@@ -6,13 +6,15 @@
 
 {
   imports =
-    [ ./boot.nix
+    [ ./system-modules/boot.nix
       ./hardware-configuration.nix
-      ./users.nix
-      ./packages.nix
-      ./audio.nix
-      ./network.nix
-      ./display.nix
+      ./system-modules/users.nix
+      ./system-modules/home-manager/home-manager.nix
+      ./package-modules/packages.nix
+      ./system-modules/audio.nix
+      ./system-modules/network.nix
+      ./system-modules/display.nix
+      ./package-modules/hyprland.nix
     ];
 
   # Enables Flakes:
@@ -35,9 +37,10 @@
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
     programs.mtr.enable = true;
-   
-    sudo.wheelNeedsPassword = false;
- 
+    
+    security.sudo.wheelNeedsPassword = false;
+    security.doas.wheelNeedsPassword = false;
+
     security.doas.enable = true;
     security.doas.extraRules = [{
     groups = [ "wheel" ];
@@ -68,5 +71,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
-
 }
