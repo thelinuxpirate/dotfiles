@@ -1,0 +1,48 @@
+-- Thanks to krive001 to share the code of xmobar
+-- https://github.com/krive001/xmonad-xmobar
+
+Config {
+    font = "xft:Noto Sans LGC:size=11:style=Regular",
+    additionalFonts = ["xft:Noto Sans:size=10:style=Bold","xft:FontAwesome:style=Regular:size=13"]
+   , bgColor          = "#282c34"
+   , fgColor          = "#ff6c6b"
+   , position         = TopSize C 100 30
+   , textOffset       = -1
+   , iconOffset       = -8
+   , alpha            = 255
+   , border           = BottomB
+   , borderWidth      = 0
+   , borderColor      = "#c0c5ce"
+   , lowerOnStart     = True
+   , hideOnStart      = False
+   , allDesktops      = True
+   , overrideRedirect = True
+   , pickBroadest     = True
+   , persistent       = True
+   , sepChar          = "%"
+   , alignSep         = "}{"
+   , template         = "<action=`gsimplecal` button=1>%date%</action> }{ %coretemp% | %multicpu% | %memory%"
+   , commands         =
+      [ Run MultiCpu                            [ "--template" , "<fc=red><fn=2>  </fn></fc><fc=blue></fc><total> %"
+                                                , "--Low"      , "50"        -- units: %
+                                                , "--High"     , "85"        -- units: %
+                                                , "--low"      , "#ffffff"
+                                                , "--normal"   , "#ffffff"
+                                                , "--high"     , "#fd0537"
+                                                ] 10
+
+      , Run CoreTemp                            [ "--template" , "<fc=cyan><fn=2>  </fn></fc><fc=cyan></fc><core0> °C"
+                                                , "--Low"      , "2"         -- units: °C
+                                                , "--High"     , "80"        -- units: °C
+                                                , "--low"      , "#ffffff"
+                                                , "--normal"   , "#ffffff"
+                                                , "--high"     , "#fd0537"
+                                                ] 10
+
+      , Run Memory                              [ "--template" ,"<fc=purple><fn=2> </fn></fc><fc=white></fc><usedratio> %"
+                                                ] 10
+      
+      , Run Date                                "date: %m-%d-%Y & %H:%M" "date" 60
+      ]
+
+}
