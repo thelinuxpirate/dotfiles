@@ -60,9 +60,12 @@ import qualified XMonad.StackSet as W
 -- P-2, Custom Functions & Extra: (Most Function Titles Start With "mi" at the Start of each Function); --
 
 miStartupHook :: X () -- Creates a StartupHook for Xmonad which Autostarts Commands & Applications;
-miStartupHook = do 
+miStartupHook = do     
     spawnOnce "nitrogen --restore &" -- Autostarts Nitrogen for the Wallpaper (You Will Have to Set your own Wallpaper using Nitrogen!);
     spawnOnce "picom --daemon" -- Autostarts Picom for Transparency (YOU MUST CONFIGURE YOUR OWN PICOM.CONF);
+    spawnOnce "emacs --daemon &" -- Autostarts Emacs Daemon;
+    spawnOnce "dunst &"
+-- spawnOnce "sudo /home/thelinuxpirate/./paperview/paperview /home/thelinuxpirate/Pictures/Wallpapers/LIVE/synth 20 &" -- If picom is enabled do not enable this;
 
 miManageHook = composeAll
      {- Using 'doShift ( miWorkspaces !! 7)' sends Program to Workspace 8!
@@ -158,15 +161,15 @@ miXmobarPP = def
     yellow   = xmobarColor "#f1fa8c" ""
     red      = xmobarColor "#ff5555" ""
     lowWhite = xmobarColor "#bbbbbb" ""
-    cyan = xmobarColor  "#59bac9" ""
+    cyan     = xmobarColor  "#59bac9" ""
 
 -- Feel Free to Add Your Own Colors! ^^^^ --
 
 miWorkspaces :: Forest String
 miWorkspaces    = [ Node "terminals"
                       [ Node "I" []
-                        , Node "II" []
-                        , Node "III" []
+                      , Node "II" []
+                      , Node "III" []
                       ]
                   , Node "web"
                       [ Node "browser"
@@ -185,16 +188,34 @@ miWorkspaces    = [ Node "terminals"
                           , Node "window.2" []
                           , Node "window.3" []
                           ]
-                      ]    
+                      ]
+				  , Node "dev"
+				      [ Node "emacs"
+					    [ Node "code.1" []
+						, Node "code.2" []
+						]
+                      , Node "wii"
+					    [ Node "emacs" []
+                        , Node "run" []
+						, Node "compile" []
+						, Node "other" []
+						]
+				      , Node "gamecube"
+					    [ Node "emacs" []
+						, Node "run" []
+						, Node "compile" []
+						, Node "other" []
+						]
+					  ]
                   , Node "godot"
                       [ Node "engine"
                         [ Node "godot-edit" [] 
                         , Node "godot-runtime" []
                         ]
                       , Node "programming"
-                          [ Node "neovim.1" []
-                          , Node "neovim.2" []
-                          , Node "neovim.3" []
+                          [ Node "emacs.1" []
+                          , Node "emacs.2" []
+                          , Node "emacs.3" []
                           ]                      
                       , Node "graphic"
                           [ Node "gimp.1" []
@@ -281,7 +302,7 @@ miConfig = def
     { terminal            = miTerminal -- Rebinds the "terminal" variable; 
     , modMask             = miModMask    -- Rebinds the Mod-Key to be the Super-Key;
     , startupHook         = miStartupHook -- Rebinds the StartupHook to the pre-configured version;
-    , logHook             = workspaceHistoryHook
+    , logHook             = workspaceHistoryHook -- Keeps the Workspace History in Tact;
     , normalBorderColor   = miNormalBorderColor -- Sets the normalBorderColor of Windows;
     , focusedBorderColor  = miFocusBorderColor -- Sets the focusedBorderColor of Windows;
     , borderWidth         = miBorderWidth -- Sets the BorderWidth for Windows;
@@ -292,21 +313,24 @@ miConfig = def
     }
 
     `additionalKeysP` -- Binds keybinds: 'M' = Mod-Key, 'S' = Shift, '<>' = Special Keys;
-    [ ("M-S-b", spawn "opera"                                                     ) -- Opens Opera;
-    , ("M-S-d", spawn "Discord"                                                   ) -- Opens Discord;
+    [ ("M-S-b", spawn "brave"                                                     ) -- Opens Opera;
+    , ("M-S-d", spawn "discord"                                                   ) -- Opens Discord;
     , ("M-S-s", spawn "LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify"      ) -- Opens Spotify-adblock;
     , ("M-<Space>", spawn "rofi -show drun"                                       ) -- Opens Rofi;
     , ("M-<Return>", spawn miTerminal                                             ) -- Opens Perfered Terminal;
     , ("M-S-g", spawn "gimp"                                                      ) -- Opens Gimp Photo Editor;
-    , ("M-g", spawn "./.start-godot"                                              ) -- Launches a Script to open Godot Game Engine;
+    , ("M-g", spawn "godot"				                                              ) -- Launches a Script to open Godot Game Engine;
+    , ("M-S-e", spawn "sudo emacsclient -c"                     								  )
+    , ("M-e", spawn "emacsclient -c"                                              )
     , ("M-w", kill                                                                ) -- Kills Targeted Window;
     , ("M-p", sendMessage NextLayout                                              ) -- Switches Between Layouts;
     , ("M-f", sendMessage $ JumpToLayout "Full"                                   ) -- Sets the Layout to Full;
-    , ("M-S-f", sendMessage $ JumpToLayout "BSP"                                  ) -- Sets the Layout to emptyBSP;
-    , ("M-r", withFocused $ windows . W.sink                                      ) -- Puts Floating Window back into Tiling Mode;
+    , ("M-S-f", sendMessage $ JumpToLayout "BSP"                                  )-- Sets the Layout to emptyBSP;
+    , ("M-m", sendMessage $ JumpToLayout "Mirror tiled"		          					  )
+	  , ("M-r", withFocused $ windows . W.sink                                      ) -- Puts Floating Window back into Tiling Mode;
     , ("M-1", windows $ W.greedyView "terminals"                                  )
-    , ("M-2", windows $ W.greedyView "web.browser"                               )
-    , ("M-3", windows $ W.greedyView "web.browser.window.1"                      )
+    , ("M-2", windows $ W.greedyView "web.browser"                                )
+    , ("M-3", windows $ W.greedyView "dev.emacs"                                  )
     , ("M-4", windows $ W.greedyView "web.discord"                                )
     , ("M-5", windows $ W.greedyView "web.spotify"                                )
     , ("M-6", windows $ W.greedyView "gaming.steam"                               )
@@ -315,8 +339,8 @@ miConfig = def
     , ("M-9", windows $ W.greedyView "gaming.lutris.window.1"                     )
     , ("M-0", windows $ W.greedyView "godot.engine.godot-edit"                    )
     , ("M-S-1", windows $ W.shift "terminals"                                     )
-    , ("M-S-2", windows $ W.shift "web.browser"                                  )
-    , ("M-S-3", windows $ W.shift "web.browser.window.1"                         )
+    , ("M-S-2", windows $ W.shift "web.browser"                                   )
+    , ("M-S-3", windows $ W.shift "dev.emacs"                                     )
     , ("M-S-4", windows $ W.shift "web.discord"                                   )
     , ("M-S-5", windows $ W.shift "web.spotify"                                   )
     , ("M-S-6", windows $ W.shift "gaming.steam"                                  )
@@ -334,8 +358,8 @@ miConfig = def
     , ("<XF86AudioMute>", spawn "amixer set Master toggle"                        ) -- Mute Audio;
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 2%-"                    ) -- Lower Audio - 2;
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 2%+"                    ) -- Raise Audio + 2;
-    , ("M-<XF86MonBrightnessUp>", spawn "brightnessctl set +500"                      ) -- Raise Brightness + 10, (Brightnessctl is an option);
-    , ("M-<XF86MonBrightnessDown>", spawn "brightnessctl set 500-"                   ) -- Lower Brightness - 10, (Brightnessctl is an option); 
-    , ("<XF86MonBrightnessUp>", spawn "brightnessctl set +200"                         ) -- Raise Brightness, + 5, (Brightnessctl is an option);
-    , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 200-"                       ) -- Lower Brightness, - 5, (Brightnessctl is an option);
+    , ("M-<XF86MonBrightnessUp>", spawn "brightnessctl set +500"                  ) -- Raise Brightness + 10, (Brightnessctl is an option);
+    , ("M-<XF86MonBrightnessDown>", spawn "brightnessctl set 500-"			      	  ) -- Lower Brightness - 10, (Brightnessctl is an option);
+    , ("<XF86MonBrightnessUp>", spawn "brightnessctl set +200"                    ) -- Raise Brightness, + 5, (Brightnessctl is an option);
+    , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 200-"                  ) -- Lower Brightness, - 5, (Brightnessctl is an option);
     ]
