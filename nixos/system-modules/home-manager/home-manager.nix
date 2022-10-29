@@ -11,7 +11,6 @@
   home-manager.users.thelinuxpirate = { pkgs, ... }: {
 
     home.packages = with pkgs; [
-	emacs 
 	vscode
 	fish
 	doas

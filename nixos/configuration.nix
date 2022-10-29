@@ -14,12 +14,16 @@
       ./system-modules/audio.nix
       ./system-modules/network.nix
       ./system-modules/display.nix
+      ./package-modules/visual.nix
       ./package-modules/hyprland.nix
       ./package-modules/dwm/dwm-overlay.nix
     ];
 
   # Enables Flakes:
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
+  # Set default shell:
+  users.defaultUserShell = pkgs.zsh;
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -48,6 +52,9 @@
     users = [ "thelinuxpirate" ];
     keepEnv = true;
     }];
+
+  # 32 Bit Support for OpenGL:
+  hardware.opengl.driSupport32Bit = true;
 
   # programs.gnupg.agent = {
   #   enable = true;

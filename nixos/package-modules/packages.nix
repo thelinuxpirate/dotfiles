@@ -3,49 +3,82 @@
 { # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   
+  # Allows broken packages:
+  nixpkgs.config.allowBroken = true;
+
   # Specify Packages Here:
   environment.systemPackages = with pkgs; [
         vim
         neovim
-        doas
+        emacs
+	doas
 	zsh
+	oh-my-zsh
 	fuse
-        git
+	appimage-run
+	ripgrep
+	fd
+	git
 	wget
         links2
-        tree
+        killall
+	gnumake
+	tree
         plocate
         mlocate
         htop
 	neofetch
         pfetch
         ipfetch
+	libnotify
+	dunst
 	alacritty
+	easyeffects
 	gnome.file-roller
 	gnome.gnome-tweaks
 	xfce.xfce4-screenshooter
+	obs-studio
+	obs-studio-plugins.obs-vkcapture
 	ranger
 	feh
 	etcher
+	transmission-gtk
+	transmission-remote-gtk
 	chromium
 	spotify
-        discord
+	spotify-tui
+	discord
+	betterdiscordctl
 	vlc
-        blender
+        amberol
+	blender
         gimp
         steam
         lutris
-        lmms
+        godot
+	lmms
 	gcc
         ghc
-        go
+	go
         lua5_4
-        openssh
+        cargo
+	rustc
+	rust-analyzer
+	rustup
+	openssl
+	dotnet-sdk
+	dotnet-runtime
+	dotnet-aspnetcore
+	python3
+	openssh
 	ssh-tools
 	ssh-chat
 	ssh-ident
 	ssh-audit
 	xorg.xbacklight
+	brightnessctl
+	SDL2
+	imagemagick
 	vulkan-loader
 	vulkan-tools
 	vulkan-headers
@@ -64,7 +97,9 @@
 	wofi-emoji
 	rofi-wayland
         dmenu-wayland
+	dmenu
 	swaybg
+	i3lock
 	nitrogen
 	lxappearance
 	libsForQt5.qt5ct
@@ -73,6 +108,9 @@
         haskellPackages.gtk
 	cabal-install
         stack
+	haskellPackages.zlib
+	zlib
+	gnatcoll-zlib
   ];
 
   nixpkgs.config.permittedInsecurePackages = [

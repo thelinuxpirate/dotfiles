@@ -8,12 +8,4 @@
     packages = with pkgs; [
     ];
   };
-
-  users.users.serverhook = {
-    isNormalUser = true;
-    description = "Server Start Up & Test";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
-  };
 }
