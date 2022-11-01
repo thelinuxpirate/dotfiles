@@ -1,2 +1,2 @@
 # dotfiles
-NixOS dotfiles + more
+My dotfiles for my NixOS build + regular dotfiles
