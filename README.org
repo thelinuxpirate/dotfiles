@@ -5,5 +5,14 @@ These are my currently used dotfiles containg many files for Xmonad + Emacs.
 ** Todo List and Updates:
 Todo:
 - [ ] Updated Emacs Config;
+- [ ] Rewrite Emacs Config in Org;
+- [ ] Learn + Configure EXWM;
 - [X] Updated Xmonad Config;
+- [ ] Rewrite Xmonad Config in Org;
 - [X] Updated NixOS Config (I no longer use NixOS so it will no longer be *updated*);
+
+(Personal Projects)
+- [ ] Rewrite TheTuss bot in Rust;
+- [ ] Finsih the Buisness & Marketing Game using Bevy;
+
+** Extra Information: 
