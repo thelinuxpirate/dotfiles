@@ -3,7 +3,7 @@
 # (org-babel-tangle to save)
   - *Introduction*
   This config uses a good amount of MELPA Packages so if you port this config remember to install those packages!:
-  \\(The configuration contains a file that attemps to install the packages if they aren't already installed.)\\
+  (The configuration contains a file that attemps to install the packages if they aren't already installed.)\\
   *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
 
 ** Startup:
