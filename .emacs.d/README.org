@@ -51,10 +51,14 @@ Loads the package repositories like MELPA and ORG;
 This will load the "use-package" package and enable it for use, use-package is like a better verison
 of the require action as it will only require/load a package when it is needed. This makes Emacs faster &
 will make the start up load time faster;
+---------------------------------------------------------------------------------------------------------
 ** Packages:
 #+BEGIN_SRC emacs-lisp
-(load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el") ;; Loads Keybindings set for EVIL Mode;
-(require 'evil)
+(load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el")
+(use-package 'evil)
+  :demand t
+  :init
+  :config
 (evil-mode 1)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -112,6 +116,12 @@ will make the start up load time faster;
 (exwm-enable)
 
 #+END_SRC
+** Explanation:
+- *L:16* (Evil Bindings)
+This will load & enable the Evil keybindings I set in "/keybinds/evil-bindings.el";
+- *L:17* ()
+
+--------------------------------------------------------------------------------------------------
 ** Syntax Related Packages:
 #+BEGIN_SRC emacs-lisp
 ;; Syntax Packages start here:
@@ -133,17 +143,26 @@ If you don't understand Emacs Lisp I will try my best to explain some of the cod
   - *Enabled/Disabled:*
   When something either contains a "-1" or a "1" this means it is either being enabled/disabled; -1 = Disabled ; 1 = Enabled;
   - *Load-File*
-  I perfer seperating my configurations into multiple files. This main file does not contain all of the code but the main part
+  I perfer separating my configurations into multiple files. This main file does not contain all of the code but the main part
   that is activated. This activation sequence loads the other files/code so it can be used. This is declared by "load-file".
   You will decalre: load-file "PATH_TO_FILE"
 ** Package List:
 Nearly all of these packages have been installed via the MELPA Repository or the ELPA Repository. Here I will list the packages,
 what they do, package names, & extra information. 
  - *Evil Mode:*
-*Package Name:* evil-mode\\
-*Dependencies:* None\\
+*Package Name:* evil-mode\\ 
+*Dependencies:* None\\ 
 *Installation Meathod:* MELPA\\
 Evil Mode contains Vim-like features and its mode whilist being able to switch to Emacs mode using: C-z, I also have
 defined my own Evil-Mode keybinds which is mainly just porting the default bindings into my perfered way. The main keystroke used is:
 Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytime. For reference configuration is stored in: 
-"/keybinds/evilbindings.el";
+"/keybinds/evilbindings.el"; 
+- *Org Mode:*
+*Package Name:* org-mode\\
+*Dependencies:* None\\
+*Installation Meathod:* Pre-Installed\\
+
+*Package Name:* \\
+*Dependencies:* \\
+*Installation Meathod:* \\
+
