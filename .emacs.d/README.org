@@ -150,9 +150,9 @@ If you don't understand Emacs Lisp I will try my best to explain some of the cod
 Nearly all of these packages have been installed via the MELPA Repository or the ELPA Repository. Here I will list the packages,
 what they do, package names, & extra information. 
  - *Evil Mode:*
-*Package Name:* evil-mode\\ 
-*Dependencies:* None\\ 
-*Installation Meathod:* MELPA\\
+*Package Name:* evil-mode \\ 
+*Dependencies:* None \\ 
+*Installation Meathod:* MELPA \\
 Evil Mode contains Vim-like features and its mode whilist being able to switch to Emacs mode using: C-z, I also have
 defined my own Evil-Mode keybinds which is mainly just porting the default bindings into my perfered way. The main keystroke used is:
 Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytime. For reference configuration is stored in: 
