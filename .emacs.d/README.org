@@ -73,29 +73,22 @@ will make the start up load time faster;
 
 (use-package org)
 
-;; Beacon Mode (Instaled via Source, IF MELPA, Package Name: beacon-mode):
-(load-file "/home/thelinuxpirate/.emacs.d/packages/beacon.el") ;; Loads the beacon-mode package
+(load-file "/home/thelinuxpirate/.emacs.d/packages/beacon.el")
 (beacon-mode 1)
 
-;; Which-Key (Installed via Source, IF MELPA, Package Name: which-key):
-(load-file "/home/thelinuxpirate/.emacs.d/packages/whichkey.el") ;; Loads the which key config
+(load-file "/home/thelinuxpirate/.emacs.d/packages/whichkey.el")
 (which-key-mode 1)
-
-;; DOOM Modeline (Installed via MELPA, Package Name: doom-modeline, NOTE: all-the-icons pkg
-;; is needed for the font icon to appear):
 (load-file "/home/thelinuxpirate/.emacs.d/packages/doom-modeline.el")
-(require 'doom-modeline)
-(doom-modeline-mode 1)
 
-;; Dashboard & Dashboard dependencies (The Start Up Menu, dependencies & dashboard installed
-;; via MELPA, Package Names: dashboard, page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts):
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
 (page-break-lines-mode 1)
 (projectile-mode 1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map) ;; <- Default Emacs;
-(evil-define-key 'global 'normal (kbd "<leader>p") 'projectile-command-map) ;; <- Evil Binding;
 (use-package all-the-icons
   :if (display-graphic-p))
-(load-file "/home/thelinuxpirate/.emacs.d/packages/dashboard.el") ;; Dashboard Conf;
+(load-file "/home/thelinuxpirate/.emacs.d/packages/dashboard.el")
 (use-package dashboard
   :ensure t
   :config
@@ -120,6 +113,26 @@ automated so I wouldn't touch any of it;
 Enables the use of the Org-Mode package;
 - *L:35* (Load Beacon Config)
 Loads the beacon's package configuration from "/packages/beacon.el";
+- *L:36* (Enable Beacon)
+Enables the beacon package;
+- *L:38* (Load Which-Key Config)
+Loads the configuration of the Which Key package from "/packages/whichkey.el";
+- *L:39* (Enable Which-Key)
+This enables the which key package;
+- *L:41* (Load Doom-Modeline)
+Loads the Doom Modeline configuration from "packages/doom-modeline.el";
+- *L:42-L:44* (Use-PKG Doom-Modeline) 
+Enables the use of the doom-modeline package and loads it into the enviorment;
+- *L:46* (Enable Page Breaking)
+Enables the use of Page Breaking by using the Page Break Package;
+- *L:47* (Enable Projectile)
+Enables the Projectile package;
+- *L:48-L:49* (Use-PKG The Icons Package)
+These lines enable the the use of All The Icons which is needed by other packages; 
+- *L:50* (Load Dashboard)
+This loads the configuration for the package dashboard;
+- *L:51-L:54* (Use-PKG Dashboard)
+Uses the Dashboard package, enables the package and its configuration; 
 --------------------------------------------------------------------------------------------------
 ** Syntax Related Packages:
 #+BEGIN_SRC emacs-lisp
@@ -164,9 +177,25 @@ Org Mode is a powerful document mode, this README file is an org file written us
 so I can't add much detail or explanation behind it as much as I'd like to. The only big thing that I can mention is that I use org mode
 to write my configuration. I have this README file interact and save code changes to init.el so if you edit the configuration try to use
 this org file. A better explanation will be written soon!
-
 ** Beacon:
 - *Package Name:* beacon-mode
 - *Dependencies:* None
 - *Installation Meathod:* Source (Package.el will try to install via MELPA)
-
+The beacon package is small yet reliable. This package will highlight the cursor's location whenever
+the cursor is moved using the scrollbar.
+** Which Key:
+- *Package Name:* which-key
+- *Dependencies:* None
+- *Installation Meathod:* Source (Package.el will try to install via MELPA)
+Yet another small yet reliable package. Which Key is super helpful when porting and inventing new keybinds/keystrokes
+when you are entering a key combination which key will let you know the aviable options in a smaller window. I don't 
+think I could have gotten far without this package.
+** Doom Modeline:
+- *Package Name:* doom-modeline 
+- *Dependencies:* (Optional: all-the-icons, all-the-icons-install-fonts) 
+- *Installation Meathod:* MELPA
+ 
+** Dashboard:
+- *Package Name:* dashboard
+- *Dependencies:* page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts 
+- *Installation Meathod:* (All) MELPA
