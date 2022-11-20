@@ -3,7 +3,7 @@
 # (org-babel-tangle to save)
   - *Introduction*
   This config uses a good amount of MELPA Packages so if you port this config remember to install those packages!:
-  (The configuration contains a file that attemps to install the packages if they aren't already installed.)
+  \\(The configuration contains a file that attemps to install the packages if they aren't already installed.)\\
   *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
 
 ** Startup:
@@ -93,11 +93,9 @@ will make the start up load time faster;
   :ensure t
   :config
     (dashboard-setup-startup-hook))
-
-;; EXWM (Installed via MELPA, Package Name: exwm):
+    
 (load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el")
 (exwm-enable)
-
 #+END_SRC
 ** Explanation:
 - *L:16* (Evil Bindings)
@@ -132,12 +130,14 @@ These lines enable the the use of All The Icons which is needed by other package
 - *L:50* (Load Dashboard)
 This loads the configuration for the package dashboard;
 - *L:51-L:54* (Use-PKG Dashboard)
-Uses the Dashboard package, enables the package and its configuration; 
+Uses the Dashboard package, enables the package and its configuration;
+- *L:56* (Load Exwm Configuration)
+This will load the Exwm Configuration located in "/exwm/exwm_config.el";
+- *L:57* (Enable Exwm)
+This enables the use of Exwm; 
 --------------------------------------------------------------------------------------------------
 ** Syntax Related Packages:
 #+BEGIN_SRC emacs-lisp
-;; Syntax Packages start here:
-
 ;; Tree-Sitter (Installed via MELA, Package Names: tree-sitter ; tree-sitter-langs):
 (require 'tree-sitter)
 (require 'tree-sitter-langs)
