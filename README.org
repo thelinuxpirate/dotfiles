@@ -1,3 +1,31 @@
-*Heading:
-text
-**subheading
+* First Heading
+  Text Content:
+  *[[https://github.com/DarthYoshi07/dotfiles][Dotfiles]]*
+
+** Sub heading
+   *Sub*-Text:
+   
+| Name   | Age | Emacs User |
+| Shovel |  15 | NO         |
+
+* Second Heading
+  Text Content:
+  
+  - This is a list (Works with numbers)
+  - This is part 2 of the list;
+  
+- [ ] This is a checklist
+- [X] This Check is *CHECKED*
+
+* Source Code:
+
+  #+begin_src rust
+  fn main() {
+  let hw: &str = "Hello World!";
+  println!("{hw}");
+}
+  #+end_src
+
+* TODO Rich Headings + [TODO]
+
+  Org mode defaults with two states: *TODO* + *DONE*
