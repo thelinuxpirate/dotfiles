@@ -25,21 +25,21 @@ The code at the top of the file, what I want to happen at the start when Emacs L
   (require 'use-package)
 #+END_SRC
 ** Explanation:
-- *L:1* (menu-bar-mode)
+- *L:1* (Disable Menu Bar)
 By default Emacs contains a menu-bar, I disable it;
-- *L:2* (scroll-bar-mode)
+- *L:2* (Disable Scroll Bar)
 By default Emacs contains a scroll bar, I disable it;
-- *L:3* (tool-bar-mode)
+- *L:3* (Disable Tool Bar)
 By default Emacs contains a tool bar, I disable it;
-- *L:4* (tooltip-mode)
+- *L:4* (Disable Tooltip)
 I do not enjoy having the tooltips, so I disable it;
-- *L:5* (display-battery-mode)
+- *L:5* (Enable Battery)
 I have a laptop and I find it helpful to display the battery on the modeline; 
-- *L:6* (display-time-mode)
+- *L:6* (Display Time)
 I like to have the current time displayed on the modeline;
-- *L:7* (global-display-line-numbers-mode)
+- *L:7* (Display Line Numbers)
 This will display the line count at the left of your screen (GLOBAL);
-- *L:8* (set-fringe-mode)
+- *L:8* (Set Fringe)
 This is set to 10 to give more room to the screen;
 - *L:9* (Emacs Bindings)
 This will load & enable the Emacs bindings I set in "/keybinds/emacs-bindings.el";
