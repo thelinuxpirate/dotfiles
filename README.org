@@ -1,7 +1,5 @@
---------------------------------------------------------
 * Dotfiles:
 These are my currently used dotfiles containg many files for Xmonad + Emacs.
-
 
 ** Todo List and Updates:
 Todo:
@@ -15,7 +13,7 @@ Todo:
 (Personal Projects)
 - [ ] Rewrite TheTuss bot in Rust;
 - [ ] Finish the Buisness & Marketing Game using Bevy;
-
+--------------------------------------------------------
 ** My Random Views and Other: 
 - *Distro of choice:*
 My currently used and distro of choice (for now) is Debian. My current Debian experience has been
