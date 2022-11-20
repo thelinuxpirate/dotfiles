@@ -14,7 +14,7 @@ Todo:
 - [ ] Rewrite TheTuss bot in Rust;
 - [ ] Finish the Buisness & Marketing Game using Bevy;
 --------------------------------------------------------
-** My Random Views and Other: 
+** My Personal Views: 
 - *Distro of choice:*
 My currently used and distro of choice (for now) is Debian. My current Debian experience has been
 great and I have the choice of getting frequently updated by using the Testing branch.
@@ -22,3 +22,14 @@ great and I have the choice of getting frequently updated by using the Testing b
 As you can tell the main window manager I use is XMonad and its been great. Lots of options to
 choose from by messing around with the contrib and it has been able to do everything I'd like
 it to. The XMobar bar for XMonad is also *REALLY* good but I just hate the syntax of it's configuration.
+The only thing I could hope for is Wayland support as I have an interest of using Wayland.
+- *The Coding Experience:*
+A year ago my computer self destructed and could no longer boot into windows which made me dabble with
+linux systems. It has been a key part of my learning experience with tech. If that would have never happened
+I would have never faced the horros of my Ubuntu installation dying or the joys of installing Arch after 7 hours 
+& the biggest part of installing Gentoo after a three day process. After a while of messing around with Linux systems
+I wanted to learn how to create my own applications and video games which is still the stage I'm going through as of now.
+I started off hoping to use the Unity engine and learning basic C# to trying to use Rust to create my projects.
+- *Linux Tip:*
+A big personal view of mine is that Operating Systems shouldn't be reccommended randomly to people and don't
+force people to switch their system. They will hate it even more as they have no idea what they are doing with it. 
