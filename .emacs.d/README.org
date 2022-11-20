@@ -1,7 +1,6 @@
-#+TITLE: Emacs Configuration
+#+TITLE: TheLinuxPirate's Personal Emacs Configuration:
 #+PROPERTY: header-args :tangle init.el 
 # (org-babel-tangle to save)
-* TheLinuxPirate's Personal Emacs Configuration: 
   - *Introduction*
   This config uses a good amount of MELPA Packages so if you port this config remember to install those packages!:
   (The configuration contains a file that attemps to install the packages if they aren't already installed.)
@@ -23,7 +22,7 @@ The code at the top of the file, what I want to happen at the start when Emacs L
   (load-theme 'dracula t)
   (load-file "/home/thelinuxpirate/.emacs.d/packages/package-repositories.el")
 
-  (require 'use-package) ;; For packages configured through this manner;
+  (require 'use-package)
 #+END_SRC
 ** Explanation:
 - *L:1* (menu-bar-mode)
@@ -132,9 +131,14 @@ will make the start up load time faster;
 * Appendix:
 If you don't understand Emacs Lisp I will try my best to explain some of the code I use:
   - *Enabled/Disabled:*
-  When something either contains a "-1" or a "1" this means it is either being enabled/disabled; -1 = Disabled ; 1 = Enabled
+  When something either contains a "-1" or a "1" this means it is either being enabled/disabled; -1 = Disabled ; 1 = Enabled;
   - *Load-File*
   I perfer seperating my configurations into multiple files. This main file does not contain all of the code but the main part
   that is activated. This activation sequence loads the other files/code so it can be used. This is declared by "load-file".
   You will decalre: load-file "PATH_TO_FILE"
 ** Package List:
+Nearly all of these packages have been installed via the MELPA Repository or the ELPA Repository. Here I will list the packages,
+what they do, package names, & extra information. 
+ - *Evil Mode:*
+*Package Name:* evil-mode
+*Dependencies:* None
