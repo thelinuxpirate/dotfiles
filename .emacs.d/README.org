@@ -138,9 +138,8 @@ This enables the use of Exwm;
 --------------------------------------------------------------------------------------------------
 ** Syntax Related Packages:
 #+BEGIN_SRC emacs-lisp
-;; Tree-Sitter (Installed via MELA, Package Names: tree-sitter ; tree-sitter-langs):
-(require 'tree-sitter)
-(require 'tree-sitter-langs)
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
 (global-tree-sitter-mode 1)
 
 ;; Rust-Mode: (Installed via MELPA, Package Name: rust-mode)
@@ -149,6 +148,8 @@ This enables the use of Exwm;
 ;; Go-Mode (Installed via MELPA, Package Name: go-mode):
 (require 'go-mode)
 #+END_SRC
+** Explanation:
+- *L:*
 ---------------------------------------------------------------
 * Appendix:
 If you don't understand Emacs Lisp I will try my best to explain some of the code I use:
@@ -176,26 +177,42 @@ Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytim
 Org Mode is a powerful document mode, this README file is an org file written using this Org Mode feature. I am quite new to org
 so I can't add much detail or explanation behind it as much as I'd like to. The only big thing that I can mention is that I use org mode
 to write my configuration. I have this README file interact and save code changes to init.el so if you edit the configuration try to use
-this org file. A better explanation will be written soon!
+this org file. A better explanation will be written soon;
 ** Beacon:
 - *Package Name:* beacon-mode
 - *Dependencies:* None
 - *Installation Meathod:* Source (Package.el will try to install via MELPA)
 The beacon package is small yet reliable. This package will highlight the cursor's location whenever
-the cursor is moved using the scrollbar.
+the cursor is moved using the scrollbar;
 ** Which Key:
 - *Package Name:* which-key
 - *Dependencies:* None
 - *Installation Meathod:* Source (Package.el will try to install via MELPA)
 Yet another small yet reliable package. Which Key is super helpful when porting and inventing new keybinds/keystrokes
 when you are entering a key combination which key will let you know the aviable options in a smaller window. I don't 
-think I could have gotten far without this package.
+think I could have gotten far without this package;
+** VTerm:
+- *Package Name:* vterm 
+- *Dependencies:* None 
+- *Installation Meathod:* MELPA
+Emacs contains its own shell but I am not the biggest fan of it & I haven't gotten around to configuring it. Vterm is another shell but it
+is a lot more powerful and allows the option to run TUIs like Network Manager's TUI for Linux users just inside of Emacs;
 ** Doom Modeline:
 - *Package Name:* doom-modeline 
 - *Dependencies:* (Optional: all-the-icons, all-the-icons-install-fonts) 
 - *Installation Meathod:* MELPA
- 
+The modeline is a very important feature in Emacs and I personally love it. So the modeline is the little line at the bottom that gives you
+lots of information, now the Doom-Modeline package enhances the modeline and gives it a better look, and more features. I have my Doom-Modeline
+configuration in: "/packages/doom-modeline.el"; 
 ** Dashboard:
 - *Package Name:* dashboard
 - *Dependencies:* page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts 
 - *Installation Meathod:* (All) MELPA
+The dashboard is mainly a custom thing I like to see at the startup but also contains its useful features like an Agenda and the option to
+display recently viewed files. The Dashboard is highly customizable and a great package overall;
+** Tree-Sitter 
+- *Package Name:* tree-sitter 
+- *Dependencies:* tree-sitter-langs
+- *Repository:* [[https://github.com/tree-sitter/tree-sitter][Tree Sitter]]
+- *Installation Meathod:* MELPA
+TEXT
