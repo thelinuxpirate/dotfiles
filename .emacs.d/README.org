@@ -53,7 +53,6 @@ of the require action as it will only require/load a package when it is needed. 
 will make the start up load time faster;
 ** Packages:
 #+BEGIN_SRC emacs-lisp
-;; Evil Mode (Installed via MELPA, Package Name: evil):
 (load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el") ;; Loads Keybindings set for EVIL Mode;
 (require 'evil)
 (evil-mode 1)
@@ -68,7 +67,8 @@ will make the start up load time faster;
  '(ispell-dictionary nil)
  '(line-number-mode nil)
  '(package-selected-packages
-   '(dashboard all-the-icons projectile page-break-lines use-package desktop-environment exwm tree-sitter-langs tree-sitter vterm doom-modeline go-mode rust-mode evil cmake-mode)))
+   '(dashboard all-the-icons projectile page-break-lines use-package desktop-environment 
+   exwm tree-sitter-langs tree-sitter vterm doom-modeline go-mode rust-mode evil cmake-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -141,4 +141,9 @@ Nearly all of these packages have been installed via the MELPA Repository or the
 what they do, package names, & extra information. 
  - *Evil Mode:*
 *Package Name:* evil-mode\\
-*Dependencies:* None
+*Dependencies:* None\\
+*Installation Meathod:* MELPA\\
+Evil Mode contains Vim-like features and its mode whilist being able to switch to Emacs mode using: C-z, I also have
+defined my own Evil-Mode keybinds which is mainly just porting the default bindings into my perfered way. The main keystroke used is:
+Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytime. For reference configuration is stored in: 
+"/keybinds/evilbindings.el";
