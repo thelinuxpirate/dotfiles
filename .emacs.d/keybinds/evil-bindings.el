@@ -24,14 +24,18 @@
 (evil-define-key 'normal 'global (kbd "<leader><tab>k") 'kill-buffer)
 (evil-define-key 'normal 'global (kbd "<leader><tab>s") 'vterm)
 (evil-define-key 'normal 'global (kbd "<leader><tab>b") 'list-buffers)
-(evil-define-key 'normal 'global (kbd "<leader><tab>df") 'switch-to-buffer)
+(evil-define-key 'normal 'global (kbd "<leader><tab>d f") 'switch-to-buffer)
 (evil-define-key 'normal 'global (kbd "<leader><tab>l") 'load-file)
 (evil-define-key 'normal 'global (kbd "<leader><tab>f") 'find-file)
 (evil-define-key 'normal 'global (kbd "<leader><tab> <tab>") 'switch-to-prev-buffer)
 (evil-define-key 'normal 'global (kbd "<leader><tab> SPC") 'switch-to-next-buffer)
-;; LEADER + X:
+(evil-define-key 'normal 'global (kbd "<leader><tab>c") 'comment-region)
+(evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
 
-;; LEADER + W (Contains bindings related to windows & buffers):
+;; LEADER + O (Contains Org Mode Related Bindings):
+(evil-define-key 'normal 'visual (kbd "<leader>o l") 'org-insert-link)
+
+;; LEADER + W (Contains Bindings Related to Windows & Buffers):
 (evil-define-key 'normal 'global (kbd "<leader>w w") 'make-frame)
 (evil-define-key 'normal 'global (kbd "<leader>w 1") 'delete-window)
 (evil-define-key 'normal 'global (kbd "<leader>w 2") 'delete-other-windows)

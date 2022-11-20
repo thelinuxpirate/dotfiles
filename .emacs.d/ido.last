@@ -1,0 +1,52 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/thelinuxpirate/.config/" . "xmonad/")
+ ("/home/thelinuxpirate/" . ".emacs.d/")
+ ("/home/" . "thelinuxpirate/")
+ ("/" . "home/")
+ ("/home/thelinuxpirate/.emacs.d/" . "auto-save-list/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/thelinuxpirate/.emacs.d/"
+ "/home/thelinuxpirate/.emacs.d/exwm/"
+ "/home/thelinuxpirate/.emacs.d/keybinds/"
+ "/home/thelinuxpirate/.config/xmonad/"
+ "/home/thelinuxpirate/.config/picom/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "init.el"
+ "exwm-config.el"
+ "emacs-bindings.el"
+ "xmonad.hs"
+ "picom.conf"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/thelinuxpirate/.emacs.d/auto-save-list/" (25459 3698 509804 978000) ".saves-9590-ThePirateShip~" ".saves-3876-ThePirateShip~" ".saves-1386-ThePirateShip~" ".saves-30402-ThePirateShip~" ".saves-5021-ThePirateShip~" ".saves-1457-ThePirateShip~" ".saves-2613-ThePirateShip~" ".saves-1550-ThePirateShip~" ".saves-4927-ThePirateShip~" ".saves-31403-ThePirateShip~" ".saves-1358-ThePirateShip~" ".saves-11631-ThePirateShip~" ".saves-34149-ThePirateShip~" ".saves-27816-ThePirateShip~" ".saves-4287-ThePirateShip~" ".saves-1378-ThePirateShip~" ".saves-2139-ThePirateShip~" ".saves-1391-ThePirateShip~" ".saves-1708-ThePirateShip~" ".saves-4619-ThePirateShip~" ".saves-7422-ThePirateShip~" ".saves-2858-ThePirateShip~" ".saves-1365-ThePirateShip~" ".saves-1383-ThePirateShip~" ".saves-1376-ThePirateShip~" ".saves-1380-ThePirateShip~" ".saves-2571-ThePirateShip~" ".saves-28725-ThePirateShip~" ".saves-1656-ThePirateShip~" ".saves-4627-ThePirateShip~" ".saves-1382-ThePirateShip~" ".saves-31245-ThePirateShip~" ".saves-1403-ThePirateShip~" ".saves-33328-ThePirateShip~" ".saves-29540-ThePirateShip~" ".saves-2379-ThePirateShip~" "../" ".saves-4383-ThePirateShip~" ".saves-4453-ThePirateShip~" ".saves-32585-ThePirateShip~" ".saves-30157-ThePirateShip~" ".saves-1379-ThePirateShip~" "./" ".saves-30289-ThePirateShip~" ".saves-1357-ThePirateShip~")
+
+ ("/home/thelinuxpirate/.emacs.d/" (25459 3698 449802 495000) "init.el" "package.el" "init.el~" "ido.last~" "package.el~" "ido.last" "auto-save-list/" "themes/" "keybinds/" "elpa/" "../" "eshell/" "packages/" "./")
+
+ ("/home/thelinuxpirate/" (25459 3937 541199 759000) "Documents/" ".links2/" ".zshenv" ".bash_logout" "Videos/" ".emacs.d/" ".Xauthority" ".zcompdump-ThePirateShip-5.9.zwc" ".rustup/" ".steampath" "zsh-syntax-highlighting/" ".zcompdump" "Games/" ".zshrc" ".themes/" ".zcompdump-ThePirateShip-5.9" ".xsession-errors.old" ".steam/" ".cargo/" "emacs-packages/" "RMAIL" "grub/" ".mozilla/" "GameCovers/" ".viminfo" "Orchis-theme/" ".wine/" "dwm/" ".oh-my-zsh/" "Music/" "devkit/" ".sudo_as_admin_successful" ".klei/" ".spectrwm.conf" ".dmrc" ".zshrc.pre-oh-my-zsh" "Code/" "Pictures/" ".cache/" ".lmmsrc.xml" "Desktop/" ".profile" ".zsh_history" ".fehbg" ".mono/" ".pki/" "old-dots/" ".xinitrc~" ".cinnamon/" ".spectrwm.conf~" ".lesshst" ".shell.pre-oh-my-zsh" "../" ".xsession-errors" ".steampid" "Templates/" ".local/" ".bash_history" ".npm/" ".gtkrc-2.0" "Downloads/" "./" ".icons/" "Public/" ".bashrc" ".config/" ".xinitrc")
+
+ ("/home/thelinuxpirate/.emacs.d/exwm/" (25458 57210 883534 269000) "exwm-config.el~" "exwm-config.el" "../" "./")
+
+ ("/home/thelinuxpirate/.config/picom/" (25458 51811 838153 429000) "picom.conf~" "../" "picom.conf" "./")
+
+ ("/home/thelinuxpirate/.emacs.d/keybinds/" (25458 55394 241835 884000) "emacs-bindings.el" "emacs-bindings.el~" "evil-bindings.el~" "evil-bindings.el" "../" "./")
+
+ ("/home/thelinuxpirate/.config/xmonad/" (25458 51171 258046 466000) "xmobar/" "xmonad.hs" "xmonad.hs~" "../" "./")
+
+ ("/home/thelinuxpirate/.config/" (25457 28856 926047 478000) "goa-1.0/" "nitrogen/" "BraveSoftware/" "leftwm/" "pulse/" "neofetch/" "nemo/" "dconf/" "lutris/" "balena-etcher-electron/" "alacritty/" "pavucontrol.ini" "drpcm/" "rofi/" "dunst/" "vlc/" "discordrpcmaker/" "awesome/" "chromium/" "cinnamon-session/" "xfce4/" "htop/" "xmonad/" "google-chrome/" "BetterDiscord/" "autostart/" "Thunar/" "cef_user_data/" "picom/" "user-dirs.locale" "BetterDiscord Installer/" "opera/" "discord/" "menus/" "transmission/" "../" "gtk-3.0/" "./" "gtk-2.0/" "user-dirs.dirs" "mimeapps.list")
+
+ ("/home/" (25441 46986 597555 808000) "thelinuxpirate/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

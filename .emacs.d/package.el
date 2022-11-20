@@ -16,3 +16,9 @@
 
 (unless (package-installed-p 'go-mode)
   (package-install 'go-mode))
+
+(unless (package-installed-p 'tree-sitter)
+  (package-install 'tree-sitter))
+
+(unless (package-installed-p 'tree-sitter-langs)
+  (package-install 'tree-sitter-langs))

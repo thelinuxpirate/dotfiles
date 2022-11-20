@@ -91,10 +91,10 @@
 (setq doom-modeline-buffer-encoding t)
 
 ;; Whether display the indentation information.
-(setq doom-modeline-indent-info nil)
+(setq doom-modeline-indent-info t)
 
 ;; If non-nil, only display one number for checker information if applicable.
-(setq doom-modeline-checker-simple-format t)
+(setq doom-modeline-checker-simple-format nil)
 
 ;; The maximum number displayed for notifications.
 (setq doom-modeline-number-limit 99)
