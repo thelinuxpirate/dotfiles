@@ -8,17 +8,28 @@
   *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
 
 ** Startup:
-- (menu-bar-mode) <- By default Emacs contains a menu-bar, I disable it;
-- (scroll-bar-mode) <- By default Emacs contains a scroll bar, I disable it;
-- (tool-bar-mode) <- By default Emacs contains a tool bar, I disable it;
-- (tooltip-mode) <- I do not enjoy having the tooltips, so I disable it;
-- (display-battery-mode) <- I have a laptop and I find it helpful to display the battery on the modeline; 
-- (display-time-mode) <- I like to have the current time displayed on the modeline;
-- (global-display-line-numbers-mode) <- This will display the line count at the left of your screen (GLOBAL);
-- (set-fringe-mode) <- This is set to 10 to give more room to the screen;
-- (Emacs Bindings) <- This will load & enable the Emacs bindings I set in "/keybinds/emacs-bindings.el";
-- (Theme Path + Load-Theme) <- Sets the theme load path the to dracula theme located in "/themes"; 
-- (Load-File) <- Loads the package repositories like MELPA and ORG;
+- (menu-bar-mode)
+By default Emacs contains a menu-bar, I disable it;
+- (scroll-bar-mode)
+By default Emacs contains a scroll bar, I disable it;
+- (tool-bar-mode)
+By default Emacs contains a tool bar, I disable it;
+- (tooltip-mode)
+I do not enjoy having the tooltips, so I disable it;
+- (display-battery-mode)
+I have a laptop and I find it helpful to display the battery on the modeline; 
+- (display-time-mode)
+I like to have the current time displayed on the modeline;
+- (global-display-line-numbers-mode)
+This will display the line count at the left of your screen (GLOBAL);
+- (set-fringe-mode)
+This is set to 10 to give more room to the screen;
+- (Emacs Bindings)
+This will load & enable the Emacs bindings I set in "/keybinds/emacs-bindings.el";
+- (Theme Path + Load-Theme)
+Sets the theme load path the to dracula theme located in "/themes"; 
+- (Load-File)
+Loads the package repositories like MELPA and ORG;
   #+BEGIN_SRC emacs-lisp
   (menu-bar-mode -1)
   (scroll-bar-mode -1)        
