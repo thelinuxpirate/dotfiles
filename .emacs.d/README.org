@@ -147,7 +147,12 @@ This enables the use of Exwm;
 (use-package go-mode)
 #+END_SRC
 ** Explanation:
-- *L:*
+- *L:59-L:61* (Use-PKG Tree Sitter)
+Uses and then enables the features of Tree Sitter globaly;
+- *L:63* (Use-PKG Rust Mode)
+Uses and enables the Rust Mode package;
+- *L:65* (Use-PKG Go Mode)
+Uses and enables the Go Mode package;
 ---------------------------------------------------------------
 * Appendix:
 If you don't understand Emacs Lisp I will try my best to explain some of the code I use:
@@ -225,11 +230,12 @@ efficiently update the syntax tree as the source file is edited.";
 ** Rust Mode:
 - *Package Name:* rust-mode 
 - *Dependencies:* None
-- *Repository:* 
+- *Repository:* [[https://github.com/rust-lang/rust-mode][Rust Mode]] 
 - *Installation Meathod:* MELPA
-TEXT
+Rust Mode adds syntax highligting for rust files and better integration;
 ** Go Mode:
 - *Package Name:* go-mode
 - *Dependencies:* None
-- *Repository:* 
+- *Repository:* [[https://github.com/dominikh/go-mode.el][Go Mode]] 
 - *Installation Meathod:* MELPA
+Go Mode adds syntax highligting for go files and better integration;
