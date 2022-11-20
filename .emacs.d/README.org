@@ -142,11 +142,9 @@ This enables the use of Exwm;
 (use-package tree-sitter-langs)
 (global-tree-sitter-mode 1)
 
-;; Rust-Mode: (Installed via MELPA, Package Name: rust-mode)
-(require 'rust-mode)
+(use-package rust-mode)
 
-;; Go-Mode (Installed via MELPA, Package Name: go-mode):
-(require 'go-mode)
+(use-package go-mode)
 #+END_SRC
 ** Explanation:
 - *L:*
@@ -165,6 +163,7 @@ what they do, package names, & extra information.
 ** Evil Mode:
 - *Package Name:* evil-mode
 - *Dependencies:* None
+- *Repository:* [[https://github.com/emacs-evil/evil][Evil Mode]]
 - *Installation Meathod:* MELPA
 Evil Mode contains Vim-like features and its mode whilist being able to switch to Emacs mode using: C-z, I also have
 defined my own Evil-Mode keybinds which is mainly just porting the default bindings into my perfered way. The main keystroke used is:
@@ -173,6 +172,7 @@ Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytim
 ** Org Mode:
 - *Package Name:* org-mode
 - *Dependencies:* None
+- *Repository:* [[https://orgmode.org/][Org Mode]]
 - *Installation Meathod:* Pre-Installed
 Org Mode is a powerful document mode, this README file is an org file written using this Org Mode feature. I am quite new to org
 so I can't add much detail or explanation behind it as much as I'd like to. The only big thing that I can mention is that I use org mode
@@ -181,25 +181,29 @@ this org file. A better explanation will be written soon;
 ** Beacon:
 - *Package Name:* beacon-mode
 - *Dependencies:* None
+- *Repository:* [[https://github.com/Malabarba/beacon][Beacon]]
 - *Installation Meathod:* Source (Package.el will try to install via MELPA)
 The beacon package is small yet reliable. This package will highlight the cursor's location whenever
 the cursor is moved using the scrollbar;
 ** Which Key:
 - *Package Name:* which-key
 - *Dependencies:* None
+- *Repository:* [[https://github.com/justbur/emacs-which-key][Which Key]]
 - *Installation Meathod:* Source (Package.el will try to install via MELPA)
 Yet another small yet reliable package. Which Key is super helpful when porting and inventing new keybinds/keystrokes
 when you are entering a key combination which key will let you know the aviable options in a smaller window. I don't 
 think I could have gotten far without this package;
 ** VTerm:
 - *Package Name:* vterm 
-- *Dependencies:* None 
+- *Dependencies:* None
+ - *Repository:* [[https://github.com/akermu/emacs-libvterm][VTerm]]
 - *Installation Meathod:* MELPA
 Emacs contains its own shell but I am not the biggest fan of it & I haven't gotten around to configuring it. Vterm is another shell but it
 is a lot more powerful and allows the option to run TUIs like Network Manager's TUI for Linux users just inside of Emacs;
 ** Doom Modeline:
 - *Package Name:* doom-modeline 
-- *Dependencies:* (Optional: all-the-icons, all-the-icons-install-fonts) 
+- *Dependencies:* (Optional: all-the-icons, all-the-icons-install-fonts)
+ - *Repository:* [[https://github.com/seagle0128/doom-modeline][Doom Modeline]]
 - *Installation Meathod:* MELPA
 The modeline is a very important feature in Emacs and I personally love it. So the modeline is the little line at the bottom that gives you
 lots of information, now the Doom-Modeline package enhances the modeline and gives it a better look, and more features. I have my Doom-Modeline
@@ -207,12 +211,25 @@ configuration in: "/packages/doom-modeline.el";
 ** Dashboard:
 - *Package Name:* dashboard
 - *Dependencies:* page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts 
+- *Repository:* [[https://github.com/emacs-dashboard/emacs-dashboard][Dashboard]]
 - *Installation Meathod:* (All) MELPA
 The dashboard is mainly a custom thing I like to see at the startup but also contains its useful features like an Agenda and the option to
 display recently viewed files. The Dashboard is highly customizable and a great package overall;
-** Tree-Sitter 
+** Tree-Sitter: 
 - *Package Name:* tree-sitter 
 - *Dependencies:* tree-sitter-langs
-- *Repository:* [[https://github.com/tree-sitter/tree-sitter][Tree Sitter]]
+- *Repository:* [[https://emacs-tree-sitter.github.io/][Tree Sitter]]
+- *Installation Meathod:* MELPA
+"Tree-sitter is a parser generator tool and an incremental parsing library. It can build a concrete syntax tree for a source file and 
+efficiently update the syntax tree as the source file is edited.";
+** Rust Mode:
+- *Package Name:* rust-mode 
+- *Dependencies:* None
+- *Repository:* 
 - *Installation Meathod:* MELPA
 TEXT
+** Go Mode:
+- *Package Name:* go-mode
+- *Dependencies:* None
+- *Repository:* 
+- *Installation Meathod:* MELPA
