@@ -1,0 +1,123 @@
+#+TITLE: Emacs Configuration
+#+PROPERTY: header-args :tangle init.el 
+# (org-babel-tangle to save)
+* TheLinuxPirate's Personal Emacs Configuration: 
+  - *Introduction*
+  This config uses a good amount of MELPA Packages so if you port this config remember to install those packages!:
+  (The configuration contains a file that attemps to install the packages if they aren't already installed.)
+  *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
+
+** Startup:
+- (menu-bar-mode) <- By default Emacs contains a menu-bar, I disable it;
+- (scroll-bar-mode) <- By default Emacs contains a scroll bar, I disable it;
+- (tool-bar-mode) <- By default Emacs contains a tool bar, I disable it;
+- (tooltip-mode) <- I do not enjoy having the tooltips, so I disable it;
+- (display-battery-mode) <- I have a laptop and I find it helpful to display the battery on the modeline; 
+- (display-time-mode) <- I like to have the current time displayed on the modeline;
+- (global-display-line-numbers-mode) <- This will display the line count at the left of your screen (GLOBAL);
+- (set-fringe-mode) <- This is set to 10 to give more room to the screen;
+- (Emacs Bindings) <- This will load & enable the Emacs bindings I set in "/keybinds/emacs-bindings.el";
+- (Theme Path + Load-Theme) <- Sets the theme load path the to dracula theme located in "/themes"; 
+- (Load-File) <- Loads the package repositories like MELPA and ORG;
+  #+BEGIN_SRC emacs-lisp
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)        
+  (tool-bar-mode -1)          
+  (tooltip-mode -1) 
+  (display-battery-mode 1)
+  (display-time-mode 1)
+  (global-display-line-numbers-mode 1)
+  (set-fringe-mode 10)
+  (load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
+  (add-to-list 'custom-theme-load-path "/home/thelinuxpirate/.emacs.d/themes")
+  (load-theme 'dracula t)
+  (load-file "/home/thelinuxpirate/.emacs.d/packages/package-repositories.el")
+
+  (require 'use-package) ;; For packages configured through this manner;
+#+END_SRC
+** Packages:
+#+BEGIN_SRC emacs-lisp
+;; Evil Mode (Installed via MELPA, Package Name: evil):
+(load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el") ;; Loads Keybindings set for EVIL Mode;
+(require 'evil)
+(evil-mode 1)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(display-battery-mode t)
+ '(display-time-mode t)
+ '(ispell-dictionary nil)
+ '(line-number-mode nil)
+ '(package-selected-packages
+   '(dashboard all-the-icons projectile page-break-lines use-package desktop-environment exwm tree-sitter-langs tree-sitter vterm doom-modeline go-mode rust-mode evil cmake-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Org Mode (Pre-installed on newer Emacs Versions):
+(use-package org)
+
+;; Beacon Mode (Instaled via Source, IF MELPA, Package Name: beacon-mode):
+(load-file "/home/thelinuxpirate/.emacs.d/packages/beacon.el") ;; Loads the beacon-mode package
+(beacon-mode 1)
+
+;; Which-Key (Installed via Source, IF MELPA, Package Name: which-key):
+(load-file "/home/thelinuxpirate/.emacs.d/packages/whichkey.el") ;; Loads the which key config
+(which-key-mode 1)
+
+;; DOOM Modeline (Installed via MELPA, Package Name: doom-modeline, NOTE: all-the-icons pkg
+;; is needed for the font icon to appear):
+(load-file "/home/thelinuxpirate/.emacs.d/packages/doom-modeline.el")
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+
+;; Dashboard & Dashboard dependencies (The Start Up Menu, dependencies & dashboard installed
+;; via MELPA, Package Names: dashboard, page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts):
+(page-break-lines-mode 1)
+(projectile-mode 1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map) ;; <- Default Emacs;
+(evil-define-key 'global 'normal (kbd "<leader>p") 'projectile-command-map) ;; <- Evil Binding;
+(use-package all-the-icons
+  :if (display-graphic-p))
+(load-file "/home/thelinuxpirate/.emacs.d/packages/dashboard.el") ;; Dashboard Conf;
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook))
+
+;; EXWM (Installed via MELPA, Package Name: exwm):
+(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el")
+(exwm-enable)
+
+#+END_SRC
+** Syntax Related Packages:
+#+BEGIN_SRC emacs-lisp
+;; Syntax Packages start here:
+
+;; Tree-Sitter (Installed via MELA, Package Names: tree-sitter ; tree-sitter-langs):
+(require 'tree-sitter)
+(require 'tree-sitter-langs)
+(global-tree-sitter-mode 1)
+
+;; Rust-Mode: (Installed via MELPA, Package Name: rust-mode)
+(require 'rust-mode)
+
+;; Go-Mode (Installed via MELPA, Package Name: go-mode):
+(require 'go-mode)
+#+END_SRC
+---------------------------------------------------------------
+* Appendix:
+If you don't understand Emacs Lisp I will try my best to explain some of the code I use:
+  - *Enabled/Disabled:*
+  When something either contains a "-1" or a "1" this means it is either being enabled/disabled; -1 = Disabled ; 1 = Enabled
+  - *Load-File*
+  I perfer seperating my configurations into multiple files. This main file does not contain all of the code but the main part
+  that is activated. This activation sequence loads the other files/code so it can be used. This is declared by "load-file".
+  You will decalre: load-file "PATH_TO_FILE"
+** Package List:
