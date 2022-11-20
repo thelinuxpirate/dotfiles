@@ -1,31 +1,9 @@
-* First Heading
-  Text Content:
-  *[[https://github.com/DarthYoshi07/dotfiles][Dotfiles]]*
+* Dotfiles:
+These are my currently used dotfiles containg many files for Xmonad + Emacs.
 
-** Sub heading
-   *Sub*-Text:
-   
-| Name   | Age | Emacs User |
-| Shovel |  15 | NO         |
 
-* Second Heading
-  Text Content:
-  
-  - This is a list (Works with numbers)
-  - This is part 2 of the list;
-  
-- [ ] This is a checklist
-- [X] This Check is *CHECKED*
-
-* Source Code:
-
-  #+begin_src rust
-  fn main() {
-  let hw: &str = "Hello World!";
-  println!("{hw}");
-}
-  #+end_src
-
-* TODO Rich Headings + [TODO]
-
-  Org mode defaults with two states: *TODO* + *DONE*
+** Todo List and Updates:
+Todo:
+- [ ] Updated Emacs Config;
+- [X] Updated Xmonad Config;
+- [X] Updated NixOS Config (I no longer use NixOS so it will no longer be *updated*);
