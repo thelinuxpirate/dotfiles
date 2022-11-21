@@ -1,7 +1,8 @@
 #+TITLE: TheLinuxPirate's Personal Emacs Configuration:
+--------------------------------------------------------------------------------------------------------------------------------------------------
 #+PROPERTY: header-args :tangle init.el 
 # (org-babel-tangle to save)
-  - *Introduction*
+* Introduction
   This config uses a good amount of MELPA Packages so if you port this config remember to install those packages!:
   (The configuration contains a file that attemps to install the packages if they aren't already installed.)\\
   *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
@@ -161,7 +162,25 @@ If you don't understand Emacs Lisp I will try my best to explain some of the cod
   - *Load-File*
   I perfer separating my configurations into multiple files. This main file does not contain all of the code but the main part
   that is activated. This activation sequence loads the other files/code so it can be used. This is declared by "load-file".
-  You will declare: load-file "PATH_TO_FILE"
+  You will declare: load-file "PATH_TO_FILE";
+-----------------------------------------------------------------------------------------------------------------------------------
+** Themes:
+There are only few themes installed in this configuration, some by MEPLA and others by source;
+** Dracula Theme:
+- *Theme Name:* Dracula
+- *Installation Meathod:* Source
+This is the main theme I use, the theme is found in the "/themes/" directory;
+** Gruvbox Theme:
+- *Theme Name:* Gruvbox
+- *Package Name:* gruvbox-dark-medium
+- *Installation Meathod:* MELPA
+I use the dark themes of gruvbox from time to time, I find it nice to have a selection of themes;
+** Emacs Afternoon Theme:
+- *Theme Name:* Emacs-Afternoon-Theme
+- *Package Name:* afternoon-theme
+- *Installation Meathod:* MELPA
+Another dark-ish theme that is an option to use. If you want to declare this theme do: "(load-theme 'afternoon t)";
+------------------------------------------------------------------------------------------------------------------------------------
 ** Package List:
 Nearly all of these packages have been installed via the MELPA Repository or the ELPA Repository. Here I will list the packages,
 what they do, package names, & extra information. 
