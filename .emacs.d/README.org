@@ -1,5 +1,4 @@
 #+TITLE: TheLinuxPirate's Personal Emacs Configuration:
---------------------------------------------------------------------------------------------------------------------------------------------------
 #+PROPERTY: header-args :tangle init.el 
 # (org-babel-tangle to save)
 * Introduction
