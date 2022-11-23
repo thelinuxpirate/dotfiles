@@ -24,24 +24,19 @@
 	exwm-workspace-number 7)
   ;;When window "class" updates, use it to set the buffer name
   (add-hook 'exwm-update-class-hook #'exwm-update-class)
-
-  ;; Disable these two:
-  (display-battery-mode -1)
-  (display-time-mode -1)
-
   ;; Update panel indicator when workspace changes
   (add-hook 'exwm-workspace-switch-hook #'polybar--send-polybar-exwm-workspace)
-
   ;; Update "title"
   ;;(add-hook 'exwm-update-title-hook #'exwm-update-title)
-
   ;; Configure Window By Class:
   ;;(add-hook 'exwm-update-finish-hook #'exwm-configure-window-by-class)
- 
   ;; Hide the modeline on all floating windows
   (add-hook 'exwm-floating-setup-hook
             (lambda ()
               (exwm-layout-hide-mode-line)))
+  ;; Disable these two:
+  (display-battery-mode -1)
+  (display-time-mode -1)
 
 ;; Set the screen resolution (update this to be the correct resolution for your screen!)
 (require 'exwm-randr)
@@ -51,6 +46,8 @@
 	    (start-process-shell-command
 	     "xrandr" nil "xrandr --output eDP-1 --mode 1366x768 --pos 0x0 --rotate normal")))
 (exwm-randr-enable)
+
+;; MAYBE? This section killed Exwm for me;
 
 (defvar polybar--polybar-process nil
   "Holds the process of the running Polybar instance, if any")
@@ -144,7 +141,6 @@
           ([s-h] . windmove-right)
           ([s-k] . windmove-up)
           ([s-j] . windmove-down)
-	  ([?\s-q] . kill-emacs)
           ([?\s-`] . (lambda () 
 	               (interactive) (exwm-workspace-switch-create 0)))
          ,@(mapcar (lambda (i)
@@ -155,6 +151,7 @@
                    (number-sequence 0 6))))
           (exwm-input-set-key (kbd "<s-return>") 'vterm)
 	  (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
+	  (exwm-input-set-key (kbd "s-Q") 'kill-emacs)
 	  (exwm-input-set-key (kbd "s-d") 'dired)
 	  (exwm-input-set-key (kbd "s-D") 'start--discord)
 	  (exwm-input-set-key (kbd "s-B") 'start--brave-browser)

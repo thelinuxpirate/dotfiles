@@ -13,8 +13,8 @@ The code at the top of the file, what I want to happen at the start when Emacs L
   (scroll-bar-mode -1)        
   (tool-bar-mode -1)          
   (tooltip-mode -1) 
-  (display-battery-mode 1)
-  (display-time-mode 1)
+  (display-battery-mode 1) ;; I comment this when I use Exwm;
+  (display-time-mode 1) ;; I comment this when I use Exwm;
   (global-display-line-numbers-mode 1)
   (set-fringe-mode 10)
   (load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
@@ -94,8 +94,23 @@ will make the start up load time faster;
   :config
     (dashboard-setup-startup-hook))
     
-(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el")
+(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el") ;; Disable if not using Exwm;
 (exwm-enable)
+
+(use-package counsel ;; Counsel is the pkg name, MELPA, 2 or three depend all-the-icons-ivy, all-the-icons-dried
+  :custom
+    (counsel-linux-app-format-function#'counsel-linux-app-format-function-name-only))
+(ivy-mode 1)
+
+;; Make it look better (MELPA, ivy-rich, all-the-icons-ivy-rich):
+(use-package ivy-rich
+  :init
+(ivy-rich-mode 1)
+  :config
+(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+(use-package highlight-parentheses ;; MELPA PKG: highlight-parentheses
+  :ensure t)
+(global-highlight-parentheses-mode)
 #+END_SRC
 ** Explanation:
 - *L:16* (Evil Bindings)
@@ -133,7 +148,7 @@ This loads the configuration for the package dashboard;
 Uses the Dashboard package, enables the package and its configuration;
 - *L:56* (Load Exwm Configuration)
 This will load the Exwm Configuration located in "/exwm/exwm_config.el";
-- *L:57* (Enable Exwm)
+- *L:57* (Enable Exwm) <- More on my Exwm Configuration
 This enables the use of Exwm; 
 --------------------------------------------------------------------------------------------------
 ** Syntax Related Packages:
@@ -257,3 +272,83 @@ Rust Mode adds syntax highligting for rust files and better integration;
 - *Repository:* [[https://github.com/dominikh/go-mode.el][Go Mode]] 
 - *Installation Meathod:* MELPA
 Go Mode adds syntax highligting for go files and better integration;
+
+* Other Files:
+** Package.el:
+I use Package.el as a startup checker to make sure every package used in this configuration is installed! I am a fan of redeployable
+configurations & systems. The only downside to this is that it will be exucuted at every startup which means the more packages you add
+the slower your start up will be.
+#+BEGIN_SRC emacs-lisp :tangle package.el 
+;; This code makes sure that these packages are installed before you start using the system:
+(unless (package-installed-p 'use-package) ; 
+  (package-install 'use-package))
+
+(unless (package-installed-p 'evil)  ;
+  (package-install 'evil))
+
+(unless (package-installed-p 'vterm) ; 
+  (package-install 'vterm))
+
+(unless (package-installed-p 'beacon-mode) ;
+  (package-install 'beacon-mode))
+
+(unless (package-installed-p 'which-key) ;
+  (package-install 'which-key))
+
+(unless (package-installed-p 'doom-modeline) ;
+  (package-install 'doom-modeline))
+
+(unless (package-installed-p 'page-break-lines) ; 
+  (package-install 'page-break-lines))
+
+(unless (package-installed-p 'projectile)  ;
+  (package-install 'projectile))
+
+(unless (package-installed-p 'all-the-icons) ; 
+  (package-install 'all-the-icons))
+
+(unless (package-installed-p 'dashboard) ; 
+  (package-install 'dashboard))
+
+(unless (package-installed-p 'cmake-mode)  ;
+  (package-install 'cmake-mode))
+
+(unless (package-installed-p 'exwm) ; 
+  (package-install 'exwm))
+
+(unless (package-installed-p 'desktop-environment) ; 
+  (package-install 'desktop-environment))
+
+(unless (package-installed-p 'counsel) ; 
+  (package-install 'counsel))
+
+(unless (package-installed-p 'ivy) ;
+  (package-install 'ivy))
+
+(unless (package-installed-p 'all-the-icons-ivy) ; 
+  (package-install 'all-the-icons-ivy))
+
+(unless (package-installed-p 'all-the-icons-dired) ; 
+  (package-install 'all-the-icons-dired))
+
+(unless (package-installed-p 'ivy-rich) ;
+  (package-install 'ivy-rich))
+
+(unless (package-installed-p 'all-the-icons-ivy-rich) ; 
+  (package-install 'all-the-icons-ivy-rich))
+
+(unless (package-installed-p 'highlight-parentheses) ; 
+  (package-install 'highlight-parentheses))
+
+(unless (package-installed-p 'tree-sitter) ;
+  (package-install 'tree-sitter))
+
+(unless (package-installed-p 'tree-sitter-langs) ;
+  (package-install 'tree-sitter-langs))
+
+(unless (package-installed-p 'rust-mode) ;
+  (package-install 'rust-mode))
+
+(unless (package-installed-p 'go-mode) ;
+  (package-install 'go-mode))
+#+END_SRC

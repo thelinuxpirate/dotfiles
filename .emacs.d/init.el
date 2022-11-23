@@ -2,8 +2,8 @@
 (scroll-bar-mode -1)        
 (tool-bar-mode -1)          
 (tooltip-mode -1) 
-(display-battery-mode 1)
-(display-time-mode 1)
+(display-battery-mode 1) ;; I comment this when I use Exwm;
+(display-time-mode 1) ;; I comment this when I use Exwm;
 (global-display-line-numbers-mode 1)
 (set-fringe-mode 10)
 (load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
@@ -53,8 +53,23 @@
   :config
     (dashboard-setup-startup-hook))
     
-(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el")
+(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el") ;; Disable if not using Exwm;
 (exwm-enable)
+
+(use-package counsel ;; Counsel is the pkg name, MELPA, 2 or three depend all-the-icons-ivy, all-the-icons-dried
+  :custom
+    (counsel-linux-app-format-function#'counsel-linux-app-format-function-name-only))
+(ivy-mode 1)
+
+;; Make it look better (MELPA, ivy-rich, all-the-icons-ivy-rich):
+(use-package ivy-rich
+  :init
+(ivy-rich-mode 1)
+  :config
+(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+(use-package highlight-parentheses ;; MELPA PKG: highlight-parentheses
+  :ensure t)
+(global-highlight-parentheses-mode)
 
 (use-package tree-sitter)
 (use-package tree-sitter-langs)

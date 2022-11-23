@@ -1,25 +1,5 @@
 ;;; desktop-environment.el --- Helps you control your GNU/Linux computer  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Damien Cassou
-
-;; Author: Damien Cassou <damien@cassou.me>, Nicolas Petton <nicolas@petton.fr>
-;; Url: https://gitlab.petton.fr/DamienCassou/desktop-environment
-;; Package-requires: ((emacs "25.1"))
-;; Version: 0.5.0
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 ;;; Commentary:
 
 ;; This package helps you control your GNU/Linux desktop from Emacs.
@@ -55,19 +35,19 @@
 
 ;;; Customization - brightness
 
-(defcustom desktop-environment-brightness-normal-increment "10%+"
+(defcustom desktop-environment-brightness-normal-increment "2%+"
   "Normal brightness increment value."
   :type 'string)
 
-(defcustom desktop-environment-brightness-normal-decrement "10%-"
+(defcustom desktop-environment-brightness-normal-decrement "2%-"
   "Normal brightness decrement value."
   :type 'string)
 
-(defcustom desktop-environment-brightness-small-increment "5%+"
+(defcustom desktop-environment-brightness-small-increment "1%+"
   "Small brightness increment value."
   :type 'string)
 
-(defcustom desktop-environment-brightness-small-decrement "5%-"
+(defcustom desktop-environment-brightness-small-decrement "1%-"
   "Small brightness decrement value."
   :type 'string)
 
@@ -94,11 +74,11 @@ replaced by the desired new brightness level."
 
 ;;; Customization - volume
 
-(defcustom desktop-environment-volume-normal-increment "5%+"
+(defcustom desktop-environment-volume-normal-increment "2%+"
   "Normal volume increment value."
   :type 'string)
 
-(defcustom desktop-environment-volume-normal-decrement "5%-"
+(defcustom desktop-environment-volume-normal-decrement "2%-"
   "Normal volume decrement value."
   :type 'string)
 
