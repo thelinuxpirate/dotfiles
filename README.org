@@ -3,21 +3,20 @@ These are my currently used dotfiles containg many files for Xmonad + Emacs.
 
 ** Todo List and Updates:
 Todo:
-- [ ] Updated Emacs Config;
-- [ ] Rewrite Emacs Config in Org;
-- [ ] Learn + Configure EXWM;
+- [X] Move Emacs Config to another Repo;
+- [?] Learn + Configure EXWM;
 - [X] Updated Xmonad Config;
-- [ ] Rewrite Xmonad Config in Org;
+- [?] Rewrite Xmonad Config in Org;
 - [X] Updated NixOS Config (I no longer use NixOS so it will no longer be *updated*);
 
 (Personal Projects)
-- [ ] Rewrite TheTuss bot in Rust;
-- [ ] Finish the Buisness & Marketing Game using Bevy;
+- [?] Rewrite TheTuss bot in another language;
+- [?] Finish the Buisness & Marketing Game using Bevy;
 --------------------------------------------------------
 ** My Personal Views: 
 - *Distro of choice:*
 My currently used and distro of choice (for now) is Debian. My current Debian experience has been
-great and I have the choice of getting frequently updated by using the Testing branch.
+great and I have the choice of getting frequently updated by using the Testing branch. <- Outdated
 - *Window Manager of choice:*
 As you can tell the main window manager I use is XMonad and its been great. Lots of options to
 choose from by messing around with the contrib and it has been able to do everything I'd like
