@@ -26,48 +26,46 @@ static const char dmenufont[]            = "monospace:size=10";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
-static char normfgcolor[]                = "#bbbbbb"; // Basic Font Color for the Bar;
-static char normbgcolor[]                = "#222222"; // Basic Border color fot the Bar;
-static char normbordercolor[]            = "#444444"; // Bar Color;
-static char normfloatcolor[]             = "#db8fd9"; // Floating Window Border Color;
+static char normfgcolor[]                = "#50fa7b"; // Basic Font Color for the Bar;
+static char normbgcolor[]                = "#282a36"; // Bar color;
+static char normbordercolor[]            = "#282a36"; // Basic Border color for the Bar;
+static char normfloatcolor[]             = "#ffb86c"; // Floating Window Border Color (?);
 
-static char selfgcolor[]                 = "#eeeeee"; // Window Name being displayed stuff;
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
-static char selfloatcolor[]              = "#005577";
+static char selfgcolor[]                 = "#44475a"; // Dmenu Text Color WHEN HIGHLIGHTED;
+static char selbgcolor[]                 = "#6272a4"; // Dmenu Highlight Text Color;
 
-static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
-static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#db8fd9";
+static char selbordercolor[]             = "#ffb86c"; // Window Border Color;
+static char selfloatcolor[]              = "#ff79c6"; // Window Floating Color;
 
-static char titleselfgcolor[]            = "#eeeeee";
-static char titleselbgcolor[]            = "#005577";
-static char titleselbordercolor[]        = "#005577";
-static char titleselfloatcolor[]         = "#005577";
+static char titlenormfgcolor[]           = "#50fa7b"; // POSSIBLE WINDOW TITLES (?);
+static char titlenormbgcolor[]           = "#50fa7b"; // (?);
+static char titlenormbordercolor[]       = "#50fa7b"; // (?);
+static char titlenormfloatcolor[]        = "#50fa7b"; // (?);
 
-static char tagsnormfgcolor[]            = "#bbbbbb"; // Tag when not active;
-static char tagsnormbgcolor[]            = "#222222";
-static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#db8fd9";
+static char titleselfgcolor[]            = "#50fa7b"; // (?);
+static char titleselbgcolor[]            = "#ff5555"; // (?);
+static char titleselbordercolor[]        = "#ff5555"; // (?);
+static char titleselfloatcolor[]         = "#ff5555"; // (?);
 
-static char tagsselfgcolor[]             = "#eeeeee"; // Tag when active;
-static char tagsselbgcolor[]             = "#005577";
-static char tagsselbordercolor[]         = "#005577";
-static char tagsselfloatcolor[]          = "#005577";
+static char tagsnormfgcolor[]            = "#53BDBD"; // Inactive Tag Text Color;
+static char tagsnormbgcolor[]            = "#282a36"; // Inactive Tag Box Color;
+static char tagsnormbordercolor[]        = "#6272a4"; // (?);
+static char tagsnormfloatcolor[]         = "#ff5555"; // (?);
 
-static char hidnormfgcolor[]             = "#005577";
-static char hidselfgcolor[]              = "#227799";
-static char hidnormbgcolor[]             = "#222222";
-static char hidselbgcolor[]              = "#222222";
+static char tagsselfgcolor[]             = "#50fa7b"; // Active Tag Text Color;
+static char tagsselbgcolor[]             = "#44475a"; // Active Tag Box Color;
+static char tagsselbordercolor[]         = "#005577"; // (?);
+static char tagsselfloatcolor[]          = "#005577"; // (?);
 
-static char urgfgcolor[]                 = "#bbbbbb";
+static char hidnormfgcolor[]             = "#005577"; // (?);
+static char hidselfgcolor[]              = "#227799"; // (?);
+static char hidnormbgcolor[]             = "#222222"; // (?);
+static char hidselbgcolor[]              = "#222222"; // (?);
+
+static char urgfgcolor[]                 = "#bbbbbb"; // URGENT COLORS
 static char urgbgcolor[]                 = "#222222";
 static char urgbordercolor[]             = "#ff0000";
 static char urgfloatcolor[]              = "#db8fd9";
-
-
-
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -81,10 +79,6 @@ static char *colors[][ColCount] = {
 	[SchemeHidSel]       = { hidselfgcolor,    hidselbgcolor,    c000000,              c000000 },
 	[SchemeUrg]          = { urgfgcolor,       urgbgcolor,       urgbordercolor,       urgfloatcolor },
 };
-
-
-
-
 
 /* Tags
  * In a traditional dwm the number of tags in use can be changed simply by changing the number
@@ -115,9 +109,14 @@ static char *colors[][ColCount] = {
  */
 static char *tagicons[][NUMTAGS] =
 {
-	[DEFAULT_TAGS]        = {  "", "", "", "", "", "", "", "" },
+        [DEFAULT_TAGS]        = { "emac", "web", "music", "discrd",
+				  "stem", "gd", "othr", "ctrl" },
 	[ALTERNATIVE_TAGS]    = { "1", "2", "3", "4", "5", "6", "7", "8" },
 	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>" },
+	/*[DEFAULT_TAGS]        = { "^c#A130C7^ emac", "^c#F0A10E^ web",
+				  "^c#6FBD42^ music", "^c#53BDBD^ discrd",
+				  "^c#A130C7^ stem", "^c#53BDBD^ gd",
+				  "^c#30C783^ othr", "^c#F0A10E^ ctrl" }, */
 };
 
 
@@ -185,11 +184,11 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-        { "[]=",      tile },    /* Default Master and Stack 0 */
-	{ "[\\]",     dwindle }, /* Dwindle Wheel 1 */
-	{ "TTT",      bstack }, /* Master on top and Stack on the bottom 2 */
-	{ "|M|",      centeredmaster }, /* Master in the center stack on the sides 3 */
-	{ "(@)",      spiral }, /* 4 */
+        { "|M|",      centeredmaster }, /* Master in the center stack on the sides 0 */
+	{ "TTT",      bstack }, /* Master on top and Stack on the bottom 1 */
+	{ "[]=",      tile },    /* Default Master and Stack 2 */
+	{ "[\\]",     dwindle }, /* Dwindle Wheel 3 */
+	{ "(@)",      spiral }, /* Spiral Spin 4 */
 	{ "><><",     NULL },    /* No layout function means floating behavior 5 */
 	{ "[F]",      monocle }, /* 6 */
 	{ NULL,       NULL },
@@ -223,9 +222,9 @@ static const char *dmenucmd[] = {
 };
 
 static const char *termcmd[]    = { "alacritty", NULL };
-static const char *webcmd[]     = { "brave", NULL };
+static const char *webcmd[]     = { "brave-browser", NULL };
 static const char *editorcmd[]  = { "emacs", NULL };
-static const char *discordcmd[] = { "discord", NULL };
+static const char *discordcmd[] = { "Discord", NULL };
 static const char *playercmd[]  = { "spotify", NULL };
 
 
@@ -255,10 +254,10 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,                     quit,                   {0} },
 
 	// Layouts
-	{ MODKEY,                       XK_t,                     setlayout,              {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,                     setlayout,              {.v = &layouts[1]} },
-	{ MODKEY,                       XK_i,                     setlayout,              {.v = &layouts[2]} },
-	{ MODKEY,                       XK_m,                     setlayout,              {.v = &layouts[3]} },
+	{ MODKEY,                       XK_t,                     setlayout,              {.v = &layouts[2]} },
+	{ MODKEY,                       XK_f,                     setlayout,              {.v = &layouts[3]} },
+	{ MODKEY,                       XK_i,                     setlayout,              {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,                     setlayout,              {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_space,                 togglefloating,         {0} },
 	{ MODKEY|ShiftMask,             XK_f,                     fullscreen,             {0} },
 	{ MODKEY|ShiftMask,             XK_p,                     cyclelayout,            {.i = -1 } },
