@@ -15,13 +15,9 @@ Todo:
 --------------------------------------------------------
 ** My Personal Views: 
 - *Distro of choice:*
-My currently used and distro of choice (for now) is Debian. My current Debian experience has been
-great and I have the choice of getting frequently updated by using the Testing branch. <- Outdated
+Fedora
 - *Window Manager of choice:*
-As you can tell the main window manager I use is XMonad and its been great. Lots of options to
-choose from by messing around with the contrib and it has been able to do everything I'd like
-it to. The XMobar bar for XMonad is also *REALLY* good but I just hate the syntax of it's configuration.
-The only thing I could hope for is Wayland support as I have an interest of using Wayland.
+Suckless' DWM
 - *The Coding Experience:*
 A year ago my computer self destructed and could no longer boot into windows which made me dabble with
 linux systems. It has been a key part of my learning experience with tech. If that would have never happened
