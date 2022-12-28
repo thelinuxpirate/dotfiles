@@ -1,0 +1,354 @@
+* NEW FILE DOCS
+
+* Treehouse Code
+** Startup:
+The code at the top of the file, what I want to happen at the start when Emacs Loads;
+#+BEGIN_SRC emacs-lisp
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)        
+  (tool-bar-mode -1)          
+  (tooltip-mode -1) 
+  (display-battery-mode 1) ;; I comment this when I use Exwm;
+  (display-time-mode 1) ;; I comment this when I use Exwm;
+  (global-display-line-numbers-mode 1)
+  (set-fringe-mode 10)
+  (load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
+  (add-to-list 'custom-theme-load-path "/home/thelinuxpirate/.emacs.d/themes")
+  (load-theme 'dracula t)
+  (load-file "/home/thelinuxpirate/.emacs.d/packages/package-repositories.el")
+
+  (load-file "/home/thelinuxpirate/.emacs.d/package.el")
+  (require 'use-package)
+#+END_SRC
+** Explanation:
+- *L:1* (Disable Menu Bar)
+By default Emacs contains a menu-bar, I disable it;
+- *L:2* (Disable Scroll Bar)
+By default Emacs contains a scroll bar, I disable it;
+- *L:3* (Disable Tool Bar)
+By default Emacs contains a tool bar, I disable it;
+- *L:4* (Disable Tooltip)
+I do not enjoy having the tooltips, so I disable it;
+- *L:5* (Enable Battery)
+I have a laptop and I find it helpful to display the battery on the modeline; 
+- *L:6* (Display Time)
+I like to have the current time displayed on the modeline;
+- *L:7* (Display Line Numbers)
+This will display the line count at the left of your screen (GLOBAL);
+- *L:8* (Set Fringe)
+This is set to 10 to give more room to the screen;
+- *L:9* (Emacs Bindings)
+This will load & enable the Emacs bindings I set in "/keybinds/emacs-bindings.el";
+- *L:10-L:11* (Theme Path + Load-Theme)
+Sets the theme load path the to dracula theme located in "/themes"; 
+- *L:12* (Load-File PKG-REPO)
+Loads the package repositories like MELPA and ORG;
+- *L:14* (require + use-package) 
+This will load the "use-package" package and enable it for use, use-package is like a better verison
+of the require action as it will only require/load a package when it is needed. This makes Emacs faster &
+will make the start up load time faster;
+---------------------------------------------------------------------------------------------------------
+** Packages:
+#+BEGIN_SRC emacs-lisp
+(load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el")
+(use-package evil
+  :demand t
+  :init
+  :config
+(evil-mode 1)
+(custom-set-variables
+ '(column-number-mode t)
+ '(display-battery-mode t)
+ '(display-time-mode t)
+ '(ispell-dictionary nil)
+ '(line-number-mode nil)
+ '(package-selected-packages
+   '(dashboard all-the-icons projectile page-break-lines use-package desktop-environment 
+   exwm tree-sitter-langs tree-sitter vterm doom-modeline go-mode rust-mode evil cmake-mode)))
+(custom-set-faces))
+
+(use-package org)
+
+(load-file "/home/thelinuxpirate/.emacs.d/packages/beacon.el")
+(beacon-mode 1)
+
+(load-file "/home/thelinuxpirate/.emacs.d/packages/whichkey.el")
+(which-key-mode 1)
+(load-file "/home/thelinuxpirate/.emacs.d/packages/doom-modeline.el")
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
+(page-break-lines-mode 1)
+(projectile-mode 1)
+(use-package all-the-icons
+  :if (display-graphic-p))
+(load-file "/home/thelinuxpirate/.emacs.d/packages/dashboard.el")
+(use-package dashboard
+  :ensure t
+  :config
+    (dashboard-setup-startup-hook))
+    
+(load-file "/home/thelinuxpirate/.emacs.d/exwm/exwm_config.el") ;; Disable if not using Exwm;
+(exwm-enable)
+
+(use-package counsel ;; Counsel is the pkg name, MELPA, 2 or three depend all-the-icons-ivy, all-the-icons-dried
+  :custom
+    (counsel-linux-app-format-function#'counsel-linux-app-format-function-name-only))
+(ivy-mode 1)
+
+;; Make it look better (MELPA, ivy-rich, all-the-icons-ivy-rich):
+(use-package ivy-rich
+  :init
+(ivy-rich-mode 1)
+  :config
+(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+(use-package highlight-parentheses ;; MELPA PKG: highlight-parentheses
+  :ensure t)
+(global-highlight-parentheses-mode)
+#+END_SRC
+** Explanation:
+- *L:16* (Evil Bindings)
+This will load & enable the Evil keybindings I set in "/keybinds/evil-bindings.el";
+- *L:17* (Use-PKG Evil)
+This enables the Evil Package and applies the configuration to be loaded;
+- *L:21* (Evil-Mode)
+This enables the ability to use the package evil mode;
+- *L:22-L:31* (Evil-Settings)
+These lines are evil mode's settings and pre-made code, some of this code is even
+automated so I wouldn't touch any of it;
+- *L:33* (Use-PKG Org)
+Enables the use of the Org-Mode package;
+- *L:35* (Load Beacon Config)
+Loads the beacon's package configuration from "/packages/beacon.el";
+- *L:36* (Enable Beacon)
+Enables the beacon package;
+- *L:38* (Load Which-Key Config)
+Loads the configuration of the Which Key package from "/packages/whichkey.el";
+- *L:39* (Enable Which-Key)
+This enables the which key package;
+- *L:41* (Load Doom-Modeline)
+Loads the Doom Modeline configuration from "packages/doom-modeline.el";
+- *L:42-L:44* (Use-PKG Doom-Modeline) 
+Enables the use of the doom-modeline package and loads it into the enviorment;
+- *L:46* (Enable Page Breaking)
+Enables the use of Page Breaking by using the Page Break Package;
+- *L:47* (Enable Projectile)
+Enables the Projectile package;
+- *L:48-L:49* (Use-PKG The Icons Package)
+These lines enable the the use of All The Icons which is needed by other packages; 
+- *L:50* (Load Dashboard)
+This loads the configuration for the package dashboard;
+- *L:51-L:54* (Use-PKG Dashboard)
+Uses the Dashboard package, enables the package and its configuration;
+- *L:56* (Load Exwm Configuration)
+This will load the Exwm Configuration located in "/exwm/exwm_config.el";
+- *L:57* (Enable Exwm) <- More on my Exwm Configuration
+This enables the use of Exwm; 
+--------------------------------------------------------------------------------------------------
+** Syntax Related Packages:
+#+BEGIN_SRC emacs-lisp
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+(global-tree-sitter-mode 1)
+
+(use-package rust-mode)
+
+(use-package go-mode)
+
+(use-package yaml-mode)
+
+(use-package haskell-mode)
+#+END_SRC
+** Explanation:
+- *L:59-L:61* (Use-PKG Tree Sitter)
+Uses and then enables the features of Tree Sitter globaly;
+- *L:63* (Use-PKG Rust Mode)
+Uses and enables the Rust Mode package;
+- *L:65* (Use-PKG Go Mode)
+Uses and enables the Go Mode package;
+---------------------------------------------------------------
+* Appendix:
+If you don't understand Emacs Lisp I will try my best to explain some of the code I use:
+  - *Enabled/Disabled:*
+  When something either contains a "-1" or a "1" this means it is either being enabled/disabled; -1 = Disabled ; 1 = Enabled;
+  - *Load-File*
+  I perfer separating my configurations into multiple files. This main file does not contain all of the code but the main part
+  that is activated. This activation sequence loads the other files/code so it can be used. This is declared by "load-file".
+  You will declare: load-file "PATH_TO_FILE";
+-----------------------------------------------------------------------------------------------------------------------------------
+** Themes:
+There are only few themes installed in this configuration, some by MEPLA and others by source;
+** Dracula Theme:
+- *Theme Name:* Dracula
+- *Installation Meathod:* Source
+This is the main theme I use, the theme is found in the "/themes/" directory;
+** Gruvbox Theme:
+- *Theme Name:* Gruvbox
+- *Package Name:* gruvbox-dark-medium
+- *Installation Meathod:* MELPA
+I use the dark themes of gruvbox from time to time, I find it nice to have a selection of themes;
+** Emacs Afternoon Theme:
+- *Theme Name:* Emacs-Afternoon-Theme
+- *Package Name:* afternoon-theme
+- *Installation Meathod:* MELPA
+Another dark-ish theme that is an option to use. If you want to declare this theme do: "(load-theme 'afternoon t)";
+------------------------------------------------------------------------------------------------------------------------------------
+** Package List:
+Nearly all of these packages have been installed via the MELPA Repository or the ELPA Repository. Here I will list the packages,
+what they do, package names, & extra information. 
+** Evil Mode:
+- *Package Name:* evil-mode
+- *Dependencies:* None
+- *Repository:* [[https://github.com/emacs-evil/evil][Evil Mode]]
+- *Installation Meathod:* MELPA
+Evil Mode contains Vim-like features and its mode whilist being able to switch to Emacs mode using: C-z, I also have
+defined my own Evil-Mode keybinds which is mainly just porting the default bindings into my perfered way. The main keystroke used is:
+Leader-Tab-KEY; Leader is equal the the spacebar, and it can be redefined anytime. For reference configuration is stored in: 
+"/keybinds/evilbindings.el"; 
+** Org Mode:
+- *Package Name:* org-mode
+- *Dependencies:* None
+- *Repository:* [[https://orgmode.org/][Org Mode]]
+- *Installation Meathod:* Pre-Installed
+Org Mode is a powerful document mode, this README file is an org file written using this Org Mode feature. I am quite new to org
+so I can't add much detail or explanation behind it as much as I'd like to. The only big thing that I can mention is that I use org mode
+to write my configuration. I have this README file interact and save code changes to init.el so if you edit the configuration try to use
+this org file. A better explanation will be written soon;
+** Beacon:
+- *Package Name:* beacon-mode
+- *Dependencies:* None
+- *Repository:* [[https://github.com/Malabarba/beacon][Beacon]]
+- *Installation Meathod:* Source (Package.el will try to install via MELPA)
+The beacon package is small yet reliable. This package will highlight the cursor's location whenever
+the cursor is moved using the scrollbar;
+** Which Key:
+- *Package Name:* which-key
+- *Dependencies:* None
+- *Repository:* [[https://github.com/justbur/emacs-which-key][Which Key]]
+- *Installation Meathod:* Source (Package.el will try to install via MELPA)
+Yet another small yet reliable package. Which Key is super helpful when porting and inventing new keybinds/keystrokes
+when you are entering a key combination which key will let you know the aviable options in a smaller window. I don't 
+think I could have gotten far without this package;
+** VTerm:
+- *Package Name:* vterm 
+- *Dependencies:* None
+ - *Repository:* [[https://github.com/akermu/emacs-libvterm][VTerm]]
+- *Installation Meathod:* MELPA
+Emacs contains its own shell but I am not the biggest fan of it & I haven't gotten around to configuring it. Vterm is another shell but it
+is a lot more powerful and allows the option to run TUIs like Network Manager's TUI for Linux users just inside of Emacs;
+** Doom Modeline:
+- *Package Name:* doom-modeline 
+- *Dependencies:* (Optional: all-the-icons, all-the-icons-install-fonts)
+ - *Repository:* [[https://github.com/seagle0128/doom-modeline][Doom Modeline]]
+- *Installation Meathod:* MELPA
+The modeline is a very important feature in Emacs and I personally love it. So the modeline is the little line at the bottom that gives you
+lots of information, now the Doom-Modeline package enhances the modeline and gives it a better look, and more features. I have my Doom-Modeline
+configuration in: "/packages/doom-modeline.el"; 
+** Dashboard:
+- *Package Name:* dashboard
+- *Dependencies:* page-break-lines, projectile, all-the-icons, all-the-icons-install-fonts 
+- *Repository:* [[https://github.com/emacs-dashboard/emacs-dashboard][Dashboard]]
+- *Installation Meathod:* (All) MELPA
+The dashboard is mainly a custom thing I like to see at the startup but also contains its useful features like an Agenda and the option to
+display recently viewed files. The Dashboard is highly customizable and a great package overall;
+** Tree-Sitter: 
+- *Package Name:* tree-sitter 
+- *Dependencies:* tree-sitter-langs
+- *Repository:* [[https://emacs-tree-sitter.github.io/][Tree Sitter]]
+- *Installation Meathod:* MELPA
+"Tree-sitter is a parser generator tool and an incremental parsing library. It can build a concrete syntax tree for a source file and 
+efficiently update the syntax tree as the source file is edited.";
+** Rust Mode:
+- *Package Name:* rust-mode 
+- *Dependencies:* None
+- *Repository:* [[https://github.com/rust-lang/rust-mode][Rust Mode]] 
+- *Installation Meathod:* MELPA
+Rust Mode adds syntax highligting for rust files and better integration;
+** Go Mode:
+- *Package Name:* go-mode
+- *Dependencies:* None
+- *Repository:* [[https://github.com/dominikh/go-mode.el][Go Mode]] 
+- *Installation Meathod:* MELPA
+Go Mode adds syntax highligting for go files and better integration;
+
+* Other Files:
+** Package.el:
+I use Package.el as a startup checker to make sure every package used in this configuration is installed! I am a fan of redeployable
+configurations & systems. The only downside to this is that it will be exucuted at every startup which means the more packages you add
+the slower your start up will be.
+#+BEGIN_SRC emacs-lisp :tangle package.el 
+;; This code makes sure that these packages are installed before you start using the system:
+(unless (package-installed-p 'use-package) ; 
+  (package-install 'use-package))
+
+(unless (package-installed-p 'evil)  ;
+  (package-install 'evil))
+
+(unless (package-installed-p 'vterm) ; 
+  (package-install 'vterm))
+
+(unless (package-installed-p 'beacon) ;
+  (package-install 'beacon))
+
+(unless (package-installed-p 'which-key) ;
+  (package-install 'which-key))
+
+(unless (package-installed-p 'doom-modeline) ;
+  (package-install 'doom-modeline))
+
+(unless (package-installed-p 'page-break-lines) ; 
+  (package-install 'page-break-lines))
+
+(unless (package-installed-p 'projectile)  ;
+  (package-install 'projectile))
+
+(unless (package-installed-p 'all-the-icons) ; 
+  (package-install 'all-the-icons))
+
+(unless (package-installed-p 'dashboard) ; 
+  (package-install 'dashboard))
+
+(unless (package-installed-p 'cmake-mode)  ;
+  (package-install 'cmake-mode))
+
+(unless (package-installed-p 'exwm) ; 
+  (package-install 'exwm))
+
+(unless (package-installed-p 'desktop-environment) ; 
+  (package-install 'desktop-environment))
+
+(unless (package-installed-p 'counsel) ; 
+  (package-install 'counsel))
+
+(unless (package-installed-p 'ivy) ;
+  (package-install 'ivy))
+
+(unless (package-installed-p 'all-the-icons-ivy) ; 
+  (package-install 'all-the-icons-ivy))
+
+(unless (package-installed-p 'all-the-icons-dired) ; 
+  (package-install 'all-the-icons-dired))
+
+(unless (package-installed-p 'ivy-rich) ;
+  (package-install 'ivy-rich))
+
+(unless (package-installed-p 'all-the-icons-ivy-rich) ; 
+  (package-install 'all-the-icons-ivy-rich))
+
+(unless (package-installed-p 'highlight-parentheses) ; 
+  (package-install 'highlight-parentheses))
+
+(unless (package-installed-p 'tree-sitter) ;
+  (package-install 'tree-sitter))
+
+(unless (package-installed-p 'tree-sitter-langs) ;
+  (package-install 'tree-sitter-langs))
+
+(unless (package-installed-p 'rust-mode) ;
+  (package-install 'rust-mode))
+
+(unless (package-installed-p 'go-mode) ;
+  (package-install 'go-mode))
+#+END_SRC
