@@ -265,8 +265,8 @@ static const Key keys[] = {
 
 	// XF86 Keys
 	{ MODKEY,                       XF86XK_AudioRaiseVolume,  spawn,                  SHCMD("pamixer -i 2") },
-	{ MODKEY,                       XF86XK_AudioLowerVolume,  spawn,                  SHCMD("pamixer -d 2 ") },
-        { MODKEY,                       XF86XK_AudioMute,         spawn,                  SHCMD("pamixer --toggle-mute") },
+	{ MODKEY,                       XF86XK_AudioLowerVolume,  spawn,                  SHCMD("pamixer -d 2") },
+        { MODKEY,                       XF86XK_AudioMute,         spawn,                  SHCMD("pamixer -t") },
         { MODKEY,                       XF86XK_MonBrightnessUp,   spawn,                  SHCMD("brightnessctl set 500+") },
         { MODKEY,                       XF86XK_MonBrightnessDown, spawn,                  SHCMD("brightnessctl set 500-") },
 
