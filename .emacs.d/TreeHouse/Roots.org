@@ -2,9 +2,9 @@
 The Roots of the tree (package.el) is one of the first exucuted files during emacs' startup;
 This file is more a way to secure the configuration and makes sure everything is put in place,
 it does this by making sure every package that is declared in the Tree is installed;
+
 (Not an automatic process you must patch in each new package manually)
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/package.el 
-;; This code makes sure that these packages are installed before you start using the system:
 (unless (package-installed-p 'use-package)  
   (package-install 'use-package))
 
