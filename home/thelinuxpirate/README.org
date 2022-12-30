@@ -1,4 +1,4 @@
-#+TITLE: ~/thelinuxpirate
+#+TITLE: ~/
 * Information
 I have re-structured my dotfiles repository to have different locations for the folders located inside of my user & root.
 
