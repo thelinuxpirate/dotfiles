@@ -1,19 +1,28 @@
-(menu-bar-mode -1)
-(scroll-bar-mode -1)        
-(tool-bar-mode -1)          
-(tooltip-mode -1) 
-(display-battery-mode -1) ;; Disabled on DWM;
-(display-time-mode -1) ;; Disabled on DWM;
-(global-display-line-numbers-mode 1)
-(set-fringe-mode 10)
-(load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
-(add-to-list 'custom-theme-load-path "/home/thelinuxpirate/.emacs.d/themes")
-(load-theme 'dracula t)
-(load-file "/home/thelinuxpirate/.emacs.d/packages/package-repositories.el")
+# Make Configuration "Treehouse" structured/themed 
+* Introduction
+  *[[https://github.com/DarthYoshi07/dotfiles][DOTFILES]]* <- The name DarthYoshi is an elden baller name I made when I was a bit younger so I'd perfer to gain credit as "TheLinuxPirate";
 
-(load-file "/home/thelinuxpirate/.emacs.d/package.el")
-(require 'use-package)
+** Startup:
+The code at the top of the file, what I want to happen at the start when Emacs Loads;
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)        
+  (tool-bar-mode -1)          
+  (tooltip-mode -1) 
+  (display-battery-mode -1) ;; Disabled on DWM;
+  (display-time-mode -1) ;; Disabled on DWM;
+  (global-display-line-numbers-mode 1)
+  (set-fringe-mode 10)
+  (load-file "/home/thelinuxpirate/.emacs.d/keybinds/emacs-bindings.el") 
+  (add-to-list 'custom-theme-load-path "/home/thelinuxpirate/.emacs.d/themes")
+  (load-theme 'dracula t)
+  (load-file "/home/thelinuxpirate/.emacs.d/packages/package-repositories.el")
 
+  (load-file "/home/thelinuxpirate/.emacs.d/package.el")
+  (require 'use-package)
+#+END_SRC
+** Packages:
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 (load-file "/home/thelinuxpirate/.emacs.d/keybinds/evil-bindings.el")
 (use-package evil
   :demand t
@@ -71,7 +80,9 @@
 (use-package highlight-parentheses ;; MELPA PKG: highlight-parentheses
   :ensure t)
 (global-highlight-parentheses-mode)
-
+#+END_SRC
+** Syntax Related Packages:
+#+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/init.el
 (use-package tree-sitter)
 (use-package tree-sitter-langs)
 (global-tree-sitter-mode 1)
@@ -86,3 +97,4 @@
 
 (use-package rainbow-mode)
 (rainbow-mode 1)
+#+END_SRC
