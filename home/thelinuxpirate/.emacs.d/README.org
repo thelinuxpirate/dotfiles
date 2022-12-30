@@ -22,8 +22,8 @@ and just beacuse it organizes things a lot better for me.
 * The Code
 The code is seperated into sections (like a treehouse):
 
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/.emacs.d/TreeHouse/Sky.org][The Sky]]       *;* Extra Information about the Configuration
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/.emacs.d/TreeHouse/TreeHouse.org][The TreeHouse]] *;* Exwm 
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/.emacs.d/TreeHouse/Tree.org][The Tree]]      *;* init.el
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/.emacs.d/TreeHouse/Dirt.org][The Dirt]]      *;* Package Configurations
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/.emacs.d/TreeHouse/Roots.org][The Roots]]     *;* package.el
+- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Sky.org][The Sky]] *;* Extra Information about the Configuration
+- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/TreeHouse.org][The TreeHouse]] *;* Exwm 
+- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Tree.org][The Tree]]      *;* init.el
+- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Dirt.org][The Dirt]]      *;* Package Configurations
+- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Roots.org][The Roots]]     *;* package.el
