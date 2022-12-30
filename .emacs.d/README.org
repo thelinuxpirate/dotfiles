@@ -1,4 +1,6 @@
 #+TITLE: GNU Emacs TreeHouse Configuration
+
+* Welcome Mat
 This is my personal Emacs configuration and I call it the "GNU Emacs TreeHouse" or just "Emacs TreeHouse" for short.
 The "Emacs Treehouse" (refered as the "treehouse") is a personal attempt of creating an IDE-like editor and personal text editor
 for just text editing reasons.
