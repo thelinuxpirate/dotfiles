@@ -22,8 +22,8 @@ and just beacuse it organizes things a lot better for me.
 * The Code
 The code is seperated into sections (like a treehouse):
 
-- The Sky       ; Extra Information about the Configuration
-- The TreeHouse ; Exwm 
-- The Tree      ; init.el
-- The Dirt      ; Package Configurations
-- The Roots     ; package.el
+- The Sky       *;* Extra Information about the Configuration
+- The TreeHouse *;* Exwm 
+- The Tree      *;* init.el
+- The Dirt      *;* Package Configurations
+- The Roots     *;* package.el
