@@ -3,11 +3,11 @@ These are my currently used dotfiles containg many files for Xmonad + Emacs.
 
 ** Todo List and Updates:
 Todo:
-- [X] Move Emacs Config to another Repo;
-- [?] Learn + Configure EXWM;
-- [X] Updated Xmonad Config;
-- [?] Rewrite Xmonad Config in Org;
-- [X] Updated NixOS Config (I no longer use NixOS so it will no longer be *updated*);
+- [...] Restructure Repo and add more README documentation
+- [...] Learn + Configure EXWM;
+- [...] Write Xmonad Config in Org;
+- [...] Write Suckless' Configs in Org;
+- [?] Rewrie NixOS Configuration?
 
 (Personal Projects)
 - [?] Rewrite TheTuss bot in another language;
@@ -15,7 +15,7 @@ Todo:
 --------------------------------------------------------
 ** My Personal Views: 
 - *Distro of choice:*
-Fedora
+Gentoo
 - *Window Manager of choice:*
 Suckless' DWM
 - *The Coding Experience:*
