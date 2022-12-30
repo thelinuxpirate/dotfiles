@@ -118,12 +118,24 @@ Wouldnt be here if this wasnt a thing.
 Whenever you move your cursor around and start scrolling the cursor begins to flash, after
 moving so you can have your eye on it.
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/packages/beacon.el
+;;; beacon.el --- Highlight the cursor whenever the window scrolls  -*- lexical-binding: t; -*-
+;; Whenever the window scrolls a light will shine on top of your cursor so
+;; you know where it is.
+
+;;; Code:
 (require 'seq)
 (require 'faces)
 (if (fboundp 'seq-mapn)
     (defalias 'beacon--seq-mapn #'seq-mapn)
+  ;; This is for people who are on outdated Emacs snapshots. Will be
+  ;; deleted in a couple of weeks.
   (defun beacon--seq-mapn (function sequence &rest sequences)
+    "Like `seq-map' but FUNCTION is mapped over all SEQUENCES.
+The arity of FUNCTION must match the number of SEQUENCES, and the
+mapping stops on the shortest sequence.
+Return a list of the results.
 
+\(fn FUNCTION SEQUENCES...)"
     (let ((result nil)
           (sequences (seq-map (lambda (s) (seq-into s 'list))
                               (cons sequence sequences))))
@@ -133,52 +145,97 @@ moving so you can have your eye on it.
       (nreverse result))))
 
 (defgroup beacon nil
+  "Customization group for beacon."
   :group 'emacs
   :prefix "beacon-")
 
 (defvar beacon--timer nil)
 
 (defcustom beacon-push-mark 35
+  "Should the mark be pushed before long movements?
+If nil, `beacon' will not push the mark.
+Otherwise this should be a number, and `beacon' will push the
+mark whenever point moves more than that many lines."
   :type '(choice integer (const nil)))
 
 (defcustom beacon-blink-when-point-moves-vertically nil
+  "Should the beacon blink when moving a long distance vertically?
+If nil, don't blink due to vertical movement.
+If non-nil, this should be an integer, which is the minimum
+movement distance (in lines) that triggers a beacon blink."
   :type '(choice integer (const nil)))
 
 (defcustom beacon-blink-when-point-moves-horizontally nil
+  "Should the beacon blink when moving a long distance horizontally?
+If nil, don't blink due to horizontal movement.
+If non-nil, this should be an integer, which is the minimum
+movement distance (in columns) that triggers a beacon blink."
   :type '(choice integer (const nil)))
 
 (defcustom beacon-blink-when-buffer-changes t
+  "Should the beacon blink when changing buffer?"
   :type 'boolean)
 
 (defcustom beacon-blink-when-window-scrolls t
+  "Should the beacon blink when the window scrolls?"
   :type 'boolean)
 
 (defcustom beacon-blink-when-window-changes t
+  "Should the beacon blink when the window changes?"
   :type 'boolean)
 
 (defcustom beacon-blink-when-focused nil
+  "Should the beacon blink when Emacs gains focus?
+Note that, due to a limitation of `focus-in-hook', this might
+trigger false positives on some systems."
   :type 'boolean
   :package-version '(beacon . "0.2"))
 
 (defcustom beacon-blink-duration 0.3
+  "Time, in seconds, that the blink should last."
   :type 'number)
 
 (defcustom beacon-blink-delay 0.3
+  "Time, in seconds, before starting to fade the beacon."
   :type 'number)
 
 (defcustom beacon-size 40
+  "Size of the beacon in characters."
   :type 'number)
 
 (defcustom beacon-color 0.5
+  "Color of the beacon.
+This can be a string or a number.
+
+If it is a number, the color is taken to be white or
+black (depending on the current theme's background) and this
+number is a float between 0 and 1 specifing the brightness.
+
+If it is a string, it is a color name or specification,
+e.g. \"#666600\"."
   :type '(choice number color))
 
 (defface beacon-fallback-background
   '((((class color) (background light)) (:background "black"))
     (((class color) (background dark)) (:background "white")))
+  "Fallback beacon background color.
+Used in cases where the color can't be determined by Emacs.
+Only the background of this face is used.")
 
 (defvar beacon-dont-blink-predicates nil
+  "A list of predicates that prevent the beacon blink.
+These predicate functions are called in order, with no
+arguments, before blinking the beacon.  If any returns
+non-nil, the beacon will not blink.
+
+For instance, if you want to disable beacon on buffers where
+`hl-line-mode' is on, you can do:
+
+    (add-hook \\='beacon-dont-blink-predicates
+              (lambda () (bound-and-true-p hl-line-mode)))")
 
 (defun beacon--compilation-mode-p ()
+  "Non-nil if this is some form of compilation mode."
   (or (derived-mode-p 'compilation-mode)
       (bound-and-true-p compilation-minor-mode)))
 
@@ -189,15 +246,26 @@ moving so you can have your eye on it.
                                        inf-ruby-mode
                                        mu4e-headers-mode
                                        gnus-summary-mode gnus-group-mode)
+  "A list of major-modes where the beacon won't blink.
+Whenever the current buffer satisfies `derived-mode-p' for
+one of the major-modes on this list, the beacon will not
+blink."
   :type '(repeat symbol))
 
 (defcustom beacon-dont-blink-commands '(next-line previous-line
+                                            forward-line)
+  "A list of commands that should not make the beacon blink.
+Use this for commands that scroll the window in very
+predictable ways, when the blink would be more distracting
+than helpful.."
   :type '(repeat symbol))
 
 (defcustom beacon-before-blink-hook nil
+  "Hook run immediately before blinking the beacon."
   :type 'hook)
 
 
+;;; Internal variables
 (defvar beacon--window-scrolled nil)
 (defvar beacon--previous-place nil)
 (defvar beacon--previous-mark-head nil)
@@ -205,6 +273,7 @@ moving so you can have your eye on it.
 (defvar beacon--previous-window-start 0)
 
 (defun beacon--record-vars ()
+  "Record some variables for interal use."
   (unless (window-minibuffer-p)
     (setq beacon--previous-mark-head (car mark-ring))
     (setq beacon--previous-place (point-marker))
@@ -212,13 +281,20 @@ moving so you can have your eye on it.
     (setq beacon--previous-window-start (window-start))))
 
 
+;;; Overlays
 (defvar beacon--ovs nil)
 
 (defconst beacon-overlay-priority (/ most-positive-fixnum 2)
+  "Priotiy used on all of our overlays.")
 
 (defun beacon--make-overlay (length &rest properties)
+  "Put an overlay at point over LENGTH columns.
+
+Specify background color in PROPERTIES."
   (let ((ov (make-overlay (point) (+ length (point)))))
     (overlay-put ov 'beacon t)
+    ;; Our overlay is very temporary, so we take the liberty of giving
+    ;; it a high priority.
     (overlay-put ov 'priority beacon-overlay-priority)
     (overlay-put ov 'window (selected-window))
     (while properties
@@ -227,9 +303,14 @@ moving so you can have your eye on it.
     ov))
 
 (defun beacon--colored-overlay (color)
+  "Put an overlay at point with background COLOR."
   (beacon--make-overlay 1 'face (list :background color)))
 
 (defun beacon--ov-put-after-string (overlay colors)
+  "Add an after-string property to OVERLAY.
+The property's value is a string of spaces with background
+COLORS applied to each one.
+If COLORS is nil, OVERLAY is deleted!"
   (if (not colors)
       (when (overlayp overlay)
         (delete-overlay overlay))
@@ -242,23 +323,32 @@ moving so you can have your eye on it.
                   'cursor 1000))))
 
 (defun beacon--visual-current-column ()
+  "Get the visual column we are at.
 
+Take long lines and visual line mode into account."
   (save-excursion
     (let ((current (point)))
       (beginning-of-visual-line)
       (- current (point)))))
 
 (defun beacon--after-string-overlay (colors)
+  "Put an overlay at point with an after-string property.
+The property's value is a string of spaces with background
+COLORS applied to each one."
+  ;; The after-string must not be longer than the remaining columns
+  ;; from point to right window-end else it will be wrapped around.
   (let ((colors (seq-take colors (- (window-width) (beacon--visual-current-column) 1))))
     (beacon--ov-put-after-string (beacon--make-overlay 0) colors)))
 
 (defun beacon--ov-at-point ()
+  "Return beacon overlay at current point."
   (car (or (seq-filter (lambda (o) (overlay-get o 'beacon))
                        (overlays-in (point) (point)))
            (seq-filter (lambda (o) (overlay-get o 'beacon))
                        (overlays-at (point))))))
 
 (defun beacon--vanish (&rest _)
+  "Turn off the beacon."
   (when (get-buffer-window)
     (when (timerp beacon--timer)
       (cancel-timer beacon--timer))
@@ -266,7 +356,10 @@ moving so you can have your eye on it.
     (setq beacon--ovs nil)))
 
 
+;;; Colors
 (defun beacon--int-range (a b)
+  "Return a list of integers between A inclusive and B exclusive.
+Only returns `beacon-size' elements."
   (let ((d (/ (- b a) beacon-size))
         (out (list a)))
     (dotimes (_ (1- beacon-size))
@@ -274,6 +367,7 @@ moving so you can have your eye on it.
     (nreverse out)))
 
 (defun beacon--color-range ()
+  "Return a list of background colors for the beacon."
   (let* ((default-bg (or (save-excursion
                            (unless (eobp)
                              (forward-line 1)
@@ -298,7 +392,9 @@ moving so you can have your eye on it.
                      [0 1 2])))))
 
 
+;;; Blinking
 (defun beacon--shine ()
+  "Shine a beacon at point."
   (let ((colors (beacon--color-range)))
     (save-excursion
       (while colors
@@ -310,6 +406,7 @@ moving so you can have your eye on it.
           (forward-char 1))))))
 
 (defun beacon--dec ()
+  "Decrease the beacon brightness by one."
   (pcase (beacon--ov-at-point)
     (`nil (beacon--vanish))
     ((and o (let c (overlay-get o 'beacon-colors)) (guard c))
@@ -331,6 +428,10 @@ moving so you can have your eye on it.
 
 ;;;###autoload
 (defun beacon-blink ()
+  "Blink the beacon at the position of the cursor.
+Unlike `beacon-blink-automated', the beacon will blink
+unconditionally (even if `beacon-mode' is disabled), and this can
+be invoked as a user command or called from Lisp code."
   (interactive)
   (beacon--vanish)
   (run-hooks 'beacon-before-blink-hook)
@@ -343,6 +444,13 @@ moving so you can have your eye on it.
                      #'beacon--dec)))
 
 (defun beacon-blink-automated ()
+  "If appropriate, blink the beacon at the position of the cursor.
+Unlike `beacon-blink', the blinking is conditioned on a series of
+variables: `beacon-mode', `beacon-dont-blink-commands',
+`beacon-dont-blink-major-modes', and
+`beacon-dont-blink-predicates'."
+  ;; Record vars here in case something is blinking outside the
+  ;; command loop.
   (beacon--record-vars)
   (unless (or (not beacon-mode)
               (run-hook-with-args-until-success 'beacon-dont-blink-predicates)
@@ -351,19 +459,29 @@ moving so you can have your eye on it.
     (beacon-blink)))
 
 
+;;; Movement detection
 (defun beacon--movement-> (delta-y &optional delta-x)
+  "Return non-nil if latest vertical movement is > DELTA-Y.
+If DELTA-Y is nil, return nil.
+The same is true for DELTA-X and horizonta movement."
   (and delta-y
        (markerp beacon--previous-place)
        (equal (marker-buffer beacon--previous-place)
               (current-buffer))
+       ;; Quick check that prevents running the code below in very
+       ;; short movements (like typing).
        (> (abs (- (point) beacon--previous-place))
           delta-y)
+       ;; Col movement.
        (or (and delta-x
                 (> (abs (- (current-column)
                            (save-excursion
                              (goto-char beacon--previous-place)
                              (current-column))))
                    delta-x))
+           ;; Check if the movement was >= DELTA lines by moving DELTA
+           ;; lines. `count-screen-lines' is too slow if the movement had
+           ;; thousands of lines.
            (save-excursion
              (let ((p (point)))
                (goto-char (min beacon--previous-place p))
@@ -372,6 +490,7 @@ moving so you can have your eye on it.
                   (line-beginning-position)))))))
 
 (defun beacon--maybe-push-mark ()
+  "Push mark if it seems to be safe."
   (when (and (not mark-active)
              (beacon--movement-> beacon-push-mark))
     (let ((head (car mark-ring)))
@@ -380,18 +499,24 @@ moving so you can have your eye on it.
         (push-mark beacon--previous-place 'silent)))))
 
 (defun beacon--post-command ()
+  "Blink if point moved very far."
   (cond
+   ;; Sanity check.
    ((not (markerp beacon--previous-place)))
+   ;; Blink for switching buffers.
    ((and beacon-blink-when-buffer-changes
          (not (eq (marker-buffer beacon--previous-place)
                   (current-buffer))))
     (beacon-blink-automated))
+   ;; Blink for switching windows.
    ((and beacon-blink-when-window-changes
          (not (eq beacon--previous-window (selected-window))))
     (beacon-blink-automated))
+   ;; Blink for scrolling.
    ((and beacon--window-scrolled
          (equal beacon--window-scrolled (selected-window)))
     (beacon-blink-automated))
+   ;; Blink for movement
    ((beacon--movement-> beacon-blink-when-point-moves-vertically
                   beacon-blink-when-point-moves-horizontally)
     (beacon-blink-automated)))
@@ -399,6 +524,14 @@ moving so you can have your eye on it.
   (setq beacon--window-scrolled nil))
 
 (defun beacon--window-scroll-function (window start-pos)
+  "Blink the beacon or record that WINDOW has been scrolled.
+If invoked during the command loop, record the current window so
+that it may be blinked on post-command.  This is because the
+scrolled window might not be active, but we only know that at
+`post-command-hook'.
+
+If invoked outside the command loop, `post-command-hook' would be
+unreliable, so just blink immediately."
   (unless (or (and (equal beacon--previous-window-start start-pos)
                    (equal beacon--previous-window window))
               (not beacon-blink-when-window-scrolls))
@@ -408,13 +541,18 @@ moving so you can have your eye on it.
       (beacon-blink-automated))))
 
 (defun beacon--blink-on-focus ()
+  "Blink if `beacon-blink-when-focused' is non-nil."
   (when beacon-blink-when-focused
     (beacon-blink-automated)))
 
 
+;;; Minor-mode
 (defcustom beacon-lighter
   (cond
+   ;; ((char-displayable-p ?💡) " 💡")
+   ;; ((char-displayable-p ?Λ) " Λ")
    (t " (*)"))
+  "Lighter string used on the mode-line."
   :type 'string)
 
 ;;;###autoload
@@ -438,6 +576,11 @@ moving so you can have your eye on it.
     (remove-hook 'pre-command-hook #'beacon--vanish)))
 
 (provide 'beacon)
+;;; beacon.el ends here
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 #+END_SRC
 ** Desktop-Enviorment
 If you decide to use the TreeHouse this package will prove to be very useful;
@@ -897,40 +1040,87 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
 
 (The theme is not installed via MELPA and is installed by source)
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/themes/dracula-theme.el
+;;; dracula-theme.el --- Dracula Theme
+
+;; Copyright 2015-present, All rights reserved
+;;
+;; Code licensed under the MIT license
+
+;; Maintainer: Étienne Deparis <etienne@depar.is>
+;; Author: film42
+;; Version: 1.7.0
+;; Package-Requires: ((emacs "24.3"))
+;; URL: https://github.com/dracula/emacs
+
+;;; Commentary:
+
+;; A dark color theme available for a number of editors.
+;; This theme tries as much as possible to follow the consensual
+;; specification (see URL `https://spec.draculatheme.com/').
+
+;;; Code:
 (deftheme dracula)
 
 
+;;;; Configuration options:
 
 (defgroup dracula nil
+  "Dracula theme options.
+
+The theme has to be reloaded after changing anything in this group."
   :group 'faces)
 
 (defcustom dracula-enlarge-headings t
+  "Use different font sizes for some headings and titles."
   :type 'boolean
   :group 'dracula)
 
 (defcustom dracula-height-title-1 1.3
+  "Font size 100%."
   :type 'number
   :group 'dracula)
 
 (defcustom dracula-height-title-2 1.1
+  "Font size 110%."
   :type 'number
   :group 'dracula)
 
 (defcustom dracula-height-title-3 1.0
+  "Font size 130%."
   :type 'number
   :group 'dracula)
 
 (defcustom dracula-height-doc-title 1.44
+  "Font size 144%."
   :type 'number
   :group 'dracula)
 
 (defcustom dracula-alternate-mode-line-and-minibuffer nil
+  "Use less bold and pink in the minibuffer."
   :type 'boolean
   :group 'dracula)
 
 (defvar dracula-use-24-bit-colors-on-256-colors-terms nil
+  "Use true colors even on terminals announcing less capabilities.
+
+Beware the use of this variable.  Using it may lead to unwanted
+behavior, the most common one being an ugly blue background on
+terminals, which don't understand 24 bit colors.  To avoid this
+blue background, when using this variable, one can try to add the
+following lines in their config file after having load the
+Dracula theme:
+
+    (unless (display-graphic-p)
+      (set-face-background 'default \"black\" nil))
+
+There is a lot of discussion behind the 256 colors theme (see URL
+`https://github.com/dracula/emacs/pull/57').  Please take time to
+read it before opening a new issue about your will.")
 
 
+;;;; Theme definition:
+
+;; Assigment form: VARIABLE COLOR [256-COLOR [TTY-COLOR]]
 (let ((colors '(;; Upstream theme color
                 (dracula-bg      "#282a36" "unspecified-bg" "unspecified-bg") ; official background
                 (dracula-fg      "#f8f8f2" "#ffffff" "brightwhite") ; official foreground
@@ -994,6 +1184,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (trailing-whitespace :background ,dracula-orange)
                (vertical-border :foreground ,bg2)
                (warning :foreground ,dracula-orange)
+               ;; syntax / font-lock
                (font-lock-builtin-face :foreground ,dracula-cyan :slant italic)
                (font-lock-comment-face :inherit shadow)
                (font-lock-comment-delimiter-face :inherit shadow)
@@ -1010,7 +1201,9 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (font-lock-type-face :inherit font-lock-builtin-face)
                (font-lock-variable-name-face :foreground ,dracula-fg :weight bold)
                (font-lock-warning-face :inherit warning :background ,bg2)
+               ;; auto-complete
                (ac-completion-face :underline t :foreground ,dracula-pink)
+               ;; company
                (company-echo-common :foreground ,dracula-bg :background ,dracula-fg)
                (company-preview :background ,dracula-current :foreground ,other-blue)
                (company-preview-common :inherit company-preview
@@ -1027,13 +1220,18 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (company-tooltip-selection :inherit match)
                (company-tooltip-mouse :background ,dracula-bg)
                (company-tooltip-common :foreground ,dracula-pink :weight bold)
+               ;;(company-tooltip-common-selection :inherit company-tooltip-common)
                (company-tooltip-annotation :foreground ,dracula-cyan)
+               ;;(company-tooltip-annotation-selection :inherit company-tooltip-annotation)
+               ;; completions (minibuffer.el)
                (completions-annotations :inherit font-lock-comment-face)
                (completions-common-part :foreground ,dracula-green)
                (completions-first-difference :foreground ,dracula-pink :weight bold)
+               ;; diff-hl
                (diff-hl-change :foreground ,dracula-orange :background ,dracula-orange)
                (diff-hl-delete :foreground ,dracula-red :background ,dracula-red)
                (diff-hl-insert :foreground ,dracula-green :background ,dracula-green)
+               ;; dired
                (dired-directory :foreground ,dracula-green :weight normal)
                (dired-flagged :foreground ,dracula-pink)
                (dired-header :foreground ,fg3 :background ,dracula-bg)
@@ -1070,8 +1268,10 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (diredp-link-priv :foreground ,dracula-orange)
                (diredp-autofile-name :foreground ,dracula-yellow)
                (diredp-tagged-autofile-name :foreground ,dracula-yellow)
+               ;; eldoc-box
                (eldoc-box-border :background ,dracula-current)
                (eldoc-box-body :background ,dracula-current)
+               ;; elfeed
                (elfeed-search-date-face :foreground ,dracula-comment)
                (elfeed-search-title-face :foreground ,dracula-fg)
                (elfeed-search-unread-title-face :foreground ,dracula-pink :weight bold)
@@ -1080,10 +1280,12 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (elfeed-search-last-update-face :weight bold)
                (elfeed-search-unread-count-face :foreground ,dracula-pink)
                (elfeed-search-filter-face :foreground ,dracula-green :weight bold)
+               ;;(elfeed-log-date-face :inherit font-lock-type-face)
                (elfeed-log-error-level-face :foreground ,dracula-red)
                (elfeed-log-warn-level-face :foreground ,dracula-orange)
                (elfeed-log-info-level-face :foreground ,dracula-cyan)
                (elfeed-log-debug-level-face :foreground ,dracula-comment)
+               ;; elpher
                (elpher-gemini-heading1 :inherit bold :foreground ,dracula-pink
                                        ,@(when dracula-enlarge-headings
                                            (list :height dracula-height-title-1)))
@@ -1095,17 +1297,21 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                                            (list :height dracula-height-title-3)))
                (elpher-gemini-preformatted :inherit fixed-pitch
                                            :foreground ,dracula-orange)
+               ;; enh-ruby
                (enh-ruby-heredoc-delimiter-face :foreground ,dracula-yellow)
                (enh-ruby-op-face :foreground ,dracula-pink)
                (enh-ruby-regexp-delimiter-face :foreground ,dracula-yellow)
                (enh-ruby-string-delimiter-face :foreground ,dracula-yellow)
+               ;; flyspell
                (flyspell-duplicate :underline (:style wave :color ,dracula-orange))
                (flyspell-incorrect :underline (:style wave :color ,dracula-red))
+               ;; font-latex
                (font-latex-bold-face :foreground ,dracula-purple)
                (font-latex-italic-face :foreground ,dracula-pink :slant italic)
                (font-latex-match-reference-keywords :foreground ,dracula-cyan)
                (font-latex-match-variable-keywords :foreground ,dracula-fg)
                (font-latex-string-face :foreground ,dracula-yellow)
+               ;; gemini
                (gemini-heading-face-1 :inherit bold :foreground ,dracula-pink
                                       ,@(when dracula-enlarge-headings
                                           (list :height dracula-height-title-1)))
@@ -1117,11 +1323,13 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                                           (list :height dracula-height-title-3)))
                (gemini-heading-face-rest :weight normal :foreground ,dracula-yellow)
                (gemini-quote-face :foreground ,dracula-purple)
+               ;; go-test
                (go-test--ok-face :inherit success)
                (go-test--error-face :inherit error)
                (go-test--warning-face :inherit warning)
                (go-test--pointer-face :foreground ,dracula-pink)
                (go-test--standard-face :foreground ,dracula-cyan)
+               ;; gnus-group
                (gnus-group-mail-1 :foreground ,dracula-pink :weight bold)
                (gnus-group-mail-1-empty :inherit gnus-group-mail-1 :weight normal)
                (gnus-group-mail-2 :foreground ,dracula-cyan :weight bold)
@@ -1162,8 +1370,10 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (gnus-summary-low-ancient :inherit gnus-summary-low-read)
                (gnus-summary-low-ticked :inherit gnus-summary-low-read :underline t)
                (gnus-summary-selected :inverse-video t)
+               ;; haskell-mode
                (haskell-operator-face :foreground ,dracula-pink)
                (haskell-constructor-face :foreground ,dracula-purple)
+               ;; helm
                (helm-bookmark-w3m :foreground ,dracula-purple)
                (helm-buffer-not-saved :foreground ,dracula-purple :background ,dracula-bg)
                (helm-buffer-process :foreground ,dracula-orange :background ,dracula-bg)
@@ -1193,7 +1403,9 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (helm-time-zone-current :foreground ,dracula-orange :background ,dracula-bg)
                (helm-time-zone-home :foreground ,dracula-purple :background ,dracula-bg)
                (helm-visible-mark :foreground ,dracula-bg :background ,bg3)
+               ;; highlight-indentation minor mode
                (highlight-indentation-face :background ,bg2)
+               ;; icicle
                (icicle-whitespace-highlight :background ,dracula-fg)
                (icicle-special-candidate :foreground ,fg2)
                (icicle-extra-candidate :foreground ,fg2)
@@ -1230,7 +1442,9 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (icicle-common-match-highlight-Completions :foreground ,dracula-purple)
                (icicle-candidate-part :foreground ,dracula-fg)
                (icicle-annotation :foreground ,fg4)
+               ;; icomplete
                (icompletep-determined :foreground ,dracula-orange)
+               ;; ido
                (ido-first-match
                 ,@(if dracula-alternate-mode-line-and-minibuffer
                       (list :weight 'normal :foreground dracula-green)
@@ -1240,15 +1454,20 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (ido-virtual :foreground ,dracula-cyan)
                (ido-incomplete-regexp :inherit font-lock-warning-face)
                (ido-indicator :foreground ,dracula-fg :background ,dracula-pink)
+               ;; ivy
                (ivy-current-match
                 ,@(if dracula-alternate-mode-line-and-minibuffer
                       (list :weight 'normal :background dracula-current :foreground dracula-green)
                     (list :weight 'bold :background dracula-current :foreground dracula-pink)))
+               ;; Highlights the background of the match.
                (ivy-minibuffer-match-face-1 :background ,dracula-current)
+               ;; Highlights the first matched group.
                (ivy-minibuffer-match-face-2 :background ,dracula-green
                                             :foreground ,dracula-bg)
+               ;; Highlights the second matched group.
                (ivy-minibuffer-match-face-3 :background ,dracula-yellow
                                             :foreground ,dracula-bg)
+               ;; Highlights the third matched group.
                (ivy-minibuffer-match-face-4 :background ,dracula-pink
                                             :foreground ,dracula-bg)
                (ivy-confirm-face :foreground ,dracula-orange)
@@ -1256,14 +1475,17 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (ivy-subdir :foreground ,dracula-yellow)
                (ivy-remote :foreground ,dracula-pink)
                (ivy-virtual :foreground ,dracula-cyan)
+               ;; isearch
                (isearch :inherit match :weight bold)
                (isearch-fail :foreground ,dracula-bg :background ,dracula-orange)
+               ;; jde-java
                (jde-java-font-lock-constant-face :foreground ,dracula-cyan)
                (jde-java-font-lock-modifier-face :foreground ,dracula-pink)
                (jde-java-font-lock-number-face :foreground ,dracula-fg)
                (jde-java-font-lock-package-face :foreground ,dracula-fg)
                (jde-java-font-lock-private-face :foreground ,dracula-pink)
                (jde-java-font-lock-public-face :foreground ,dracula-pink)
+               ;; js2-mode
                (js2-external-variable :foreground ,dracula-purple)
                (js2-function-param :foreground ,dracula-cyan)
                (js2-jsdoc-html-tag-delimiter :foreground ,dracula-yellow)
@@ -1271,12 +1493,14 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (js2-jsdoc-value :foreground ,dracula-yellow)
                (js2-private-function-call :foreground ,dracula-cyan)
                (js2-private-member :foreground ,fg3)
+               ;; js3-mode
                (js3-error-face :underline ,dracula-orange)
                (js3-external-variable-face :foreground ,dracula-fg)
                (js3-function-param-face :foreground ,dracula-pink)
                (js3-instance-member-face :foreground ,dracula-cyan)
                (js3-jsdoc-tag-face :foreground ,dracula-pink)
                (js3-warning-face :underline ,dracula-pink)
+               ;; lsp
                (lsp-ui-peek-peek :background ,dracula-bg)
                (lsp-ui-peek-list :background ,bg2)
                (lsp-ui-peek-filename :foreground ,dracula-pink :weight bold)
@@ -1292,6 +1516,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (lsp-ui-sideline-symbol-info :slant italic :height 0.99)
                (lsp-ui-doc-background :background ,dracula-bg)
                (lsp-ui-doc-header :foreground ,dracula-bg :background ,dracula-cyan)
+               ;; magit
                (magit-branch-local :foreground ,dracula-cyan)
                (magit-branch-remote :foreground ,dracula-green)
                (magit-tag :foreground ,dracula-orange)
@@ -1307,6 +1532,8 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                                                       :background ,bg3
                                                       :weight bold
                                                       :extend t)
+               ;; the four following lines are just a patch of the
+               ;; upstream color to add the extend keyword.
                (magit-diff-added :background "#335533"
                                  :foreground "#ddffdd"
                                  :extend t)
@@ -1330,6 +1557,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (magit-log-author :foreground ,fg3)
                (magit-process-ng :foreground ,dracula-orange :weight bold)
                (magit-process-ok :foreground ,dracula-green :weight bold)
+               ;; markdown
                (markdown-blockquote-face :foreground ,dracula-yellow
                                          :slant italic)
                (markdown-code-face :foreground ,dracula-orange)
@@ -1358,6 +1586,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (markdown-table-face :foreground ,dracula-purple)
                (markdown-list-face :foreground ,dracula-cyan)
                (markdown-language-keyword-face :foreground ,dracula-comment)
+               ;; message
                (message-header-to :foreground ,dracula-fg :weight bold)
                (message-header-cc :foreground ,dracula-fg :bold bold)
                (message-header-subject :foreground ,dracula-orange)
@@ -1372,7 +1601,9 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (message-cited-text-3 :foreground ,dracula-comment)
                (message-cited-text-4 :foreground ,fg2)
                (message-mml :foreground ,dracula-green :weight normal)
+               ;; mini-modeline
                (mini-modeline-mode-line :inherit mode-line :height 0.1 :box nil)
+               ;; mu4e
                (mu4e-unread-face :foreground ,dracula-pink :weight normal)
                (mu4e-view-url-number-face :foreground ,dracula-purple)
                (mu4e-highlight-face :background ,dracula-bg
@@ -1389,7 +1620,9 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (mu4e-cited-3-face :foreground ,dracula-comment)
                (mu4e-cited-4-face :foreground ,fg2)
                (mu4e-cited-5-face :foreground ,fg3)
+               ;; neotree
                (neo-banner-face :foreground ,dracula-orange :weight bold)
+               ;;(neo-button-face :underline nil)
                (neo-dir-link-face :foreground ,dracula-purple)
                (neo-expand-btn-face :foreground ,dracula-fg)
                (neo-file-link-face :foreground ,dracula-cyan)
@@ -1405,9 +1638,13 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (neo-vc-missing-face :foreground ,dracula-red)
                (neo-vc-needs-merge-face :foreground ,dracula-red
                                         :weight bold)
+               ;;(neo-vc-needs-update-face :underline t)
+               ;;(neo-vc-removed-face :strike-through t)
                (neo-vc-unlocked-changes-face :foreground ,dracula-red)
+               ;;(neo-vc-unregistered-face nil)
                (neo-vc-up-to-date-face :foreground ,dracula-green)
                (neo-vc-user-face :foreground ,dracula-purple)
+               ;; org
                (org-agenda-date :foreground ,dracula-cyan :underline nil)
                (org-agenda-dimmed-todo-face :foreground ,dracula-comment)
                (org-agenda-done :foreground ,dracula-green)
@@ -1457,13 +1694,16 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (org-upcoming-deadline :foreground ,dracula-yellow)
                (org-verbatim :inherit org-quote)
                (org-warning :weight bold :foreground ,dracula-pink)
+               ;; outline
                (outline-1 :foreground ,dracula-pink)
                (outline-2 :foreground ,dracula-purple)
                (outline-3 :foreground ,dracula-green)
                (outline-4 :foreground ,dracula-yellow)
                (outline-5 :foreground ,dracula-cyan)
                (outline-6 :foreground ,dracula-orange)
+               ;; perspective
                (persp-selected-face :weight bold :foreground ,dracula-pink)
+               ;; powerline
                (powerline-active1 :background ,dracula-bg :foreground ,dracula-pink)
                (powerline-active2 :background ,dracula-bg :foreground ,dracula-pink)
                (powerline-inactive1 :background ,bg2 :foreground ,dracula-purple)
@@ -1476,6 +1716,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (powerline-evil-operator-face :inherit powerline-evil-base-face :background ,dracula-pink)
                (powerline-evil-replace-face :inherit powerline-evil-base-face :background ,dracula-red)
                (powerline-evil-visual-face :inherit powerline-evil-base-face :background ,dracula-orange)
+               ;; rainbow-delimiters
                (rainbow-delimiters-depth-1-face :foreground ,dracula-fg)
                (rainbow-delimiters-depth-2-face :foreground ,dracula-cyan)
                (rainbow-delimiters-depth-3-face :foreground ,dracula-purple)
@@ -1485,6 +1726,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (rainbow-delimiters-depth-7-face :foreground ,dracula-yellow)
                (rainbow-delimiters-depth-8-face :foreground ,other-blue)
                (rainbow-delimiters-unmatched-face :foreground ,dracula-orange)
+               ;; rpm-spec
                (rpm-spec-dir-face :foreground ,dracula-green)
                (rpm-spec-doc-face :foreground ,dracula-pink)
                (rpm-spec-ghost-face :foreground ,dracula-purple)
@@ -1494,6 +1736,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (rpm-spec-section-face :foreground ,dracula-yellow)
                (rpm-spec-tag-face :foreground ,dracula-cyan)
                (rpm-spec-var-face :foreground ,dracula-orange)
+               ;; rst (reStructuredText)
                (rst-level-1 :foreground ,dracula-pink :weight bold)
                (rst-level-2 :foreground ,dracula-purple :weight bold)
                (rst-level-3 :foreground ,dracula-green)
@@ -1502,9 +1745,11 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (rst-level-6 :foreground ,dracula-orange)
                (rst-level-7 :foreground ,other-blue)
                (rst-level-8 :foreground ,dracula-fg)
+               ;; selectrum-mode
                (selectrum-current-candidate :weight bold)
                (selectrum-primary-highlight :foreground ,dracula-pink)
                (selectrum-secondary-highlight :foreground ,dracula-green)
+               ;; show-paren
                (show-paren-match-face :background unspecified
                                       :foreground ,dracula-cyan
                                       :weight bold)
@@ -1513,9 +1758,12 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                                  :weight bold)
                (show-paren-match-expression :inherit match)
                (show-paren-mismatch :inherit font-lock-warning-face)
+               ;; slime
                (slime-repl-inputed-output-face :foreground ,dracula-purple)
+               ;; spam
                (spam :inherit gnus-summary-normal-read :foreground ,dracula-orange
                      :strike-through t :slant oblique)
+               ;; speedbar (and sr-speedbar)
                (speedbar-button-face :foreground ,dracula-green)
                (speedbar-file-face :foreground ,dracula-cyan)
                (speedbar-directory-face :foreground ,dracula-purple)
@@ -1525,6 +1773,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (speedbar-separator-face :background ,dracula-bg
                                         :foreground ,dracula-fg
                                         :weight bold)
+               ;; tab-bar & tab-line (since Emacs 27.1)
                (tab-bar :foreground ,dracula-purple :background ,dracula-current
                         :inherit variable-pitch)
                (tab-bar-tab :foreground ,dracula-pink :background ,dracula-bg
@@ -1539,9 +1788,11 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                                       :box (:line-width 2 :color ,bg2 :style nil))
                (tab-line-tab-current :inherit tab-line-tab)
                (tab-line-close-highlight :foreground ,dracula-red)
+               ;; telephone-line
                (telephone-line-accent-active :background ,dracula-bg :foreground ,dracula-pink)
                (telephone-line-accent-inactive :background ,bg2 :foreground ,dracula-purple)
                (telephone-line-unimportant :background ,dracula-bg :foreground ,dracula-comment)
+               ;; term
                (term :foreground ,dracula-fg :background ,dracula-bg)
                (term-color-black :foreground ,dracula-bg :background ,dracula-comment)
                (term-color-blue :foreground ,dracula-purple :background ,dracula-purple)
@@ -1551,6 +1802,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (term-color-red :foreground ,dracula-red :background ,dracula-red)
                (term-color-white :foreground ,dracula-fg :background ,dracula-fg)
                (term-color-yellow :foreground ,dracula-yellow :background ,dracula-yellow)
+               ;; tree-sitter
                (tree-sitter-hl-face:attribute :inherit font-lock-constant-face)
                (tree-sitter-hl-face:comment :inherit font-lock-comment-face)
                (tree-sitter-hl-face:constant :inherit font-lock-constant-face)
@@ -1576,10 +1828,12 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (tree-sitter-hl-face:variable :inherit font-lock-variable-name-face)
                (tree-sitter-hl-face:variable.parameter :inherit tree-sitter-hl-face:variable
                                                        :weight normal)
+               ;; undo-tree
                (undo-tree-visualizer-current-face :foreground ,dracula-orange)
                (undo-tree-visualizer-default-face :foreground ,fg2)
                (undo-tree-visualizer-register-face :foreground ,dracula-purple)
                (undo-tree-visualizer-unmodified-face :foreground ,dracula-fg)
+               ;; web-mode
                (web-mode-builtin-face :inherit font-lock-builtin-face)
                (web-mode-comment-face :inherit font-lock-comment-face)
                (web-mode-constant-face :inherit font-lock-constant-face)
@@ -1593,11 +1847,14 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (web-mode-string-face :foreground ,dracula-yellow)
                (web-mode-type-face :inherit font-lock-type-face)
                (web-mode-warning-face :inherit font-lock-warning-face)
+               ;; which-func
                (which-func :inherit font-lock-function-name-face)
+               ;; which-key
                (which-key-key-face :inherit font-lock-builtin-face)
                (which-key-command-description-face :inherit default)
                (which-key-separator-face :inherit font-lock-comment-delimiter-face)
                (which-key-local-map-description-face :foreground ,dracula-green)
+               ;; whitespace
                (whitespace-big-indent :background ,dracula-red :foreground ,dracula-red)
                (whitespace-empty :background ,dracula-orange :foreground ,dracula-red)
                (whitespace-hspace :background ,bg3 :foreground ,dracula-comment)
@@ -1609,6 +1866,7 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (whitespace-space-before-tab :background ,dracula-orange :foreground ,dracula-red)
                (whitespace-tab :background ,bg2 :foreground ,dracula-comment)
                (whitespace-trailing :inherit trailing-whitespace)
+               ;; yard-mode
                (yard-tag-face :inherit font-lock-builtin-face)
                (yard-directive-face :inherit font-lock-builtin-face))))
 
@@ -1660,6 +1918,12 @@ The main theme I use in Emacs is Dracula, never had an issue with it and I dont 
                (file-name-as-directory (file-name-directory load-file-name))))
 
 (provide-theme 'dracula)
+
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
+
+;;; dracula-theme.el ends here
 #+END_SRC
 
 Made it to the end???

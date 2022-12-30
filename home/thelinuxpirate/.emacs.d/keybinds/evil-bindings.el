@@ -1,6 +1,3 @@
-;; JUST A NOTE: I use the Evil bindings for everything and try not to use the base Emacs Mode/Keybindings as much as possible, lots of things
-;; are redefined and remapped here as I intend to avoid using Ctrl and the default Emacs keybindings
-;; so this is the meat of the keybind config ( All of this is to save my pinky finger :) );
 (require 'evil)
 (evil-set-leader 'normal (kbd "SPC")) ;; Defines the leader key to be the <SPACE> key;
 ;; MISC:
