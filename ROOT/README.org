@@ -1,0 +1,2 @@
+#+TITLE: The root of my dotfiles
+The root doesn't contain much other than my old NixOS dotfiles & my personal Gentoo dotfiles
