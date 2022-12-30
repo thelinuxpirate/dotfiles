@@ -1,1 +1,0 @@
- app-portage/layman-2.4.3  USE="git cvs sync-plugin-portage -subversion-test"
