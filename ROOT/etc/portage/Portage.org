@@ -1,0 +1,59 @@
+#+TITLE: Portage/Package Management Configuration
+This is my configuration for my Gentoo's system's package managerment
+
+* Overlays
+*Enabled Overlays:*
+- menelkir
+* Licenses
+** Packages
+#+BEGIN_SRC sh :tangle /etc/portage/package.license
+#+END_SRC
+* USE Flags
+** 00cpu-flags
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/00cpu-flags
+*/* CPU_FLAGS_X86: aes avx avx2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3
+#+END_SRC
+** Elogind
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/elogind
+sys-auth/elogind acl audit cgroup-hybrid doc policykit
+#+END_SRC
+** Pipewire
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/pipewire
+media-video/pipewire bluetooth extra jack-sdk lv2 modemanager pipewire-alsa readline sound-server udev v4l -systemd -system-service -ssl -gstreamer -gsettings -flatpak -doc -dbus -X
+#+END_SRC
+** Vim
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/vim
+app-editors/vim acl gpm lua nls perl python sound terminal -vim-pager -X
+#+END_SRC
+** Alacritty
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/alacritty
+x11-terms/alacritty X debug -wayland
+#+END_SRC
+** GNU Emacs
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/emacs
+app-editors/emacs X Xaw3d acl alsa cairo dbus dynamic-loading gif gmp gtk gui jpeg json lcms kerberos png sound source sqlite threads tiff webp xft xpm xwidgets zlib -toolkit-scroll-bars -systemd -livecd -libxm12 -jit -gzip-el -gsettings -games -aqua
+#+END_SRC
+** Sudo
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/sudo
+app-admin/sudo ldap nls offensive -skey
+#+END_SRC
+** Xf86-Video-Intel 
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/xf86-video-intel
+x11-drivers/xf86-video-intel dbug dri sna tools udev uxa xvmc
+#+END_SRC
+** Dbus
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/dbus
+sys-apps/dubs X debug doc static-libs -systemd
+#+END_SRC
+** Git
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/git
+dev-vcs/git doc cvs cgi -gnome-keyring
+#+END_SRC
+** Xorg-Server
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/xorg-server
+x11-base/xorg-server debug suid udev xorg xnest xvfb xephyr
+#+END_SRC
+** Rtkit
+#+BEGIN_SRC sh :tangle /etc/portage/package.use/rtkit
+sys-auth/rtkit -systemd
+#+END_SRC
