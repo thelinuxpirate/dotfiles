@@ -5,4 +5,4 @@ The root doesn't contain much other than my old NixOS dotfiles & my personal Gen
 Also in case you noticed that I dont use Arch-Based distros and I have Pacman stuff I can explain!
 
 This isnt your day-to-day Arch Pacman as it uses a whole nother mirror to get Devkit packages. I have Devkit things installed as it contains
-libraries for Homebrew Wii development.
+libraries for Homebrew Wii development
