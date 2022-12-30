@@ -6,6 +6,3 @@ Main things to look at:
 - [[https://github.com/DarthYoshi07/dotfiles/tree/main/home/thelinuxpirate/.emacs.d][TreeHouse-Emacs]]
 - [[https://github.com/DarthYoshi07/dotfiles/tree/main/home/thelinuxpirate/dwm][Suckless' tools Configuration]]
 - [[https://github.com/DarthYoshi07/dotfiles/tree/main/home/thelinuxpirate/.config/xmonad][XMonad Configuration]]
-
-
-# [[LINK][TEXT]]
