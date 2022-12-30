@@ -1,2 +1,3 @@
 #+TITLE: BSPWM the One that Started it All
-TEXT
+* Warning
+This code has not been touched nor updated in a long while so beware if you decide to use this config or base your own out of it.
