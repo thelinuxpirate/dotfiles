@@ -1,5 +1,5 @@
 #+TITLE: The Dirt
-The Dirt of the configuration structures the way the Tree will perform.
+The Dirt of the configuration, structures the way the Tree will perform.
 
 * Packages
 Package's Configurations 
