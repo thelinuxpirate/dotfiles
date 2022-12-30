@@ -9,10 +9,11 @@ $HOME/.config/polybar/launch.sh
 
 # Install Feh for USE of Wallpaper, the add your wallpaper path:
 # Example: feh --bg-fill --randomize $HOME/stuff/pictures/wallpapers/* & 
-feh --bg-fill /usr/share/backgrounds/fedora-workstation/winter-in-bohemia.png*
+WALLPAPER="Insert Path to wallpaper here"
+feh --bg-fill $WALLPAPER*
 
 # Picom Startup (or add to .bashrc):
-picom --daemon
+picom --daemon &
 
 # Workspaces:
 bspc monitor -d I II III IV V VI VII
