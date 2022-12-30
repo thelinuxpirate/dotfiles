@@ -1,1 +1,482 @@
+#+TITLE: The TreeHouse
+#+PROPERTY: header-args :tangle exwm_config.el 
+** Starter Notes:
+Just to start off this configuration is very unstable and can die in any given moment. There are still lots of updates and patches going
+through with the Exwm Configuration;
+* Window Actions:
+#+BEGIN_SRC emacs-lisp
+  (defun exwm-update-class ()
+     (exwm-workspace-rename-buffer exwm-class-name))
 
+  ;;(defun exwm-update-title ()
+  ;;     (pcase exwm-class-name
+  ;;       ("Brave-browser" (exwm-workspace-rename-buffer (format "Brave: %s" exwm-title)))
+  ;;       ("Spotify"       (exwm-workspace-rename-buffer (format "Spotify: %s" exwm-title)))
+  ;;       ("discord"       (exwm-workspace-rename-buffer (format "Biscord: %s" exwm-title))))
+  ;; )
+  ;; (defun exwm-configure-window-by-class ()
+  ;;   (interactive)
+  ;;     (pcase exwm-class-name
+  ;;       ("Brave-browser" (exwm-workspace-move-window 0))
+  ;;       ("discord"       (exwm-workspace-move-window 3))
+  ;;       ("Spotify"       (exwm-workspace-move-window 5) 
+  ;;                          (exwm-floating-toggle-floating)
+  ;; 		           (exwm-layout-toggle-mode-line))))
+#+END_SRC
+Window Actions ^^^ must be defined before requiring/using Exwm; 
+* The Startup & Startup Actions:
+#+BEGIN_SRC emacs-lisp
+  (use-package exwm
+    :config
+    (setq mouse-autoselect-window nil
+	  focus-follows-mouse t
+	  exwm-workspace-warp-cursor t 
+	  exwm-workspace-number 7)
+    (add-hook 'exwm-update-class-hook #'exwm-update-class)
+    (add-hook 'exwm-workspace-switch-hook #'polybar--send-polybar-exwm-workspace)
+  (add-hook 'exwm-tiling-setup-hook
+            (lambda ()
+              (exwm-layout-hide-mode-line)))
+  (add-hook 'exwm-floating-setup-hook
+	      (lambda ()
+		(exwm-layout-hide-mode-line)))
+    (display-battery-mode -1)
+    (display-time-mode -1)
+
+    ;; Update "title"
+    ;;(add-hook 'exwm-update-title-hook #'exwm-update-title)
+    ;; Configure Window By Class:
+    ;;(add-hook 'exwm-update-finish-hook #'exwm-configure-window-by-class)
+#+END_SRC
+* Screen Resoulution:
+#+BEGIN_SRC emacs-lisp
+  ;; Set the screen resolution (update this to be the correct resolution for your screen!)
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist '(0 "eDP-1"))
+  (add-hook 'exwm-randr-screen-change-hook
+	    (lambda ()
+	      (start-process-shell-command
+	       "xrandr" nil "xrandr --output eDP-1 --mode 1366x768 --pos 0x0 --rotate normal")))
+  (exwm-randr-enable)
+#+END_SRC
+* Exwm Specific Packages + Emacs Settings:
+#+BEGIN_SRC emacs-lisp
+;; MAYBE? This section killed Exwm for me;
+#+END_SRC
+* Polybar Startup + Actions:
+#+BEGIN_SRC emacs-lisp 
+(defvar polybar--polybar-process nil
+  "Holds the process of the running Polybar instance, if any")
+
+(defun polybar--kill-piratebar ()
+  (interactive)
+  (when polybar--polybar-process
+    (ignore-errors
+      (kill-process polybar--polybar-process)))
+  (setq polybar--polybar-process nil))
+
+(defun polybar--start-piratebar ()
+  (interactive)
+  (polybar--kill-piratebar)
+  (setq polybar--polybar-process (start-process-shell-command "polybar" nil "polybar piratebar")))
+
+(defun polybar--send-polybar-hook (module-name hook-index)
+  (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" module-name hook-index)))
+
+(defun polybar--send-polybar-exwm-workspace ()
+  (polybar--send-polybar-hook "exwm-workspace" 1))
+#+END_SRC
+** Polybar as a Bar:
+#+BEGIN_SRC conf :tangle /home/thelinuxpirate/.config/polybar/config.ini
+  [bar/piratebar]
+  width = 100%
+  height = 20
+  offset-x = 0
+  offset-y = 0
+  fixed-center = true
+  enable-ipc = true
+  background = ${colors.background}
+  foreground = ${colors.foreground}
+  line-size = 2
+  line-color = #f00
+  border-size = 0
+  border-color = #00000000
+  padding-top = 5
+  padding-left = 1
+  padding-right = 1
+  module-margin = 1
+  font-0 = "Cantarell:size=10:weight=bold;2"
+  font-1 = "Font Awesome:size=10;2"
+  font-2 = "Material Icons:size=15;5"
+  font-3 = "Fira Mono:size=10;-3"
+  font-4 = "Font Awesome 5 Free:size=10;1"
+  modules-left = exwm-workspace alsa 
+  modules-center = spotify previous playpause next
+  modules-right = alsa cpu temperature battery date
+  cursor-click = pointer
+  cursor-scroll = ns-resize
+
+  [settings]
+  screenchange-reload = true
+
+  [global/wm]
+  margin-top = 0
+  margin-bottom = 0
+
+  [colors]
+  background = #f0232635
+  background-alt = #576075
+  foreground = #A6Accd
+  foreground-alt = #555
+  primary = #ffb52a
+  secondary = #e60053
+  alert = #bd2c40
+  underline-1 = #c792ea
+
+  ;[colors] Default
+  ; background = #f0232635
+  ; background-alt = #576075
+  ; foreground = #A6Accd
+  ; foreground-alt = #555
+  ; primary = #ffb52a
+  ; secondary = #e60053
+  ; alert = #bd2c40
+  ; underline-1 = #c792ea
+
+  [module/exwm-workspace]
+  type = custom/ipc
+  hook-0 = emacsclient -e "exwm-workspace-current-index" | sed -e 's/^"//' -e 's/"$//'
+  initial = 1
+  format-underline = ${colors.underline-1}
+  format-padding = 1
+
+  [module/cpu]
+  type = internal/cpu
+  interval = 2
+  format = <label> <ramp-coreload>
+  format-underline = ${colors.underline-1}
+  click-left = emacsclient -e "(proced)"
+  label = %percentage:2%%
+  ramp-coreload-spacing = 0
+  ramp-coreload-0 = ▁
+  ramp-coreload-0-foreground = ${colors.foreground-alt}
+  ramp-coreload-1 = ▂
+  ramp-coreload-2 = ▃
+  ramp-coreload-3 = ▄
+  ramp-coreload-4 = ▅
+  ramp-coreload-5 = ▆
+  ramp-coreload-6 = ▇
+
+  [module/alsa]
+  type = internal/alsa
+  master-soundcard = default
+  speaker-soundcard = default
+  headphone-soundcard = default
+  master-mixer = Master
+  speaker-mixer = Speaker
+  headphone-mixer = Headphone
+  headphone-id = 9
+  mapped = true
+  interval = 5
+  format-volume = <ramp-volume> <label-volume>
+  label-muted = 🔇 muted
+  label-muted-foreground = #66
+  ramp-volume-0 = 🔈
+  ramp-volume-1 = 🔉
+  ramp-volume-2 = 🔊
+  ramp-headphones-0 = 
+  ramp-headphones-1 = 
+
+  [module/date]
+  type = internal/date
+  interval = 5
+  date = "%a %b %e"
+  date-alt = "%A %B %d %Y"
+  time = %l:%M %p
+  time-alt = %H:%M:%S
+  format-prefix-foreground = ${colors.foreground-alt}
+  format-underline = ${colors.underline-1}
+  label = %date% %time%
+
+  [module/battery]
+  type = internal/battery
+  battery = BAT0
+  adapter = ADP1
+  full-at = 100
+  time-format = %-l:%M
+  label-charging = %percentage%% / %time%
+  format-charging = <animation-charging> <label-charging>
+  format-charging-underline = ${colors.underline-1}
+  label-discharging = %percentage%% / %time%
+  format-discharging = <ramp-capacity> <label-discharging>
+  format-discharging-underline = ${self.format-charging-underline}
+  format-full = <ramp-capacity> <label-full>
+  format-full-underline = ${self.format-charging-underline}
+  ramp-capacity-0 = 
+  ramp-capacity-1 = 
+  ramp-capacity-2 = 
+  ramp-capacity-3 = 
+  ramp-capacity-4 = 
+  animation-charging-0 = 
+  animation-charging-1 = 
+  animation-charging-2 = 
+  animation-charging-3 = 
+  animation-charging-4 = 
+  animation-charging-framerate = 750
+
+  [module/temperature]
+  type = internal/temperature
+  thermal-zone = 0
+  warn-temperature = 60
+  format = <label>
+  format-underline = ${colors.underline-1}
+  format-warn = <label-warn>
+  format-warn-underline = ${self.format-underline}
+  label = %temperature-c%
+  label-warn = %temperature-c%!
+  label-warn-foreground = ${colors.secondary}
+
+  [module/previous]
+  type = custom/ipc
+  format-font = 2
+  hook-0 = echo ""
+  hook-1 = echo "Previous"
+  click-left = "spotifyctl -q previous"
+
+
+  [module/next]
+  type = custom/ipc
+  format-font = 2
+  hook-0 = echo ""
+  hook-1 = echo "Next"
+  click-left = "spotifyctl -q next"
+
+  [module/playpause]
+  type = custom/ipc
+  format-font = 2
+  hook-0 = echo ""
+  hook-1 = echo "Pause"
+  hook-2 = echo "Play"
+  click-left = "spotifyctl -q playpause"
+
+  [module/spotify]
+  type = custom/ipc
+  hook-0 = echo ""
+  hook-1 = spotifyctl -q status --format '%artist%: %title%'
+#+END_SRC
+* Xmobar Startup + Actions:
+#+BEGIN_SRC emacs-lisp
+;; REMEMBER TO ADD HOOK
+(defvar xmobar--xmobar-process nil
+  "Holds the process of the running XMobar instance, if any")
+
+(defun xmobar--kill-bar ()
+  (interactive)
+  (when xmobar--xmobar-process
+    (ignore-errors
+      (kill-process xmobar--xmobar-process)))
+  (setq xmobar--xmobar-process nil))
+
+(defun xmobar--start-bar ()
+  (interactive)
+  (xmobar--kill-bar)
+  (setq xmobar--xmobar-process (start-process-shell-command "xmobar" nil "xmobar /home/thelinuxpirate/.emacs.d/xmobar/xmobarrc_1")))
+
+;;(defun xmobar--send-xmobar-hook (module-name hook-index)
+;;  (start-process-shell-command "polybar-msg" nil (format "polybar-msg hook %s %s" module-name hook-index)))
+
+;;(defun polybar--send-polybar-exwm-workspace ()
+;;  (polybar--send-polybar-hook "exwm-workspace" 1))
+#+END_SRC
+** Xmobar as a Bar:
+#+BEGIN_SRC conf :tangle /home/thelinuxpirate/.emacs.d/xmobar/xmobarrc_1
+ Config { font      = "xft:Noto Sans LGC:weight=bold:size=9:style=Regular"
+  , borderColor     = "#2d2d2d"
+  , border          = NoBorder
+  , bgColor         = "#282c34"
+  , fgColor         = "cyan"
+  --, textOffset    = 33
+  --, iconOffset    = 17
+  , position        = TopSize L 100 24
+  , hideOnStart     = False
+  , allDesktops     = True
+  , persistent      = True
+  , lowerOnStart    = False
+  , commands = [      Run Cpu ["-t", "cpu: (<total>%)","-H","50","--high","red"] 20
+                        -- Ram used number and percent
+                    , Run Memory ["-t", "mem: <used>M (<usedratio>%)"] 20
+                        -- Disk space free
+                    , Run DiskU [("/", "/: <free> free")] [] 60
+                        -- Uptime
+                    , Run Uptime ["-t", "uptime: <days>d <hours>h"] 360
+                        -- Battery
+                    , Run BatteryP ["BAT0"] ["-t", "battery: (<left>%)"] 360
+                        -- Time and date
+                    , Run Date "%b %d %Y - (%H:%M) " "date" 50
+		    , Run Alsa "default" "Master"
+                        [ "--template", "audio: <volumestatus>"
+                        , "--suffix"  , "True"
+                        , "--"
+                        , "--on", ""
+                        ]
+	       ]
+  , sepChar = "%"
+  , alignSep = "}{"
+  , template = "<box type=Bottom width=2 mb=2 color=#46d9ff><fc=#46d9ff>%date%</fc></box> <fc=#ff79c6>•</fc>  <box type=Top width=2 mb=2 color=#8be9fd><fc=#59bac9>%memory%</fc></box> }{ <box type=Bottom width=2 mb=2 color=#a9a1e1><fc=#a9a1e1>%disku%</fc></box>  •  <box type=Bottom width=2 mb=2 color=#98be65><fc=#98be65>%alsa:default:Master%</fc></box>  •  <box type=Bottom width=2 mb=2 color=#da8548><fc=#da8548>%battery%</fc></box> <fc=#ff79c6>•</fc> <box type=Bottom width=2 mb=2 color=#ff5555><fc=#ff5555>%uptime%</fc></box>"
+}
+#+END_SRC 
+* Global Input Keys:
+#+BEGIN_SRC emacs-lisp
+
+  ;; These keys should always pass through to Emacs;
+  (setq exwm-input-prefix-keys
+    '(?\C-x
+      ?\s-j
+      ?\s-w
+      ?\M-x))
+
+  ;; Ctrl+Q will enable the next key to be sent directly
+  ;;(define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+#+END_SRC
+* Super + j/w Keybindings:
+#+BEGIN_SRC emacs-lisp
+;; Super + j:
+(global-set-key (kbd "s-j s-e") 'execute-extended-command)
+(global-set-key (kbd "s-j k") 'kill-current-buffer)
+(global-set-key (kbd "s-j s-k") 'kill-buffer)
+(global-set-key (kbd "s-j l") 'switch-to-buffer)
+(global-set-key (kbd "s-j b") 'list-buffers)
+(global-set-key (kbd "s-j j") 'switch-to-prev-buffer)
+(global-set-key (kbd "s-j s-j") 'switch-to-next-buffer)
+;; Super + w:
+(global-set-key (kbd "s-w w") 'make-frame)
+(global-set-key (kbd "s-w 1") 'delete-window)
+(global-set-key (kbd "s-w 2") 'delete-other-windows)
+(global-set-key (kbd "s-w 3") 'split-window-below)
+(global-set-key (kbd "s-w 4") 'split-window-right)
+(global-set-key (kbd "s-w 5") 'split-window-horizontally)
+(global-set-key (kbd "s-w 6") 'split-window-vertically)
+#+END_SRC
+
+* Keybindings + Actions:
+#+BEGIN_SRC emacs-lisp
+;; Custom Actions:
+(defun start--brave-browser ()
+  (interactive)
+  (start-process-shell-command "brave" nil "brave-browser"))
+(defun start--discord ()
+  (interactive)
+  (start-process-shell-command "discord" nil "Discord"))
+(defun start--spotify ()
+  (interactive)
+  (start-process-shell-command "spotify" nil "spotify"))
+(defun start--gimp ()
+  (interactive)
+  (start-process-shell-command "gimp" nil "gimp"))
+  ;; Set up global key bindings.  These always work, no matter the input state!
+  ;; Keep in mind that changing this list after EXWM initializes has no effect.
+  (setq exwm-input-global-keys
+        `(
+          ;; Move between windows
+          ([s-l] . windmove-left)
+          ([s-h] . windmove-right)
+          ([s-k] . windmove-up)
+          ([s-j] . windmove-down)
+          ([?\s-`] . (lambda () 
+	               (interactive) (exwm-workspace-switch-create 0)))
+         ,@(mapcar (lambda (i)
+                     `(,(kbd (format "s-%d" i)) .
+                       (lambda ()
+                         (interactive)
+                         (exwm-workspace-switch-create ,i))))
+                   (number-sequence 0 6))))
+          (exwm-input-set-key (kbd "<s-return>") 'vterm)
+	  (exwm-input-set-key (kbd "s-SPC") 'counsel-linux-app)
+	  (exwm-input-set-key (kbd "s-Q") 'kill-emacs)
+	  (exwm-input-set-key (kbd "s-d") 'dired)
+	  (exwm-input-set-key (kbd "s-D") 'start--discord)
+	  (exwm-input-set-key (kbd "s-B") 'start--brave-browser)
+	  (exwm-input-set-key (kbd "s-m") 'exwm-layout-hide-mode-line)
+	  (exwm-input-set-key (kbd "s-M") 'exwm-layout-show-mode-line)
+	  (exwm-input-set-key (kbd "s-S") 'start--spotify)
+	  (exwm-input-set-key (kbd "s-r") 'exwm-floating-toggle-floating)
+	  (exwm-input-set-key (kbd "s-f") 'exwm-layout-toggle-fullscreen)
+	  (exwm-input-set-key (kbd "s-P") 'polybar--kill-piratebar)
+	  (exwm-input-set-key (kbd "s-p") 'polybar--start-piratebar) 
+	  (exwm-input-set-key (kbd "s-c") 'exwm-input-release-keyboard)
+	  (exwm-input-set-key (kbd "s-x") 'exwm-reset)
+#+END_SRC
+* Move Windows using Numbers:
+#+BEGIN_SRC emacs-lisp
+	  ;; Move Windows:
+	  (defun exwm-move-window-to-workspace(workspace-number)
+	      (interactive)
+	          (let ((frame (exwm-workspace--workspace-from-frame-or-index workspace-number))
+		      (id (exwm--buffer->id (window-buffer))))
+		          (exwm-workspace-move-window frame id)))
+	  ;; Switch to Workspace 0: 
+	  (exwm-input-set-key (kbd "s-~")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 0)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 0)))))
+	  (exwm-input-set-key (kbd "s-)")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 0)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 0)))))
+	 ;; Move Window to Workspace 1 
+	 (exwm-input-set-key (kbd "s-!")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 1)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 1)))))
+	  
+         (exwm-input-set-key (kbd "s-@")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 2)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 2)))))
+	 
+         (exwm-input-set-key (kbd "s-#")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 3)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 3)))))
+	
+         (exwm-input-set-key (kbd "s-$")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 4)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 4)))))
+
+	  (exwm-input-set-key (kbd "s-%")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 5)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 5)))))
+
+	  (exwm-input-set-key (kbd "s-^")
+                  (lambda()
+                    (interactive)
+                    (exwm-move-window-to-workspace 6)
+                    (run-with-idle-timer 0.05 nil (lambda() (exwm-workspace-switch 6)))))
+
+  (exwm-enable))
+#+END_SRC
+* After Exwm:
+#+BEGIN_SRC emacs-lisp
+(use-package desktop-environment
+  :after exwm
+  :config (desktop-environment-mode)
+  :custom
+  
+  (desktop-environment-brightness-small-increment "1%+")
+  (desktop-environment-brightness-small-decrement "1%-")
+  (desktop-environment-brightness-normal-increment "2%+")
+  (desktop-environment-brightness-normal-decrement "2%")
+  (desktop-environment-volume-small-increment "1%+")
+  (desktop-environment-volume-small-decrement "1%-")
+  (desktop-environment-volume-normal-increment "2%+")
+  (desktop-environment-volume-normal-decrement "2%-"))
+#+END_SRC
