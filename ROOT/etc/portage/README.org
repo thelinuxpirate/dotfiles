@@ -5,4 +5,4 @@ TEXT~
 * Portage.org
 Check this file out:
 
-[[https://github.com/DarthYoshi07/dotfiles/blob/main/ROOT/etc/portage/Portage.org][Portage.org] (In progress)
+[[https://github.com/DarthYoshi07/dotfiles/blob/main/ROOT/etc/portage/Portage.org][Portage.org]] (In progress)
