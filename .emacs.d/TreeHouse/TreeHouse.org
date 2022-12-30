@@ -2,7 +2,8 @@
 #+PROPERTY: header-args :tangle exwm_config.el 
 ** Starter Notes:
 Just to start off this configuration is very unstable and can die in any given moment. There are still lots of updates and patches going
-through with the Exwm Configuration;
+through with the Exwm Configuration, & Exwm is no longer my primary window manager so I doubt this section will be updated more;
+The current TreeHouse is still very usable;
 * Window Actions:
 #+BEGIN_SRC emacs-lisp
   (defun exwm-update-class ()
