@@ -24,6 +24,7 @@ the addittion of USE flags is a very cool idea and I hope more distros or packag
 Sure compiling takes awhile (I have a 2 core doodoo cpu) but I find it worth it as packages are more customizeable.
 - *Window Manager of choice:*
 Suckless' DWM
+
 I always heard about DWM and after struggling with Exwm I decided to give it a try, I am *very* happy with it. Im too lazy to
 patch it so I used flexipatch. The whole idea between Master and Slaves were goofy to me at first but now I see that its goated.
 Cant really complain too much about this Window Manager, it just gets stuff right.
