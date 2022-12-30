@@ -5,6 +5,10 @@ This file is more a way to secure the configuration and makes sure everything is
 it does this by making sure every package that is declared in the Tree is installed;
 
 (Not an automatic process you must patch in each new package manually)
+
+*NOTE:*
+
+The more packages you add here *and* install into the tree the slower it will be upon usage & startup;
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/package.el 
 (unless (package-installed-p 'use-package)  
   (package-install 'use-package))
@@ -77,4 +81,13 @@ it does this by making sure every package that is declared in the Tree is instal
 
 (unless (package-installed-p 'go-mode)
   (package-install 'go-mode))
+
+(unless (package-installed-p 'haskell-mode)
+  (package-install 'haskell-mode))
+
+(unless (package-installed-p 'yaml-mode)
+  (package-install 'yaml-mode))
+
+(unless (package-installed-p 'rainbow-mode)
+  (package-install 'rainbow-mode))
 #+END_SRC
