@@ -5,7 +5,7 @@ for just text editing reasons.
 
 Things included (or WILL be included) are:
 - [X] Full Org-Mode Configuration
-- [] LSP Support (soon)
+- [?] LSP Support (soon)
 - [X] Tree-Sitter
 - [X] Rust-Mode
 - [X] Haskell-Mode
@@ -14,10 +14,10 @@ Things included (or WILL be included) are:
 - [X] Desktop-like Configuration
 
 and more.
-
 This whole configuration (like many of my dotfiles) are written into Org-Mode so it can read better, so I can add explanations to my code,
 and just beacuse it organizes things a lot better for me.
 
+* The Code
 The code is seperated into sections (like a treehouse):
 
 - The TreeHouse - Exwm 
