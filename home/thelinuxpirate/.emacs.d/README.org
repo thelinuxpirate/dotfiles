@@ -6,14 +6,17 @@ The "Emacs Treehouse" (refered as the "treehouse") is a personal attempt of crea
 for just text editing reasons.
 
 Things included (or WILL be included) are:
-- [X] Full Org-Mode Configuration
-- [?] LSP Support (soon)
-- [X] Tree-Sitter
+- [X] Basic Org-Mode Configuration
+- [] Org Mode & Org-Roam Configuration
+- [] LSP Support
+- [] Configured Tree-Sitter
+- [X] Basic Tree-Sitter
 - [X] Rust-Mode
 - [X] Haskell-Mode
 - [X] Python-Mode
 - [X] Go-Mode
-- [X] Desktop-like Configuration
+- [X] Basic Desktop-like Configuration
+- [] Full EXWM Configuration
 
 and more.
 This whole configuration (like many of my dotfiles) are written into Org-Mode so it can read better, so I can add explanations to my code,
