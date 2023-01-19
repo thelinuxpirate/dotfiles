@@ -1,7 +1,0 @@
-#+TITLE: Suckless' Tools Configuration
-* Information
-- DWM
-- Slstatus
-- Slock
-
-(I perfer to use a packaged version of Dmenu)
