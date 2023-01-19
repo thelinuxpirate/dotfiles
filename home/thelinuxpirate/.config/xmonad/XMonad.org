@@ -218,3 +218,25 @@ Config { font            = "xft:Noto Sans LGC:weight=bold:size=9:style=Regular"
        , template = " <box type=Bottom width=2 mb=2 color=#46d9ff><fc=#46d9ff>%date%</fc></box> }{ <box type=Bottom width=2 mb=2 color=#ecbe7b><fc=#ecbe7b><action=`alacritty -e htop`>%cpu%</action></fc></box>  •  <box type=Bottom width=2 mb=2 color=#ff6c6b><fc=#ff6c6b><action=`alacritty -e htop`>%memory%</action></fc></box>   •  <box type=Bottom width=2 mb=2 color=#a9a1e1><fc=#a9a1e1>%disku%</fc></box>  •  <box type=Bottom width=2 mb=2 color=#98be65><fc=#98be65>%uptime%</fc></box>  •  <box type=Bottom width=2 mb=2 color=#da8548><fc=#da8548>%battery%</fc></box>"
        }
 #+END_SRC
+
+
+* build.sh:
+A simple script to build xmonad:
+#+BEGIN_SRC sh :tangle ~/.config/xmonad/build.sh
+  echo "Cloning XMonad-Base files & XMonad-Contrib files for Installation"
+  git clone https://github.com/xmonad/xmonad && git clone https://github.com/xmonad/xmonad-contrib
+  echo "Getting ready to build!"
+  
+  echo "Generating init file..."
+  stack init
+
+  echo "Installing: XMonad + Contrib"
+  stack install
+  echo "DONE!"
+
+  export PATH=$HOME/.local/bin:$PATH
+  echo "Exported ~/.local/bin to your $PATH"
+
+  echo "Proof of installation:"
+  which xmonad
+#+END_SRC
