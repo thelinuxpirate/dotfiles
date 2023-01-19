@@ -1,0 +1,6 @@
+xset r rate 200 60
+
+pipewire &
+pipewire-pulse &
+
+exec xmonad
