@@ -1,4 +1,4 @@
-#TITLE: Why?
+#+TITLE: Why?
 I have a ".startx" directory because I want to seperate my window managers when I use startx and not continue changing my ".xinitrc". 
 So in order to change this I made this directory and added files with the Window Manager's names as each file is a startx conf specifically made for that WM.
 
