@@ -1,1 +1,1 @@
-require("thelinuxpirate")
+require("src")
