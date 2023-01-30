@@ -1,0 +1,103 @@
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: monospace;
+    font-size: 15px;
+}
+
+window#waybar {
+        background: #292b2e;
+	color: #fdf6e3;
+}
+
+
+#custom-right-arrow-dark,
+#custom-left-arrow-dark {
+	color: #1a1a1a;
+}
+#custom-right-arrow-light,
+#custom-left-arrow-light {
+	color: #292b2e;
+	background: #1a1a1a;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#pulseaudio,
+#custom-modules,
+#custom-media {
+    background: #1a1a1a;
+}
+
+.custom-spotify {
+    padding: 0 5px;
+    margin: 0 0px;
+    background: #1a1a1a;
+    color: #ff8533;
+}
+
+.custom-kernel {
+    background: #1a1a1a;
+    color: #888333;
+}
+
+#clock {
+    color: #d2ff4d;
+}
+
+#battery {
+    color:  #29a329;
+}
+
+#battery.charging, #battery.plugged {
+    color: #5cd65c;
+}
+
+@keyframes blink {
+    to {
+        color: #ffffff;
+    }
+}
+
+#battery.critical:not(.charging) {
+    color:  #ff0000;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+}
+
+#cpu {
+    color: #ff8533;
+}
+
+#memory {
+    color:  #ac00e6;
+}
+
+#pulseaudio {
+    color: #006699;
+}
+
+#pulseaudio.muted {
+    color: #e60000;
+}
+
+#custom-modules {
+}
+
+#custom-modules.kernel {
+}
+
+#custom-media {
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+}
