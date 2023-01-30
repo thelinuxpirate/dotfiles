@@ -26,9 +26,11 @@ system's dotfiles using Emacs' OrgMode, and document most of the changes I made.
 distros or package managers will use this idea in the future. Sure compiling takes awhile (I have a 2 core doodoo cpu) but I find it worth it as
 packages are more customizeable.
 
-*** Top 3 WMs:
+*** Top 5 WMs:
+- Hyprland
 - DWM
 - XMonad
+- Sway
 - Exwm
 
 **** Suckless' DWM
