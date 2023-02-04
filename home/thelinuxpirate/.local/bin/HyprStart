@@ -1,0 +1,26 @@
+#!/bin/sh
+
+cd ~/
+
+# EXPORTS:
+
+export HYPRLAND_LOG_WLR=1
+
+# export XCURSOR_THEME=
+
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fctitx
+export GLFW_IM_MODULE=ibus
+
+# Daemons & Other:
+dunst &
+
+emacs --daemon &
+
+gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
+gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
+
+# Hypr
+exec Hyprland
