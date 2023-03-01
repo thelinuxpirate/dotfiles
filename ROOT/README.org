@@ -1,5 +1,5 @@
 #+TITLE: The "/" of my dotfiles
-The root doesn't contain much other than my old NixOS dotfiles & my personal Gentoo dotfiles
+The root doesn't contain much other than my NixOS dotfiles & my personal Gentoo dotfiles
 
 * Pacman
 Also in case you noticed that I dont use Arch-Based distros and I have Pacman stuff I can explain!
