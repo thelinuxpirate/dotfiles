@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Reset Background
+feh --bg-scale "$SCRIPTPATH"/down.jpg
+
+leftwm command "UnloadTheme"
+
+# Kill commands
+pkill picom
+pkill dunst
+pkill polybar
