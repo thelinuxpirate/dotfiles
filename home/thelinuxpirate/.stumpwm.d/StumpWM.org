@@ -1,0 +1,112 @@
+#+title: TLP's StumpWM Configuration
+* Init
+#+begin_src lisp :tangle ~/.stumpwm.d/init.lisp
+;; -*-lisp-*-
+
+;; Init:
+(in-package :stumpwm)
+(setf *default-package* :stumpwm)
+
+(set-module-dir "/usr/share/stupmwm/contrib/") ;; AUR Package PATH
+
+;; Autostart:
+(run-shell-command "xsetroot -cursor_name left_ptr")
+(run-shell-command "xset r rate 200 60")
+(run-shell-command "feh --bg-fill ~/.stumpwm.d/config/wm/wallpapers/p_emacs.png")
+
+(run-shell-command "emacs --daemon &")
+(run-shell-command "picom --daemon &")
+(run-shell-command "dunst &")
+
+;; Load Other Files
+(load "~/.stumpwm.d/config/keybinds/bindings.lisp")
+(load "~/.stumpwm.d/config/wm/visual/colors.lisp")
+(load "~/.stumpwm.d/config/wm/modeline.lisp")
+
+;; Activate the mode-line
+(when *initializing*
+  (mode-line))
+
+;; Activate Modules
+(load-module "globalwindows")
+
+;; Startup Message
+(setf *startup-message* "Welcome to StumpWM!")
+#+end_src lisp
+* Config
+** Keybinds
+#+begin_src lisp :tangle ~/.stumpwm.d/config/keybinds/bindings.lisp
+;; -*-lisp-*-
+(set-prefix-key (kbd "s-f"))
+
+(define-key *root-map* (kbd "s-Q") "end-session")
+(define-key *root-map* (kbd "RET") "exec alacritty")
+(define-key *root-map* (kbd "SPC") "exec dmenu_run")
+(define-key *root-map* (kbd "e") "exec emacsclient -c")
+#+end_src
+** Colors
+#+begin_src lisp :tangle ~/.stumpwm.d/config/wm/visual/colors.lisp
+;; -*-lisp-*-
+(defvar tlp/nord0 "#2e3440")
+(defvar tlp/nord1 "#3b4252")
+(defvar tlp/nord2 "#434c5e")
+(defvar tlp/nord3 "#4c566a")
+(defvar tlp/nord4 "#d8dee9")
+(defvar tlp/nord5 "#e5e9f0")
+(defvar tlp/nord6 "#eceff4")
+(defvar tlp/nord7 "#8fbcbb")
+(defvar tlp/nord8 "#88c0d0")
+(defvar tlp/nord9 "#81a1c1")
+(defvar tlp/nord10 "#5e81ac")
+(defvar tlp/nord11 "#bf616a")
+(defvar tlp/nord12 "#d08770")
+(defvar tlp/nord13 "#ebcb8b")
+(defvar tlp/nord14 "#a3be8c")
+(defvar tlp/nord15 "#b48ead")
+
+(setq *colors*
+      `(,tlp/nord1   ;; 0 black
+        ,tlp/nord11  ;; 1 red
+        ,tlp/nord14  ;; 2 green
+        ,tlp/nord13  ;; 3 yellow
+        ,tlp/nord10  ;; 4 blue
+        ,tlp/nord14  ;; 5 magenta
+        ,tlp/nord8   ;; 6 cyan
+        ,tlp/nord5)) ;; 7 white
+
+(when *initializing*
+  (update-color-map (current-screen)))
+#+end_src
+** ModeLine
+#+begin_src lisp :tangle ~/.stumpwm.d/config/wm/modeline.lisp
+(setf *mode-line-timeout* 2)
+
+;; Formating
+(setf *time-modeline-string* "%F %H:%M") ;; Date
+(load "~/.stumpwm.d/config/wm/visual/colors.lisp")
+
+;; Modeline Colors
+(setf *mode-line-background-color* tlp/nord1
+      ,*mode-line-foreground-color* tlp/nord5)
+(setf *mode-line-border-color* tlp/nord1
+      ,*mode-line-border-width* 0)
+
+;; Modules
+(load-module "battery-portable")
+(load-module "cpu")
+(load-module "mem")
+
+;; Modules Formating
+(setf cpu::*cpu-modeline-fmt*        "%c"
+      cpu::*cpu-usage-modeline-fmt*  "^f2^f0^[~A~2D%^]"
+      mem::*mem-modeline-fmt*        "%a%p"
+      ,*hidden-window-color*          "^**"
+      ,*mode-line-highlight-template* "«~A»")
+
+(("%d") ("^>") ("%C") ("%M") ("%B")) ;; Displayed Contents
+(defvar *mode-line-formatter-list*
+  '<<modeline-format-gen()>>
+  "List of formatters for the modeline.")
+
+
+#+end_src
