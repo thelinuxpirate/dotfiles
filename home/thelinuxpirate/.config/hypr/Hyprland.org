@@ -1,0 +1,219 @@
+#+title: TLP's Hyprland Configuration (+ Waybar)
+* Introduction
+Hyprland is a wayland compositor which has great speed & performace, while looking great. Default features include animations, dwindle + master layouts,
+transparency...
+
+I mainly just wanted to switch to wayland and have been wanting to try out Hyprland so then I did! I have no regrets and little criticism.
+
+* Configuration
+** Hyprland
+*** Startup
+**** HyprStart
+I have a command which starts up Hyprland acting like a substitute to Xorg's xinit. I have called this command "HyprStart", and placed it under
+.local/bin which acts like usr/bin but for your user.
+#+begin_src sh :tangle ~/.local/bin/HyprStart
+
+#!/bin/sh
+cd ~/
+
+export HYPRLAND_LOG_WLR=1
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fctitx
+export GLFW_IM_MODULE=ibus
+
+dunst &
+emacs --daemon &
+
+gsettings set org.gnome.desktop.interface gtk-theme "Dracula"
+gsettings set org.gnome.desktop.wm.preferences theme "Dracula"
+
+exec Hyprland
+#+end_src
+**** Inputs & Wallpaper
+First I define the monitors, then I set variables with certain commands $setWallpaper uses swaybg to set Hyprland's wallpaper, then exec-once shall
+execute that command, including waybar.
+
+After that the input function takes in the US keyboard, I disabled follow_mouse as I personally hate it when activeness between windows is focused using
+the mouse. The touchpad has tap to click enabled as my personal machine is a laptop.
+The main important thing about the general function is that I have set the layout to be "Master".
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+monitor=,preferred,auto,auto
+
+$setWallpaper = swaybg -i ~/Pictures/Wallpapers/Github.jpg &
+exec-once = waybar & $setWallpaper
+
+input {
+    kb_layout = us
+    kb_variant =
+    kb_model =
+    kb_options =
+    kb_rules =
+    follow_mouse = 0
+    touchpad {
+        natural_scroll = yes
+        tap-to-click = true
+    }
+    sensitivity = 0
+}
+
+general {
+    gaps_in = 5
+    gaps_out = 13
+    border_size = 2
+    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+    col.inactive_border = rgba(595959aa)
+    layout = master
+}
+#+end_src
+*** Visual
+I have very basic default window decorations & animations lots of this is just the default or close-to the default.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+decoration {
+    rounding = 5
+    blur = yes
+    blur_size = 3
+    blur_passes = 1
+    blur_new_optimizations = on
+    drop_shadow = yes
+    shadow_range = 4
+    shadow_render_power = 3
+    col.shadow = rgba(1a1a1aee)
+    windowrule = opacity .9 0.8,^(Alacritty)$
+    windowrule = opacity .9 0.8,^(Spotify)$
+}
+
+animations {
+    enabled = yes
+    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+    animation = windows, 1, 7, myBezier
+    animation = windowsOut, 1, 7, default, popin 80%
+    animation = border, 1, 10, default
+    animation = fade, 1, 7, default
+    animation = workspaces, 1, 6, default
+}
+#+end_src
+*** Layouts & Extra
+Default dwindle layout settings and tinkered Master layout.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+dwindle {
+    pseudotile = yes
+    preserve_split = yes
+}
+
+master {
+    new_is_master = false
+    new_on_top = true
+}
+
+gestures {
+    workspace_swipe = off
+}
+device:epic mouse V1 {
+    sensitivity = -0.5
+}
+#+end_src
+*** Keybinds & Variables
+*Variables*
+
+I like to predefine things like my terminal just in case if it changes I won't have to change the name in many locations.
+Having for variables for volume and birghtness just makes things a lot easier.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+$volUp = amixer set Master 2%+
+$volDown = amixer set Master 2%-
+$muteAudio = amixer set Master toggle
+$brightnessUp = brightnessctl set +200
+$brightnessDown = brightnessctl set 200-
+
+$webcmd = brave-browser-nightly
+$termcmd = alacritty
+$playercmd = spotify
+
+$mod = SUPER
+$modShift = SUPER SHIFT
+$meta = ALT
+
+bind = $mod, RETURN, exec, $termcmd
+bind = $modShift, B, exec, $webcmd
+bind = $modShift, S, exec, $playercmd
+bind = $mod, SPACE, exec, wofi -S run -G -I -m -t
+bind = $mod, e, exec, emacsclient -c
+bind = $modShift, D, exec, discord
+
+bind = , XF86AudioRaiseVolume, exec, $volUp
+bind = , XF86AudioLowerVolume, exec, $volDown
+bind = , XF86AudioMute, exec, $muteAudio
+bind = , XF86AudioPlay, exec, playerctl play-pause
+bind = , XF86AudioNext, exec, playerctl next
+bind = , XF86AudioPrev, exec, playerctl previous
+bind = , XF86MonBrightnessUp, exec, $brightnessUp
+bind = , XF86MonBrightnessDown, exec, $brightnessDown
+bind = , SunPrint_Screen, exec, Wayshot -s
+bind = , XF86Search, exec, wofi -S drun -G -I -m -t
+bind = , f7, exec, $termcmd
+#+end_src
+*** Window Management & Layouts
+I only use the Master layout so the dwindle layout only has about 2 bindings.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind = $mod SHIFT, Q, exit,
+
+bind = $mod, W, killactive,
+bind = $modShift, SPACE, togglefloating,
+bind = $mod, H, movefocus, l
+bind = $mod, L, movefocus, r
+bind = $mod, K, movefocus, u
+bind = $mod, J, movefocus, d
+#+end_src
+
+*Master Layout & Dwindle*
+These bindings are *HIGHLY* inspired by DWM's default bindings. DWM really made me enjoy using the vim bindings for Window Management, instead of my
+old shitty keybinds.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind = $modShift, RETURN, layoutmsg, swapwithmaster
+bind = $modShift, L, layoutmsg, swapnext
+bind = $modShift, H, layoutmsg, swapprev
+bind = $modShift, J, layoutmsg, swapnext
+bind = $modShift, K, layoutmsg, swapprev
+bind = $mod, I, layoutmsg, addmaster
+bind = $mod, O, layoutmsg, removemaster
+bind = $mod, U, layoutmsg, orientationtop
+bind = $mod, P, layoutmsg, orientationbottom
+bind = $mod, T, layoutmsg, orientationleft
+
+# Dwindle
+bind = $mod, O, pseudo,
+bind = $mod, I, togglesplit,
+#+end_src
+
+*Tags/Workspaces*
+Default workspaces config.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind = $mod, 1, workspace, 1
+bind = $mod, 2, workspace, 2
+bind = $mod, 3, workspace, 3
+bind = $mod, 4, workspace, 4
+bind = $mod, 5, workspace, 5
+bind = $mod, 6, workspace, 6
+bind = $mod, 7, workspace, 7
+bind = $mod, 8, workspace, 8
+bind = $mod, 9, workspace, 9
+bind = $mod, 0, workspace, 10
+
+bind = $mod SHIFT, 1, movetoworkspace, 1
+bind = $mod SHIFT, 2, movetoworkspace, 2
+bind = $mod SHIFT, 3, movetoworkspace, 3
+bind = $mod SHIFT, 4, movetoworkspace, 4
+bind = $mod SHIFT, 5, movetoworkspace, 5
+bind = $mod SHIFT, 6, movetoworkspace, 6
+bind = $mod SHIFT, 7, movetoworkspace, 7
+bind = $mod SHIFT, 8, movetoworkspace, 8
+bind = $mod SHIFT, 9, movetoworkspace, 9
+bind = $mod SHIFT, 0, movetoworkspace, 10
+
+bind = $mod, mouse_down, workspace, e+1
+bind = $mod, mouse_up, workspace, e-1
+
+bindm = $mod, mouse:272, movewindow
+bindm = $mod, mouse:273, resizewindow
+#+end_src
