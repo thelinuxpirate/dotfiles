@@ -1,6 +1,6 @@
-#+title: TLP's StumpWM Configuration
+#+TITLE: TLP's StumpWM Configuration
 * Init
-#+begin_src lisp :tangle ~/.stumpwm.d/init.lisp
+#+BEGIN_SRC lisp :tangle ~/.stumpwm.d/init.lisp
 ;; -*-lisp-*-
 
 ;; Init:
@@ -32,10 +32,10 @@
 
 ;; Startup Message
 (setf *startup-message* "Welcome to StumpWM!")
-#+end_src lisp
+#+END_SRC lisp
 * Config
 ** Keybinds
-#+begin_src lisp :tangle ~/.stumpwm.d/config/keybinds/bindings.lisp
+#+BEGIN_SRC lisp :tangle ~/.stumpwm.d/config/keybinds/bindings.lisp
 ;; -*-lisp-*-
 (set-prefix-key (kbd "s-f"))
 
@@ -43,9 +43,9 @@
 (define-key *root-map* (kbd "RET") "exec alacritty")
 (define-key *root-map* (kbd "SPC") "exec dmenu_run")
 (define-key *root-map* (kbd "e") "exec emacsclient -c")
-#+end_src
+#+END_SRC
 ** Colors
-#+begin_src lisp :tangle ~/.stumpwm.d/config/wm/visual/colors.lisp
+#+BEGIN_SRC lisp :tangle ~/.stumpwm.d/config/wm/visual/colors.lisp
 ;; -*-lisp-*-
 (defvar tlp/nord0 "#2e3440")
 (defvar tlp/nord1 "#3b4252")
@@ -76,9 +76,9 @@
 
 (when *initializing*
   (update-color-map (current-screen)))
-#+end_src
+#+END_SRC
 ** ModeLine
-#+begin_src lisp :tangle ~/.stumpwm.d/config/wm/modeline.lisp
+#+BEGIN_SRC lisp :tangle ~/.stumpwm.d/config/wm/modeline.lisp
 (setf *mode-line-timeout* 2)
 
 ;; Formating
@@ -109,4 +109,4 @@
   "List of formatters for the modeline.")
 
 
-#+end_src
+#+END_SRC
