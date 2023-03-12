@@ -41,7 +41,7 @@ The main important thing about the general function is that I have set the layou
 #+begin_src sh :tangle ~/.config/hypr/hyprland.conf
 monitor=,preferred,auto,auto
 
-$setWallpaper = swaybg -i ~/Pictures/Wallpapers/Github.jpg &
+$setWallpaper = swaybg -i ~/Pictures/Wallpapers/background.jpg &
 exec-once = waybar & $setWallpaper
 
 input {
@@ -216,4 +216,240 @@ bind = $mod, mouse_up, workspace, e-1
 
 bindm = $mod, mouse:272, movewindow
 bindm = $mod, mouse:273, resizewindow
+#+end_src
+** Waybar
+*** Config
+Custom Modules which indicate arrows for design choice, audio mod, clock mods, cpu & ram mods, battery mod, and my personal favroite mod: Spotify.
+#+begin_src json :tangle ~/.config/waybar/config
+// -*- mode: json -*-
+
+{
+	"layer": "top",
+	"position": "top",
+
+	"modules-left": [
+	    "custom/left-arrow-light",
+	    "custom/left-arrow-dark",
+	    "pulseaudio",
+	    "custom/right-arrow-dark",
+	    "custom/right-arrow-light",
+
+	    "custom/spicetify",
+	    "custom/right-arrow-dark",
+	],
+	"modules-center": [
+	        "custom/left-arrow-dark",
+		"clock#1",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"clock#2",
+		"custom/right-arrow-dark",
+		"custom/right-arrow-light",
+		"clock#3",
+		"custom/right-arrow-dark"
+	],
+	"modules-right": [
+	    "custom/left-arrow-dark",
+	    "memory",
+	    "custom/left-arrow-light",
+	    "custom/left-arrow-dark",
+
+	    "cpu",
+
+	    "custom/right-arrow-dark",
+	    "custom/right-arrow-light",
+	    "battery",
+	    "custom/left-arrow-light",
+	    "custom/left-arrow-dark",
+	],
+
+    // Style:
+	"custom/left-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/left-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+
+    // Moudles:
+	"custom/spicetify": {
+ 	   "exec": "/usr/bin/python3 /home/larry/.config/waybar/custom/mediaplayer.py --player spotify",
+    	   "format": "{}  ",
+    	   "return-type": "json",
+    	   "on-click": "playerctl play-pause",
+    	   "on-scroll-up": "playerctl next",
+    	   "on-scroll-down": "playerctl previous",
+	},
+	"pulseaudio": {
+	    "format": "{volume}% {icon}",
+    	    "format-bluetooth": "{volume}% {icon}",
+    	    "format-muted": "",
+    	    "format-icons": {
+            		    "headphone": "",
+        		    "hands-free": "",
+        		    "headset": "",
+        		    "phone": "",
+        		    "portable": "",
+        		    "car": "",
+        		    "default": ["", ""],
+    			    },
+    	   "scroll-step": 1,
+    	   "on-click": "pavucontrol",
+    	   "ignored-sinks": ["Easy Effects Sink"],
+	},
+
+	"clock#1": {
+		"format": "{:%A}",
+		"tooltip": false
+	},
+	"clock#2": {
+		"format": "{:%I:%M:%p}",
+		"tooltip": false
+	},
+	"clock#3": {
+		"format": "{:%m-%d}",
+		"tooltip": false
+	},
+	"memory": {
+		"interval": 5,
+		"format": "Mem {}%",
+		"on-click": "alacritty -e htop"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "CPU {usage:2}%",
+		"on-click": "alacritty -e htop"
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+}
+#+end_src
+*** Style.css
+#+begin_src css :tangle ~/.config/waybar/style.css
+ * {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: monospace;
+    font-size: 15px;
+}
+
+window#waybar {
+        background: #292b2e;
+	color: #fdf6e3;
+}
+
+
+#custom-right-arrow-dark,
+#custom-left-arrow-dark {
+	color: #1a1a1a;
+}
+#custom-right-arrow-light,
+#custom-left-arrow-light {
+	color: #292b2e;
+	background: #1a1a1a;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#pulseaudio,
+#custom-modules,
+#custom-media {
+    background: #1a1a1a;
+}
+
+.custom-spotify {
+    padding: 0 5px;
+    margin: 0 0px;
+    background: #1a1a1a;
+    color: #ff8533;
+}
+
+.custom-kernel {
+    background: #1a1a1a;
+    color: #888333;
+}
+
+#clock {
+    color: #d2ff4d;
+}
+
+#battery {
+    color:  #29a329;
+}
+
+#battery.charging, #battery.plugged {
+    color: #5cd65c;
+}
+
+@keyframes blink {
+    to {
+        color: #ffffff;
+    }
+}
+
+#battery.critical:not(.charging) {
+    color:  #ff0000;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+}
+
+#cpu {
+    color: #ff8533;
+}
+
+#memory {
+    color:  #ac00e6;
+}
+
+#pulseaudio {
+    color: #006699;
+}
+
+#pulseaudio.muted {
+    color: #e60000;
+}
+
+#custom-modules {
+}
+
+#custom-modules.kernel {
+}
+
+#custom-media {
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+}
 #+end_src
