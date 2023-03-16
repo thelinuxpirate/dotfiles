@@ -22,6 +22,8 @@
 (evil-define-key 'normal 'global (kbd "<leader><tab> SPC") 'switch-to-next-buffer)
 (evil-define-key 'normal 'global (kbd "<leader><tab>c") 'comment-region)
 (evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
+(evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
+(evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
 
 ;; LEADER + O (Contains Org Mode Related Bindings):
 (evil-define-key 'normal 'visual (kbd "<leader>o l") 'org-insert-link)

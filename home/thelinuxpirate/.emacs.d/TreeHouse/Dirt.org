@@ -7,41 +7,39 @@ Package's Configurations
 The buffer you see upon startup is managed by the Dashboard package.
 As of now the configuration is very minimal
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/packages/dashboard.el
-(use-package dashboard
-  :ensure t
-  :config
-(setq dashboard-banner-logo-title "Welcome to the PirateShip")
-(setq dashboard-startup-banner 'logo)
-(setq dashboard-center-content t)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-(setq dashboard-set-heading-icons t)
-(setq dashboard-set-file-icons t)
-(setq dashboard-set-navigator t)
-(setq dashboard-navigator-buttons
-      `(;; line1
-        ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
-         "Dotfiles"
-         "Browse TheLinuxPirate's Dotfiles"
-         (lambda (&rest _) (browse-url "https://github.com/DarthYoshi07/dotfiles")))
-        ("★" "Star" "Show stars" (lambda (&rest _) (show-stars)) warning)
-        ("?" "" "?/h" #'show-help nil "<" ">"))
-         ;; line 2
-        ((,(all-the-icons-faicon "linkedin" :height 1.1 :v-adjust 0.0)
-          "Rust Handbook"
-          "The Rust Book"
-          (lambda (&rest _) (browse-url "https://doc.rust-lang.org/book/")))
-         ("⚑" nil "Show flags" (lambda (&rest _) (message "flag")) error))))
+  (use-package dashboard
+    :ensure t
+    :config
+  (setq dashboard-startup-banner 'logo)
+  (setq dashboard-center-content t)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (agenda . 5)
+                          (registers . 5)))
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-set-navigator t)
+  (setq dashboard-navigator-buttons
+        `(;; line1
+          ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+           "Dotfiles"
+           "Browse TheLinuxPirate's Dotfiles"
+           (lambda (&rest _) (browse-url "https://github.com/DarthYoshi07/dotfiles")))
+          ("★" "Star" "Show stars" (lambda (&rest _) (show-stars)) warning)
+          ("?" "" "?/h" #'show-help nil "<" ">"))
+           ;; line 2
+          ((,(all-the-icons-faicon "linkedin" :height 1.1 :v-adjust 0.0)
+            "Rust Handbook"
+            "The Rust Book"
+            (lambda (&rest _) (browse-url "https://doc.rust-lang.org/book/")))
+           ("⚑" nil "Show flags" (lambda (&rest _) (message "flag")) error))))
 
-(setq dashboard-init-info "Gentoo GNU/Linux/")
-(setq dashboard-set-footer t) 
-(setq dashboard-show-shortcuts t)
-(setq initial-buffer-choice
-	(lambda ()
-	  (get-buffer-create "*dashboard*"))))
+  (setq dashboard-set-footer nil) 
+  (setq dashboard-show-shortcuts t)
+  (setq initial-buffer-choice
+          (lambda ()
+            (get-buffer-create "*dashboard*"))))
 #+END_SRC
 ** Package Repositories 
 These are the repositories that are needed to install packages.
@@ -582,6 +580,9 @@ unreliable, so just blink immediately."
 ;; indent-tabs-mode: nil
 ;; End:
 #+END_SRC
+* Org Mode
+** Org-Modern
+Org-Modern just makes org mode documents look a lot better
 ** Desktop-Enviorment
 If you decide to use the TreeHouse this package will prove to be very useful;
 #+BEGIN_SRC emacs-lisp :tangle ~/.emacs.d/packages/desktop-enviorment.el
@@ -1004,6 +1005,8 @@ so this is the meat of the keybind config ( All of this is to save my pinky fing
   (evil-define-key 'normal 'global (kbd "<leader><tab> <tab>") 'switch-to-prev-buffer)
   (evil-define-key 'normal 'global (kbd "<leader><tab> SPC") 'switch-to-next-buffer)
   (evil-define-key 'normal 'global (kbd "<leader><tab>c") 'comment-region)
+  (evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
+  (evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
   (evil-define-key 'normal 'global (kbd "<leader><tab>d c") 'uncomment-region)
 
   ;; LEADER + O (Contains Org Mode Related Bindings):

@@ -1,7 +1,6 @@
 (use-package dashboard
   :ensure t
   :config
-(setq dashboard-banner-logo-title "Welcome to the PirateShip")
 (setq dashboard-startup-banner 'logo)
 (setq dashboard-center-content t)
 (setq dashboard-items '((recents  . 5)
@@ -27,9 +26,8 @@
           (lambda (&rest _) (browse-url "https://doc.rust-lang.org/book/")))
          ("⚑" nil "Show flags" (lambda (&rest _) (message "flag")) error))))
 
-(setq dashboard-init-info "Gentoo GNU/Linux/")
-(setq dashboard-set-footer t) 
+(setq dashboard-set-footer nil) 
 (setq dashboard-show-shortcuts t)
 (setq initial-buffer-choice
-	(lambda ()
-	  (get-buffer-create "*dashboard*"))))
+        (lambda ()
+          (get-buffer-create "*dashboard*"))))

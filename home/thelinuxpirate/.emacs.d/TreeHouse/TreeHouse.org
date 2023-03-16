@@ -8,21 +8,6 @@ The current TreeHouse is still very usable;
 #+BEGIN_SRC emacs-lisp
   (defun exwm-update-class ()
      (exwm-workspace-rename-buffer exwm-class-name))
-
-  ;;(defun exwm-update-title ()
-  ;;     (pcase exwm-class-name
-  ;;       ("Brave-browser" (exwm-workspace-rename-buffer (format "Brave: %s" exwm-title)))
-  ;;       ("Spotify"       (exwm-workspace-rename-buffer (format "Spotify: %s" exwm-title)))
-  ;;       ("discord"       (exwm-workspace-rename-buffer (format "Biscord: %s" exwm-title))))
-  ;; )
-  ;; (defun exwm-configure-window-by-class ()
-  ;;   (interactive)
-  ;;     (pcase exwm-class-name
-  ;;       ("Brave-browser" (exwm-workspace-move-window 0))
-  ;;       ("discord"       (exwm-workspace-move-window 3))
-  ;;       ("Spotify"       (exwm-workspace-move-window 5) 
-  ;;                          (exwm-floating-toggle-floating)
-  ;; 		           (exwm-layout-toggle-mode-line))))
 #+END_SRC
 Window Actions ^^^ must be defined before requiring/using Exwm; 
 * The Startup & Startup Actions:
@@ -43,11 +28,6 @@ Window Actions ^^^ must be defined before requiring/using Exwm;
 		(exwm-layout-hide-mode-line)))
     (display-battery-mode -1)
     (display-time-mode -1)
-
-    ;; Update "title"
-    ;;(add-hook 'exwm-update-title-hook #'exwm-update-title)
-    ;; Configure Window By Class:
-    ;;(add-hook 'exwm-update-finish-hook #'exwm-configure-window-by-class)
 #+END_SRC
 * Screen Resoulution:
 #+BEGIN_SRC emacs-lisp
@@ -88,7 +68,7 @@ Window Actions ^^^ must be defined before requiring/using Exwm;
   (polybar--send-polybar-hook "exwm-workspace" 1))
 #+END_SRC
 ** Polybar as a Bar:
-#+BEGIN_SRC conf :tangle /home/thelinuxpirate/.config/polybar/config.ini
+#+BEGIN_SRC conf :tangle ~/.config/polybar/config.ini
   [bar/piratebar]
   width = 100%
   height = 20
@@ -133,16 +113,6 @@ Window Actions ^^^ must be defined before requiring/using Exwm;
   secondary = #e60053
   alert = #bd2c40
   underline-1 = #c792ea
-
-  ;[colors] Default
-  ; background = #f0232635
-  ; background-alt = #576075
-  ; foreground = #A6Accd
-  ; foreground-alt = #555
-  ; primary = #ffb52a
-  ; secondary = #e60053
-  ; alert = #bd2c40
-  ; underline-1 = #c792ea
 
   [module/exwm-workspace]
   type = custom/ipc
