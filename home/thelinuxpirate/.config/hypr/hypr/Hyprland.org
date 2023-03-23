@@ -3,14 +3,14 @@
 Hyprland is a wayland compositor which has great speed & performace, while looking great. Default features include animations, dwindle + master layouts,
 transparency...
 
-I mainly just wanted to switch to wayland and have been wanting to try out Hyprland so then I did! I have no regrets and little criticism.
+I mainly just wanted to switch to Wayland and have been wanting to try out Hyprland so then I did! I have no regrets and little criticism.
 
 * Configuration
 ** Hyprland
 *** Startup
 **** HyprStart
 I have a command which starts up Hyprland acting like a substitute to Xorg's xinit. I have called this command "HyprStart", and placed it under
-.local/bin which acts like usr/bin but for your user.
+.local/bin which acts like usr/bin but for your user, this will not work unless ~/.local/bin is in your *$PATH*!
 #+begin_src sh :tangle ~/.local/bin/HyprStart
 
 #!/bin/sh
@@ -43,8 +43,6 @@ monitor=,preferred,auto,auto
 
 $bar0 = waybar -c ~/.config/waybar/config
 $bar1 = waybar -c ~/.config/hypr/waybar/config
-$emacsDaemon = emacs --daemon &
-$noties =
 $setWallpaper0 = swaybg -i ~/.config/hypr/wallpapers/20XX.jpg &
 $setWallpaper1 = swaybg -i ~/.config/hypr/wallpapers/totoro.png &
 
@@ -140,79 +138,113 @@ device:epic mouse V1 {
 }
 #+end_src
 *** Keybinds & Variables
-*Variables*
-
+**** Variables
 I like to predefine things like my terminal just in case if it changes I won't have to change the name in many locations.
 Having for variables for volume and birghtness just makes things a lot easier.
 #+begin_src sh :tangle ~/.config/hypr/hyprland.conf
-$volUp = amixer set Master 2%+
-$volDown = amixer set Master 2%-
-$muteAudio = amixer set Master toggle
-$brightnessUp = brightnessctl set +200
+$volUp          = amixer set Master 2%+
+$volDown        = amixer set Master 2%-
+$muteAudio      = amixer set Master toggle
+$brightnessUp   = brightnessctl set +200
 $brightnessDown = brightnessctl set 200-
 
-$webcmd = brave
-$termcmd = alacritty
-$playercmd = spotify
-$screenshit = Wayshot -s
+$webcmd         = brave
+$termcmd        = alacritty
+$playercmd      = spotify
+$screenshit     = Wayshot -s
 
-$mod = SUPER
-$modShift = SUPER SHIFT
-$meta = ALT
-
-bind = $mod, RETURN, exec, $termcmd
-bind = $modShift, B, exec, $webcmd
-bind = $modShift, S, exec, $playercmd
-bind = $mod, SPACE, exec, wofi -S run -G -I -m -t
-bind = $mod, e, exec, emacsclient -c
-bind = $modShift, D, exec, discord
-
-bind = , XF86AudioRaiseVolume, exec, $volUp
-bind = , XF86AudioLowerVolume, exec, $volDown
-bind = , XF86AudioMute, exec, $muteAudio
-bind = , XF86AudioPlay, exec, playerctl play-pause
-bind = , XF86AudioNext, exec, playerctl next
-bind = , XF86AudioPrev, exec, playerctl previous
-bind = , XF86MonBrightnessUp, exec, $brightnessUp
-bind = , XF86MonBrightnessDown, exec, $brightnessDown
-bind = , SunPrint_Screen, exec, $screenshit
-bind = , XF86Search, exec, wofi -S drun -G -I -m -t
-bind = , f7, exec, $termcmd
+$mod        = SUPER
+$modShift   = SUPER SHIFT
+$meta       = ALT
+$metaShift  = ALT SHIFT
 #+end_src
-*** Window Management & Layouts
-I only use the Master layout so the dwindle layout only has about 2 bindings.
+**** FN Key-Bindings
+For laptop use here are some bindings for those top FN Keys.
 #+begin_src sh :tangle ~/.config/hypr/hyprland.conf
-bind = $mod SHIFT, Q, exit,
-
-bind = $mod, W, killactive,
-bind = $modShift, SPACE, togglefloating,
-bind = $mod, H, movefocus, l
-bind = $mod, L, movefocus, r
-bind = $mod, K, movefocus, u
-bind = $mod, J, movefocus, d
+binde   = , XF86AudioRaiseVolume, exec, $volUp
+binde   = , XF86AudioLowerVolume, exec, $volDown
+bindr   = , XF86AudioMute, exec, $muteAudio
+bind    = , XF86AudioPlay, exec, playerctl play-pause
+bind    = , XF86AudioNext, exec, playerctl next
+bind    = , XF86AudioPrev, exec, playerctl previous
+binde   = , XF86MonBrightnessUp, exec, $brightnessUp
+binde   = , XF86MonBrightnessDown, exec, $brightnessDown
+bind    = , SunPrint_Screen, exec, $screenshit
+bind    = , XF86Search, exec, wofi -S drun -G -I -m -t
+bind    = , f7, exec, $termcmd
 #+end_src
-
-*Master Layout & Dwindle*
-These bindings are *HIGHLY* inspired by DWM's default bindings. DWM really made me enjoy using the vim bindings for Window Management, instead of my
-old shitty keybinds.
+**** Window Management & Keybinds
+Hyprland provides two kinds of layouts, being "Master", & "Dwindle". Dwindle by default is highly mouse based and I prefer having my windows
+in a set layout by all times.
+***** Simple Bindings
 #+begin_src sh :tangle ~/.config/hypr/hyprland.conf
-bind = $modShift, RETURN, layoutmsg, swapwithmaster
-bind = $modShift, L, layoutmsg, swapnext
-bind = $modShift, H, layoutmsg, swapprev
-bind = $modShift, J, layoutmsg, swapnext
-bind = $modShift, K, layoutmsg, swapprev
-bind = $mod, I, layoutmsg, addmaster
-bind = $mod, O, layoutmsg, removemaster
-bind = $mod, U, layoutmsg, orientationtop
-bind = $mod, P, layoutmsg, orientationbottom
-bind = $mod, T, layoutmsg, orientationleft
-
-# Dwindle
-bind = $mod, O, pseudo,
-bind = $mod, I, togglesplit,
+bind  = $modShift, Q, exit,
+binde = $mod, W, killactive,
+bind  = $mod, RETURN, exec, $termcmd
 #+end_src
+***** Submaps/Keychords
+Here will be "submaps/keychords" for my hyprland config, the first one listed can resize windows from their set range.
+****** Leader Submap
+The "Leader" Submap is the submap where most keychords will be stored, the main way to acess these chords is by doing MOD+SPACE.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind    = $mod, SPACE, submap, leader
+submap  = leader
 
-*Tags/Workspaces*
+bind    = , RETURN, exec, $termcmd
+binde   = , F, exec, wofi -S run -G -I -m -t
+bind    = , B, exec, $webcmd
+bind    = , S, exec, $playercmd
+bind    = , E, exec, emacsclient -c
+bind    = , D, exec, discord
+
+bind    = , SPACE, submap, reset
+submap  = reset
+#+end_src
+****** Window Management Submap
+This submap has bindings all about window management using the Master layout.
+Honestly using this submap would be faster than moving your finger and constantly holding down the MOD key.
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind    = $mod, f, submap, master
+submap  = master
+
+bind    = , RETURN, layoutmsg, swapwithmaster
+binde   = SHIFT, L, layoutmsg, swapnext
+binde   = SHIFT, H, layoutmsg, swapprev
+binde   = SHIFT, J, layoutmsg, swapnext
+binde   = SHIFT, K, layoutmsg, swapprev
+
+binde   = , H, movefocus, l
+binde   = , L, movefocus, r
+binde   = , K, movefocus, u
+binde   = , J, movefocus, d
+binde   = , W, killactive,
+
+bind    = , SPACE, togglefloating,
+bind    = , I, layoutmsg, addmaster
+bind    = , O, layoutmsg, removemaster
+bindr   = , U, layoutmsg, orientationtop
+bindr   = , P, layoutmsg, orientationbottom
+
+bindr   = , T, layoutmsg, orientationleft
+bind    = , R, submap, resize
+
+bind    = , f, submap, reset
+submap  = reset
+#+end_src
+****** Resize Window Function
+#+begin_src sh :tangle ~/.config/hypr/hyprland.conf
+bind    = $mod, R, submap, resize
+submap  = resize
+
+binde   =, L, resizeactive, 10 0
+binde   =, H, resizeactive, -10 0
+binde   =, K, resizeactive,0 -10
+binde   =, J, resizeactive, 0 10
+
+bind    =, R, submap, reset
+submap  = reset
+#+end_src
+**** Tags/Workspaces
 Default workspaces config.
 #+begin_src sh :tangle ~/.config/hypr/hyprland.conf
 bind = $mod, 1, workspace, 1
@@ -226,16 +258,16 @@ bind = $mod, 8, workspace, 8
 bind = $mod, 9, workspace, 9
 bind = $mod, 0, workspace, 10
 
-bind = $mod SHIFT, 1, movetoworkspace, 1
-bind = $mod SHIFT, 2, movetoworkspace, 2
-bind = $mod SHIFT, 3, movetoworkspace, 3
-bind = $mod SHIFT, 4, movetoworkspace, 4
-bind = $mod SHIFT, 5, movetoworkspace, 5
-bind = $mod SHIFT, 6, movetoworkspace, 6
-bind = $mod SHIFT, 7, movetoworkspace, 7
-bind = $mod SHIFT, 8, movetoworkspace, 8
-bind = $mod SHIFT, 9, movetoworkspace, 9
-bind = $mod SHIFT, 0, movetoworkspace, 10
+bind = $modShift, 1, movetoworkspace, 1
+bind = $modShift, 2, movetoworkspace, 2
+bind = $modShift, 3, movetoworkspace, 3
+bind = $modShift, 4, movetoworkspace, 4
+bind = $modShift, 5, movetoworkspace, 5
+bind = $modShift, 6, movetoworkspace, 6
+bind = $modShift, 7, movetoworkspace, 7
+bind = $modShift, 8, movetoworkspace, 8
+bind = $modShift, 9, movetoworkspace, 9
+bind = $modShift, 0, movetoworkspace, 10
 
 bind = $mod, mouse_down, workspace, e+1
 bind = $mod, mouse_up, workspace, e-1
@@ -255,15 +287,11 @@ Custom Modules which indicate arrows for design choice, audio mod, clock mods, c
 	"position": "top",
 
 	"modules-left": [
-	    "custom/left-arrow-light",
-	    "custom/left-arrow-dark",
+        "custom/right-arrow-dark",
+	    "custom/right-arrow-light",
 	    "pulseaudio",
 	    "custom/right-arrow-dark",
-	    "custom/right-arrow-light",
-
-        "custom/spicetify",
-	    "custom/right-arrow-dark",
-	],
+    ],
 	"modules-center": [
 	    "custom/left-arrow-dark",
 		"clock#1",
@@ -309,6 +337,14 @@ Custom Modules which indicate arrows for design choice, audio mod, clock mods, c
 	},
 
     // Moudles:
+    "bluetooth": {
+	    "format": " {status}",
+	    "format-connected": " {num_connections} connected",
+	    "tooltip-format": "{controller_alias}\t{controller_address}",
+	    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+	    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "alacritty -e bluetuith",
+    },
     "custom/spicetify": {
         "exec": "/usr/bin/python3 $HOME/.config/waybar/custom/mediaplayer.py --player spotify",
     	   "format": "{}  ",
@@ -408,6 +444,7 @@ window#waybar {
 #cpu,
 #memory,
 #pulseaudio,
+#bluetooth
 #custom-modules,
 #custom-media {
     background: #2E3440;
@@ -421,15 +458,15 @@ window#waybar {
 }
 
 #clock {
-    color: #5E81AC;
+    color: #BF616A;
 }
 
 #battery {
-    color:  #81A1C1;
+    color: #A3BE8C;
 }
 
 #battery.charging, #battery.plugged {
-    color: #8FBCBB;
+    color: #88C0D0;
 }
 
 @keyframes blink {
@@ -447,37 +484,34 @@ window#waybar {
     animation-direction: alternate;
 }
 
-label:focus {
-}
-
 #cpu {
-    color: #5E81AC;
+    color: #EBCB8B;
 }
 
 #memory {
-    color: #81A1C1;
+    color: #B48EAD;
 }
 
 #pulseaudio {
-    color: #88C0D0;
+    color: #A3BE8C;
 }
 
 #pulseaudio.muted {
     color: #3B4252;
 }
 
-#custom-modules {
+#bluetooth {
+    color: #EBCB8B;
 }
 
-#custom-modules.kernel {
+#bluetooth.disabled {
+    color: #BF616A;
 }
-
-#custom-media {
-    color: #2a5c45;
-    min-width: 100px;
+#bluetooth.connected {
+    color: #EBCB8B;
 }
-
-#custom-media.custom-spotify {
+#bluetooth.pairable {
+    color: #A3BE8C;
 }
 #+end_src
 *** Custom Bar II;
