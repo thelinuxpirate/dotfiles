@@ -1,8 +1,6 @@
 #+TITLE: The "/" of my dotfiles
-The root doesn't contain much other than my NixOS dotfiles & my personal Gentoo dotfiles
+The root doesn't contain much other than some N dotfiles & my personal Gentoo dotfiles
 
 * Pacman
-Also in case you noticed that I dont use Arch-Based distros and I have Pacman stuff I can explain!
-
-This isnt your day-to-day Arch Pacman as it uses a whole nother mirror to get Devkit packages. I have Devkit things installed as it contains
-libraries for Homebrew Wii development
+Also in case you noticed, I have pacman related shit for other distos?
+I don't use it as my main package manager for other distros I just need DevkitPro packages for Wii/Gamecube development
