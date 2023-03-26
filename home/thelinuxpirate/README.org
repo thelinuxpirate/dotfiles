@@ -4,5 +4,5 @@ I have re-structured my dotfiles repository to have different locations for the 
 
 Main things to look at:
 - [[https://github.com/thelinuxpirate/dotfiles/tree/TreeHouse-Emacs][TreeHouse-Emacs]]
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/Suckless/Suckless.org][Suckless' tools Configuration]]
+- [[https://github.com/thelinuxpirate/dotfiles/blob/Suckless/Suckless.org][Suckless' tools Configuration]]
 - [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.config/xmonad/XMonad.org][XMonad Configuration]]
