@@ -26,7 +26,7 @@ and just beacuse it organizes things a lot better for me.
 The code is seperated into sections (like a treehouse):
 
 - [[https://github.com/thelinuxpirate/dotfiles/blob/TreeHouse-Emacs/TreeHouse/Sky.org][The Sky]] *;* Extra Information about the Configuration
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/TreeHouse.org][The TreeHouse]] *;* Exwm 
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Tree.org][The Tree]]      *;* init.el
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Dirt.org][The Dirt]]      *;* Package Configurations
-- [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.emacs.d/TreeHouse/Roots.org][The Roots]]     *;* package.el
+- [[https://github.com/thelinuxpirate/dotfiles/blob/TreeHouse-Emacs/TreeHouse/TreeHouse.org][The TreeHouse]] *;* Exwm 
+- [[https://github.com/thelinuxpirate/dotfiles/blob/TreeHouse-Emacs/TreeHouse/Tree.org][The Tree]]      *;* init.el
+- [[https://github.com/thelinuxpirate/dotfiles/blob/TreeHouse-Emacs/TreeHouse/Dirt.org][The Dirt]]      *;* Package Configurations
+- [[https://github.com/thelinuxpirate/dotfiles/blob/TreeHouse-Emacs/TreeHouse/exwm_config.el][The Roots]]     *;* package.el
