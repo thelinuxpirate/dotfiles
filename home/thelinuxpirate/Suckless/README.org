@@ -1,9 +1,0 @@
-#+TITLE: Suckless' Tools Configuration
-* Information
-- DWM
-- Slstatus
-- Slock
-
-(I perfer to use a packaged version of Dmenu)
-
-All configurations are shown in: [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/Suckless/Suckless.org][Suckless.org]]
