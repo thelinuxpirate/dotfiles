@@ -1,5 +1,5 @@
 #+TITLE: The "/" of my dotfiles
-The root doesn't contain much other than some N dotfiles & my personal Gentoo dotfiles
+The root doesn't contain much other than some NixOS dotfiles & some Portage configuration
 
 * Pacman
 Also in case you noticed, I have pacman related shit for other distos?
