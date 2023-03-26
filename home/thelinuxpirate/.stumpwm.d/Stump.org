@@ -1,5 +1,6 @@
 #+TITLE: TLP's StumpWM Configuration
 * Init
+The start of the configuration
 #+BEGIN_SRC lisp :tangle ~/.stumpwm.d/init.lisp
 ;; -*-lisp-*-
 
