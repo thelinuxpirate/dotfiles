@@ -9,6 +9,10 @@ Todo:
 - [X] Write Suckless' Configs in Org;
 - [X] Rewrie NixOS Configuration
 
+** Branches
+I have moved the bigger configurations into their own branches, this only goes for 2 of these configs (Neovim soon).
+- [[https://github.com/thelinuxpirate/dotfiles/tree/TreeHouse-Emacs][TreeHouse Emacs]]
+- [[https://github.com/thelinuxpirate/dotfiles/tree/Suckless][Suckless Utils]]
 --------------------------------------------------------
 ** My Personal Views: 
 - *Distro Philosophies:*
