@@ -8,7 +8,7 @@
     "exclusive": true,
     "passthrough": false,
     "gtk-layer-shell": true,
-    "modules-left": ["network","cpu","memory"],
+    "modules-left": ["custom/spotify","cpu","memory"],
     "modules-center": ["clock"],
     "modules-right": ["custom/updates","bluetooth","pulseaudio","pulseaudio#microphone","custom/mode","custom/power"],
 
@@ -21,8 +21,16 @@
 
 // left modules //
 
+    "custom/spotify": {
+        "exec": "/usr/bin/python3 /home/tlp/.config/hypr/waybar/scripts/mediaplayer.py --player spotify",
+        "format": "{}  ",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
+    },
+
    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": " {essid}",
         "format-ethernet": " Wired",
         "tooltip-format": " {ipaddr}  {bandwidthUpBytes}  {bandwidthDownBytes}",

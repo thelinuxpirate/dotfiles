@@ -1,0 +1,125 @@
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-weight: bold;
+    font-size: 13.5px;
+    min-height: 0px;
+}
+
+window#waybar {
+    background: rgba(17, 17, 27, .10);
+}
+
+tooltip {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #11111b;
+}
+
+#cpu,
+#memory,
+#custom-power,
+#clock,
+#custom-updates,
+#custom-spotify
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-mode {
+    color: #cdd6f4; /* Default is: #cdd6f4  */
+    background: #11111b; /* Default is: #11111b */
+    opacity: 1;
+    padding: 0px;
+    margin: 3px 0px 3px 0px;
+}
+
+
+/* resource monitor block */
+
+#cpu {
+    border-radius: 10px 0px 0px 10px;
+    margin-left: 15px;
+    padding-left: 12px;
+    padding-right: 4px;
+}
+
+#memory {
+    border-radius: 0px 10px 10px 0px;
+    border-left-width: 0px;
+    padding-left: 4px;
+    padding-right: 12px;
+    margin-right: 6px;
+}
+
+
+/* date time block */
+
+#clock {
+    border-radius: 10px;
+    margin-left: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 6px;
+}
+
+/* control center block */
+
+#custom-updates {
+    border-radius: 10px 0px 0px 10px;
+    margin-left: 6px;
+    padding-left: 12px;
+    padding-right: 4px;
+}
+
+#custom-spotify {
+    border-radius: 10px 10px 10px 10px;
+    margin-left: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 6px;
+    color: #cdd6f4; /* Default is: #cdd6f4  */
+    background: #11111b; /* Default is: #11111b */
+    font-size: 13.5px;
+}
+
+#network {
+    border-radius: 10px 10px 10px 10px;
+    margin-left: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-right: 6px;
+}
+
+#bluetooth {
+    padding-left: 4px;
+    padding-right: 4px;
+} 
+
+#pulseaudio {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#pulseaudio.microphone {
+    border-radius: 0px 10px 10px 0px;
+    padding-left: 4px;
+    padding-right: 12px;
+}
+
+#custom-mode {
+    border-radius: 10px 0px 0px 10px;
+    margin-left: 6px;
+    padding-left: 12px;
+    padding-right: 4px;
+}
+
+#custom-power {
+    border-radius: 0px 10px 10px 0px;
+    padding-left: 4px;
+    padding-right: 12px;
+    margin-right: 25px;
+}
