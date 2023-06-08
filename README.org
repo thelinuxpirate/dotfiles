@@ -1,54 +1,10 @@
-* Dotfiles:
-These are my currently used dotfiles containg many files for NixOS, Suckless' Tools, XMonad, GNU Emacs, & more.
-
 ** Todo List and Updates:
 Todo:
-- [...] Restructure Repo and add more Org documentation
-- [...] Learn + Configure EXWM;
-- [X] Write XMonad Config in Org;
-- [X] Write Suckless' Configs in Org;
-- [X] Rewrie NixOS Configuration
+- [...] Rewrite nearly everything
+- [...] Write Neovim config
+- [...] Rewrite Emacs config
+- [...] Create a Desktop-like Sway environment
 
-** Branches
-I have moved the bigger configurations into their own branches, this only goes for 2 of these configs (Neovim soon).
-- [[https://github.com/thelinuxpirate/dotfiles/tree/TreeHouse-Emacs][TreeHouse Emacs]]
-- [[https://github.com/thelinuxpirate/dotfiles/tree/Suckless][Suckless Utils]]
---------------------------------------------------------
-** My Personal Views: 
-- *Distro Philosophies:*
-*** Top 5 Distros:
-- Debian
-- Void
-- Gentoo
-- NixOS
-- Fedora
-
-****  Gentoo:
-I love Gentoo because it is the most flexible and customizeable distro of them all. There is plenty of support for issues, the commuinty is very 
-litty and will actually help you with issues and not call you a dumbass unlike the Arch community. I personally have decided to organize my 
-system's dotfiles using Emacs' OrgMode, and document most of the changes I made. Also the addittion of USE flags is a very cool idea and I hope more 
-distros or package managers will use this idea in the future. Sure compiling takes awhile (I have a 2 core doodoo cpu) but I find it worth it as
-packages are more customizeable.
-
-*** Top 5 WMs:
-- Hyprland
-- DWM
-- XMonad
-- Sway
-- Exwm
-
-**** Suckless' DWM
-I always heard about DWM and after struggling with Exwm I decided to give it a try, I am *very* happy with it. Im too lazy to
-patch it so I used flexipatch. The whole idea between Master and Slaves were goofy to me at first but now I see that its goated.
-Cant really complain too much about this Window Manager, it just gets stuff right.
-
-# *** The Coding Experience:
-# A year ago my computer self destructed and could no longer boot into windows which made me dabble with
-# linux systems. It has been a key part of my learning experience with tech. If that would have never happened
-# I would have never faced the horros of my Ubuntu installation dying or the joys of installing Arch after 7 hours 
-# & the biggest part of installing Gentoo after a three day process. After a while of messing around with Linux systems
-# I wanted to learn how to create my own applications and video games which is still the stage I'm going through as of now.
-# I started off hoping to use the Unity engine and learning basic C# to trying to use Rust, or C to create my projects.
-# - *Linux Tip:*
-# A big personal view of mine is that Operating Systems shouldn't be reccommended randomly to people and don't
-# force people to switch their system. They will hate it even more as they have no idea what they are doing with it. 
+** Setup
+My current setup is Sway + Fedora Linux. It has been working perfectly, as I wanted to switch to Wayland.
+I'm going to clean up this repository and try to rewrite most of my older code.
