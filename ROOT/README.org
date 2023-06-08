@@ -1,6 +1,0 @@
-#+TITLE: The "/" of my dotfiles
-The root doesn't contain much other than some NixOS dotfiles & some Portage configuration
-
-* Pacman
-Also in case you noticed, I have pacman related shit for other distos?
-I don't use it as my main package manager for other distros I just need DevkitPro packages for Wii/Gamecube development
