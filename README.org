@@ -1,5 +1,4 @@
 ** Todo List and Updates:
-Todo:
 - [...] Rewrite nearly everything
 - [...] Write Neovim config
 - [...] Rewrite Emacs config
