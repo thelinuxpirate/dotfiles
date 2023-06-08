@@ -1,2 +1,0 @@
-#+title: Waybar Config
-The Waybar Config's Org Docs are: [[https://github.com/DarthYoshi07/dotfiles/blob/main/home/thelinuxpirate/.config/hypr/Hyprland.org][here]]
