@@ -1,0 +1,2 @@
+#+title: ~/.local
+This directory has cripts and other misc shit
