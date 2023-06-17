@@ -86,7 +86,7 @@
   (doom-modeline-hud t)
   (doom-modeline-lsp t)
   (doom-modeline-github t)
-  (doom-modeline-minor-modes t)
+  (doom-modeline-minor-modes nil)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-enable-word-count t)
   (doom-modeline-buffer-file-name-style 'truncate-with-project))
@@ -116,8 +116,10 @@
 	:custom
 	(persp-mode-prefix-key (kbd "C-."))
 	(persp-initial-frame-name "Main")
-	(persp-switch "neigh")
 	:init (persp-mode 1))
+
+(use-package multiple-cursors
+	:demand t)
 
 (use-package elcord
   :demand t
@@ -138,11 +140,27 @@
 (use-package company
   :demand t)
 
-(use-package rust-mode
+;; Language Modes
+(use-package rust-mode ;; Install rust-analyzer for lsp
   :demand t
   :config
   (add-hook 'rust-mode-hook
-    (lambda () (setq indent-tabs-mode nil))))
+						(lambda () (setq indent-tabs-mode nil))))
+
+(use-package go-mode
+	:demand t)
+
+(use-package haskell-mode
+	:demand t)
+
+(use-package zig-mode ;; Install zls for lsp
+	:demand t)
+
+(use-package typescript-mode
+	:demand t)
+
+(use-package kotlin-mode
+	:demand t)
 
 ;; Keybindings/Mappings
 (use-package general
@@ -170,11 +188,6 @@
   ;; God Mode Setup
   (general-create-definer zonai/GOD
     :keymaps 'override)
-
-  (zonai/GOD
-   "?"   '(zonai/god-mode-manual          :wk "Opens God-Mode Manual")
-   "C-'" '(zonai/become-human             :wk "Return to Human State"))
-
   
   (zonai/leader-mappings-norm
    ;; BUFFER MANAGEMENT
@@ -186,7 +199,7 @@
     "j <tab>" '(switch-to-prev-buffer     :wk "Switch to Previous Buffer")
     "j SPC"   '(switch-to-next-buffer     :wk "Switch to Next Buffer")
 
-   ;; GOD MODE
+   ;; GOD MODE SETTINGS
     "g"       '(:ignore t                 :wk "GOD MODE MAPPINGS")
     "g g"     '(zonai/evil-god-mode-all   :wk "SWITCH TO GOD MODE GLOBAL")
     "g l"     '(zonai/evil-god-local-mode :wk "SWITCH TO GOD MODE BUFFER")
@@ -194,7 +207,8 @@
     "g ?"     '(zonai/god-mode-manual     :wk "OPEN GOD MODE MANUAL")
 
    ;; MISC
-    "f"       '(find-file                 :wk "Find & Open File"))
+    "f"       '(find-file                 :wk "Find & Open File")
+		"t"       '(vterm                     :wk "Launch VTerm"))
 
   (zonai/localleader-mappings-norm
    ;; WINDOW MANAGEMENT
@@ -211,16 +225,39 @@
 
 	 ;; Workspaces/Persp-Mode
 		"<tab>"   '(:ignore t    :wk "Workspaces")
-    "<tab> j" '(zonai/switch-workspace :wk "Switch Workspace")
-    "<tab> l" '(persp-next   :wk "Switch to Next Workspace")
-		"<tab> h" '(persp-prev   :wk "Switch to Previous Workspace") 
 
+		"<tab> 1" '(zonai/switch-to-workspace-01 :wk "Switch to Main Workspace")
+		"<tab> 2" '(zonai/switch-to-workspace-02 :wk "Switch to Workspace 2")
+		"<tab> 3" '(zonai/switch-to-workspace-03 :wk "Switch to Workspace 3")
+		"<tab> 4" '(zonai/switch-to-workspace-04 :wk "Switch to Workspace 4")
+		"<tab> 5" '(zonai/switch-to-workspace-05 :wk "Switch to Workspace 5")
+		"<tab> 6" '(zonai/switch-to-workspace-06 :wk "Switch to Workspace 6")
+		"<tab> 7" '(zonai/switch-to-workspace-07 :wk "Switch to Workspace 7")
+		"<tab> 8" '(zonai/switch-to-workspace-08 :wk "Switch to Workspace 8")
+		"<tab> 9" '(zonai/switch-to-workspace-09 :wk "Switch to Workspace 9")
+		"<tab> 0" '(zonai/switch-to-workspace-10 :wk "Switch to Workspace 10")
 
-    )
+    "<tab> k" '(persp-next   :wk "Switch to Next Workspace")
+		"<tab> j" '(persp-prev   :wk "Switch to Previous Workspace")
+		"<tab> q" '(persp-kill   :wk "Kill Current Workspace")
+)
 
+	(zonai/GOD
+	 ;; Movement
+		"C-1" '(backward-char             :wk "Move Backward")
+		"C-2" '(next-line                 :wk "Move Down")
+		"C-3" '(forward-char              :wk "Move Foward")
+		"C-o" '(previous-line             :wk "Move Up")
 
+		"C-4" '(move-end-of-line          :wk "Move to the End of the Line")
+		"C-`" '(move-beginning-of-line    :wk "Move to the Start of the Line")
+		
+		"C-x" '(:ignore                   :wk "Action Key Prefix")
+		"C-W" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 
-  )
+		"C-?"   '(zonai/god-mode-manual    :wk "Opens God-Mode Manual")
+		"C-;" '(zonai/become-human       :wk "Return to Human State"))
+)
 
 (use-package evil
   :demand t
