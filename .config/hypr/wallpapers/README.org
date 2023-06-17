@@ -1,0 +1,2 @@
+#+title: Wallpaper Contents 
+The wallpaper contents from this directory have been moved to: ".config/sway/wallpapers"
