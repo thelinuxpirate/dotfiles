@@ -1,1 +1,3 @@
-${test}
+[Bookmarks]
+[Recent]
+/home/thelinuxpirate/Downloads/
