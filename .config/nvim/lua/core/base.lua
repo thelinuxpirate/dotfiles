@@ -12,12 +12,7 @@ vim.o.shiftwidth = 2
 vim.o.expandtab = true
 vim.o.smarttab = true
 
-vim.opt.spelllang = 'en-us'
-vim.o.spell = false
-
-if vim.o.spell == true then
-  print("Spellchecking is enabled")
-end
+vim.opt.spelllang = 'en'
 
 -- Neovide
 if vim.g.neovide then

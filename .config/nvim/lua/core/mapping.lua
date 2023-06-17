@@ -45,6 +45,12 @@ vim.keymap.set("n", "<leader>k", "<cmd>bd #<cr>",
   vim.keymap.set("n", "<localleader>s", "<C-W>x", 
   { desc = "Exchange current window with next one" })
 
+-- Nvim-Tree
+vim.keymap.set("n", "<localleader>t", vim.cmd.NvimTreeOpen, 
+{ desc = "Open Nvim-Tree" })
+vim.keymap.set("n", "<localleader>tr", vim.cmd.NvimTreeClose,
+{ desc = "Close Nvim-Tree" })
+
 -- Misc
 vim.keymap.set("n", "<leader>s", vim.cmd.so,
 { desc = "Source current file" })

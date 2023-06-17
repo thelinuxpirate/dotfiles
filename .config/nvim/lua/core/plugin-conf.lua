@@ -1,9 +1,16 @@
 -- Startup.nvim
 require("startup").setup({theme = "startify"}) 
 
+-- Spellchecking
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+    pattern = { "*.md", "*.org", "*.txt" },
+    command =  "setlocal spell"
+})
+
+
 -- Telescope
   local telescope = require('telescope')
-  telescope.setup {
+   telescope.setup {
     pickers = {
       find_files = {
         hidden = true
