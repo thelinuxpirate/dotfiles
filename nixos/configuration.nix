@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
@@ -46,6 +46,14 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable   = true;
   services.xserver.displayManager.gdm.wayland  = true;
+  services.xserver.windowManager.session = lib.singleton {
+    name = "Emacs";
+    start = ''
+      xhost +SI:localuser:$USER
+      exec emacs
+    '';
+  };
+
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -78,7 +86,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Define a user account, using the base API; 
+  # Define a user account, using the base API;
+  security.sudo.wheelNeedsPassword = false;
   users.users.tlp = {
     isNormalUser = true;
     description = "Larry Hamilton";
@@ -94,6 +103,10 @@
     pkgs.wofi
     pkgs.pavucontrol
     pkgs.gnome.nautilus
+    pkgs.unzip
+
+    pkgs.gnome.file-roller
+    pkgs.dunst
     pkgs.sway-contrib.grimshot
 
     pkgs.swaybg
