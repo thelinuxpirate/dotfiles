@@ -58,6 +58,13 @@
 (load "~/.emacs.d/lisp/home.el")
 
 ;; Looks & Fonts
+(use-package doom-themes
+	:demand t
+;;:init (load-theme 'doom-palenight)	
+	:config
+	(setq doom-themes-enable-bold t    
+        doom-themes-enable-italic t))
+
 (use-package nord-theme
   :demand t
   :init (load-theme 'nord t)
