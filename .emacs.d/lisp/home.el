@@ -1,14 +1,20 @@
+;; EXWM Plugins
+(use-package perspective-exwm
+	:demand t)
+
+(use-package buffer-move
+	:demand t)
+
 ;; EXWM Configuration
 (use-package exwm
 	:demand t
 	:init
-  (setq mouse-autoselect-window t
+  (setq mouse-autoselect-window nil
         focus-follows-mouse t)
 	;; Stops asking to replace current Window Manager
 	(setq-default exwm-replace nil)
 
-	;; Custom Functions
-	;; Desktop
+	;; Custom Functions, placed in init so they can be called upon later
 	(defun zonai/desktop-manual () (interactive)
 				 (get-buffer-create "Zonai/Desktop-Manual")
 				 (switch-to-buffer "Zonai/Desktop-Manual") 
@@ -53,12 +59,27 @@
 	(defun zonai/move-tab-other-frame ()
 		(interactive)
 		(tab-bar-move-tab-to-frame nil))
+
+	(defun zonai/exwm-init-hook ()
+		(perspective-exwm-mode))
+
 	:config
 	(setq exwm-workspace-number 10)
 	;; the next two make all buffers available on all workspaces
   (setq exwm-workspace-show-all-buffers t)
   (setq exwm-layout-show-all-buffers t)
-	
+
+	(zonai/exwm-init-hook)
+	(setq perspective-exwm-override-initial-name
+				'((0 . "emacs")
+					(1 . "web")
+					(2 . "music")
+					(3 . "discrd")
+					(4 . "audio")
+					(5 . "term")
+					(6 . "game")
+					(7 . "ctrl")))
+
 	;; Make class name the buffer name
   (add-hook 'exwm-update-class-hook
             (lambda ()
@@ -83,9 +104,30 @@
 				`(
 					([?\s-r] . exwm-reset)
 
-					([?\s-W] . exwm-workspace-switch)
+					([?\s-e] . perspective-exwm-switch-perspective)
+
+					([?\s-w] . kill-current-buffer)
+
+					([?\s-W] . delete-window) 
+
+					([?\s-Q] . kill-emacs)
+
+					;; Window Movement
+					([?\s-h] . windmove-left)
+					([?\s-j] . windmove-down)
+					([?\s-k] . windmove-up)
+					([?\s-l] . windmove-right)
+
+					([?\s-H] . buf-move-left)
+					([?\s-J] . buf-move-down)
+					([?\s-K] . buf-move-up)
+					([?\s-L] . buf-move-right)
 
 
+					;; Create Window Frames
+					([?\s-i] . split-window-vertically)
+					([?\s-o] . split-window-horizontally)
+					
 					,@(mapcar (lambda (i)
 											`(,(kbd (format "s-%d" i)) .
 												(lambda ()
@@ -98,7 +140,3 @@
 	
 	(exwm-enable) ;; Must be at the END
 	)
-
-
-(use-package perspective-exwm
-	:demand t)

@@ -122,7 +122,7 @@
 	:demand t
 	:custom
 	(persp-mode-prefix-key (kbd "C-."))
-	(persp-initial-frame-name "Main")
+	(persp-initial-frame-name "1")
 	:init (persp-mode 1))
 
 (use-package multiple-cursors
@@ -287,7 +287,8 @@
   (setq-default evil-shift-width tab-width)
 
   (evil-define-key 'insert 'global (kbd "M-e") 'evil-normal-state)
-  (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
+  (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+  (evil-define-key 'normal 'global (kbd "P") 'vterm-yank))
 
 (use-package evil-god-state
   :demand t
