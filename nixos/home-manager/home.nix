@@ -6,7 +6,7 @@
   # User Config
   users.users.tlp.shell = pkgs.zsh;
   services.emacs = {
-      enable               = true;
+      enable               = false;
       defaultEditor        = true;
   };
 
@@ -28,7 +28,9 @@
     pkgs.emacs-gtk 
     pkgs.firefox
     pkgs.dolphin-emu
+    pkgs.blender
     pkgs.discord
+    pkgs.betterdiscordctl
     pkgs.spotify
     pkgs.spicetify-cli
     pkgs.zoom

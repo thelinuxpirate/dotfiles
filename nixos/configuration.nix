@@ -1,7 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+# TLP's "thepirateship" NixOS Configuration
 { config, lib, pkgs, ... }:
 
 {
@@ -11,21 +8,22 @@
       ./home-manager/home.nix
     ];
 
+  # CORE
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "thepirateship"; # Define your hostname.
-
+  # Define your hostname.
+  networking.hostName = "thepirateship"; 
   # Enable networking
   networking.networkmanager.enable = true;
-
+  # Enable Usage of Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Set shell to zsh
+  programs.zsh.enable = true;
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -38,12 +36,9 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+  # DESKTOP
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable   = true;
   services.xserver.displayManager.gdm.wayland  = true;
   services.xserver.windowManager.session = lib.singleton {
@@ -51,26 +46,37 @@
     start = ''
       xhost +SI:localuser:$USER
       exec emacs
-    '';
-  };
-
+    ''; };
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-  };
-  programs.zsh.enable = true;
+  }; security.polkit.enable = true;
 
-  security.polkit.enable = true;
-  
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
   };
-
+  services.dbus.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # gtk portal needed to make gtk apps happy
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+  
+  # SERVICES & SETTINGS
+  # Define user account, using the base API;
+  security.sudo.wheelNeedsPassword = false;
+  users.users.tlp = {
+    isNormalUser = true;
+    description = "Larry Hamilton";
+    extraGroups = [ "networkmanager" "wheel" ];
+  };
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
+  # Enable Flatpak
+  services.flatpak.enable = true;
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
@@ -83,17 +89,19 @@
     jack.enable = true;
     #media-session.enable = true; # Enabled by default
   };
-
-  nixpkgs.config.allowUnfree = true;
-
-  # Define a user account, using the base API;
-  security.sudo.wheelNeedsPassword = false;
-  users.users.tlp = {
-    isNormalUser = true;
-    description = "Larry Hamilton";
-    extraGroups = [ "networkmanager" "wheel" ];
+  # Automatic Garbage Collection
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+  # Auto-Upgrade NixOS System
+  system.autoUpgrade = {
+    enable = true;
   };
 
+  # SYSTEM-PACKAGES
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     pkgs.alacritty
     pkgs.neovim
@@ -107,17 +115,27 @@
 
     pkgs.gnome.file-roller
     pkgs.dunst
+    pkgs.playerctl
     pkgs.sway-contrib.grimshot
+    pkgs.picom
 
     pkgs.swaybg
     pkgs.waybar
+    pkgs.eww
     pkgs.lxappearance
+    pkgs.feh
     pkgs.autotiling
 
     pkgs.git
     pkgs.curl
     pkgs.appimage-run
 
+    pkgs.wineWowPackages.stable
+    pkgs.wineWowPackages.waylandFull
+    pkgs.wine
+    (wine.override { wineBuild = "wine64"; }) # 64-Bit support
+    pkgs.winetricks
+    
     pkgs.gcc
     pkgs.cmake
     pkgs.gnumake
@@ -127,20 +145,6 @@
     pkgs.python3
     pkgs.python3Packages.pip
   ];
-
-
-  # List services that you want to enable:
-  services.openssh.enable = true;
-
-  # Automatic Garbage Collection
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-  system.autoUpgrade = {
-    enable = true;
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
