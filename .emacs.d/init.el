@@ -55,11 +55,18 @@
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'global-company-mode 1)
 (load "~/.emacs.d/lisp/elisp.el")
+(load "~/.emacs.d/lisp/home.el")
 
 ;; Looks & Fonts
 (use-package nord-theme
   :demand t
-  :init (load-theme 'nord t))
+  :init (load-theme 'nord t)
+	:config
+	(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (load-theme 'nord t)))
+    (load-theme 'nord t)))
 
 (use-package ivy
   :demand t
@@ -121,6 +128,12 @@
 (use-package multiple-cursors
 	:demand t)
 
+(use-package sudo-edit
+	:demand t)
+
+(use-package sudo-utils
+	:demand t)
+
 (use-package elcord
   :demand t
   :init (elcord-mode 1))
@@ -134,13 +147,15 @@
 	:demand t)
 
 (use-package eglot
-  :demand t
-  :mode "\\.rs\\'")
+  :demand t)
 
 (use-package company
   :demand t)
 
 ;; Language Modes
+(use-package nix-mode
+	:demand t)
+
 (use-package rust-mode ;; Install rust-analyzer for lsp
   :demand t
   :config
@@ -205,6 +220,11 @@
     "g l"     '(zonai/evil-god-local-mode :wk "SWITCH TO GOD MODE BUFFER")
     "g j"     '(evil-execute-in-god-state :wk "EXECUTE CMD IN GOD STATE")
     "g ?"     '(zonai/god-mode-manual     :wk "OPEN GOD MODE MANUAL")
+
+	 ;; Root
+		"s"       '(:ignore t                 :wk "Options as Root")
+		"s e"     '(sudo-edit                 :wk "Open Current File as Root")
+		"s f"     '(sudo-edit-find-file       :wk "Find File as Root")
 
    ;; MISC
     "f"       '(find-file                 :wk "Find & Open File")
