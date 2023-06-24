@@ -53,31 +53,38 @@
 ;; Init
 (set-default-coding-systems 'utf-8)
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'global-company-mode 1)
+(add-hook 'prog-mode-hook 'global-company-mode)
 (load "~/.emacs.d/lisp/elisp.el")
 (load "~/.emacs.d/lisp/home.el")
 
 ;; Looks & Fonts
 (use-package doom-themes
 	:demand t
-;;:init (load-theme 'doom-palenight)	
+	:init (load-theme 'doom-palenight t)	
 	:config
 	(setq doom-themes-enable-bold t    
         doom-themes-enable-italic t))
 
-(use-package nord-theme
-  :demand t
-  :init (load-theme 'nord t)
-	:config
-	(if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (load-theme 'nord t)))
-    (load-theme 'nord t)))
+;; (use-package nord-theme
+;;   :demand t
+;;   :init (load-theme 'nord t)
+;; 	:config
+;; 	(if (daemonp)
+;;     (add-hook 'after-make-frame-functions
+;;               (lambda (frame)
+;;                 (load-theme 'nord t)))
+;;     (load-theme 'nord t)))
 
 (use-package ivy
   :demand t
   :init (ivy-mode 1))
+
+(use-package dashboard
+	:demand t
+	:config
+	(dashboard-setup-startup-hook)
+	(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+	)
 
 (use-package which-key
   :demand t
@@ -184,6 +191,9 @@
 (use-package kotlin-mode
 	:demand t)
 
+(use-package yuck-mode
+	:demand t)
+
 ;; Keybindings/Mappings
 (use-package general
   :demand t
@@ -210,7 +220,12 @@
   ;; God Mode Setup
   (general-create-definer zonai/GOD
     :keymaps 'override)
-  
+
+	;; EXWM Setup
+	(general-create-definer zonai/exwm
+		:states 'normal
+    :keymaps 'override) 
+	
   (zonai/leader-mappings-norm
    ;; BUFFER MANAGEMENT
     "j"       '(:ignore t                 :wk "Buffer KeyChords")
@@ -279,10 +294,10 @@
 		"C-4" '(move-end-of-line          :wk "Move to the End of the Line")
 		"C-`" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 		
-		"C-x" '(:ignore                   :wk "Action Key Prefix")
+		"C-x" '(:ignore t                 :wk "Action Key Prefix")
 		"C-W" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 
-		"C-?"   '(zonai/god-mode-manual    :wk "Opens God-Mode Manual")
+		"C-?" '(zonai/god-mode-manual    :wk "Opens God-Mode Manual")
 		"C-;" '(zonai/become-human       :wk "Return to Human State"))
 )
 
@@ -343,3 +358,21 @@
 (use-package org-present
   :demand t
   :after org-roam)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(warning-suppress-log-types
+	 '((org-element-cache)
+		 (org-element-cache)
+		 (org-element-cache)))
+ '(warning-suppress-types '((org-element-cache) (org-element-cache))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-block ((t (:background "#3b4252" :extend t))))
+ '(org-block-begin-line ((t (:underline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
+ '(org-block-end-line ((t (:overline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t)))))
