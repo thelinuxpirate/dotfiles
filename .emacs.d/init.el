@@ -65,26 +65,52 @@
 	(setq doom-themes-enable-bold t    
         doom-themes-enable-italic t))
 
-;; (use-package nord-theme
-;;   :demand t
-;;   :init (load-theme 'nord t)
-;; 	:config
-;; 	(if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;;               (lambda (frame)
-;;                 (load-theme 'nord t)))
-;;     (load-theme 'nord t)))
+(use-package nord-theme ;; Backup Theme
+  :demand t)
 
-(use-package ivy
+ (use-package ivy
   :demand t
   :init (ivy-mode 1))
 
+(use-package projectile 
+	:demand t)
+
 (use-package dashboard
 	:demand t
+	:after projectile
 	:config
 	(dashboard-setup-startup-hook)
 	(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-	)
+	;; Set the title
+	(setq dashboard-banner-logo-title "Welcome to Zonaimacs")
+	;; Set the banner
+	(setq dashboard-startup-banner "~/.emacs.d/.custom/.dashboard_logos/shine.txt")
+
+	;; Content is not centered by default. To center, set
+	(setq dashboard-center-content t)
+	(setq dashboard-show-shortcuts t)
+
+
+	(setq dashboard-items '((recents  . 5)
+													(bookmarks . 5)
+													(projects . 5)
+													(agenda . 5)
+													(registers . 5)))
+
+	(setq dashboard-icon-type 'all-the-icons) 
+	(setq dashboard-display-icons-p t)
+	(setq dashboard-icon-type 'nerd-icons)
+	
+	(setq dashboard-set-navigator t)
+	(setq dashboard-set-init-info t)
+
+	(setq dashboard-set-init-info t)
+	(setq dashboard-set-footer t)
+	(setq dashboard-footer-messages '("\"Emacs is just a text editor\" - Some Windows User"))
+
+	;; Org Agenda
+	(setq dashboard-week-agenda t)
+	(setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda))
 
 (use-package which-key
   :demand t
@@ -111,6 +137,9 @@
   (doom-modeline-major-mode-icon t)
   (doom-modeline-enable-word-count t)
   (doom-modeline-buffer-file-name-style 'truncate-with-project))
+
+(use-package treemacs
+	:demand t)
 
 (use-package rainbow-mode
   :demand t
@@ -330,6 +359,7 @@
 ;; Org Mode Configuration
 (use-package org
   :demand t
+	:init (org-mode)
   :config
   (evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
 
@@ -339,15 +369,17 @@
 
   (custom-set-faces
    '(org-block-begin-line
-     ((t (:underline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
+     ((t (:underline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
    '(org-block
      ((t (:background "#3b4252" :extend t))))
    '(org-block-end-line
-     ((t (:overline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t))))))
+     ((t (:overline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))))
 
 (use-package org-roam
   :demand t
-  :after org)
+  :after org
+	:config
+	(add-hook 'org-mode-hook (lambda () (org-roam-mode 1))))
 
 (use-package org-superstar 
   :demand t
@@ -358,6 +390,7 @@
 (use-package org-present
   :demand t
   :after org-roam)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -368,11 +401,3 @@
 		 (org-element-cache)
 		 (org-element-cache)))
  '(warning-suppress-types '((org-element-cache) (org-element-cache))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-block ((t (:background "#3b4252" :extend t))))
- '(org-block-begin-line ((t (:underline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
- '(org-block-end-line ((t (:overline "#2e3440" :foreground "#8fbcbb" :background "#2e3440" :extend t)))))

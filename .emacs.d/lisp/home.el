@@ -40,7 +40,7 @@
 (defun zonai/update-wallpaper ()
 	(interactive)
 	(start-process-shell-command
-	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/nord-lake.png"))
+	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/wind-waker.jpg"))
 
 (defun zonai/exwm-input-set-key (key command)
 	"Similar to `exwm-input-set-key', but always refreshes prefix keys.
@@ -113,8 +113,15 @@
 				'(?\s-\ ;; Super+Space
 					?\C-\
 					?\M-x
-					?\M-`
 					?\M-&
+					?\M-h
+					?\M-j
+					?\M-k
+					?\M-l
+					?\M-H
+					?\M-J
+					?\M-K
+					?\M-L
 					?\M-:))  
 
 	;; Ctrl+Q will enable the next key to be sent directly
@@ -125,7 +132,8 @@
 		(interactive)
 		(start-process-shell-command
 		 "browser" nil "firefox")
-		(exwm-workspace-switch-create 1))
+		(exwm-workspace-switch-create 1)
+		(exwm-layout-toggle-mode-line))
 
 	(defun exwm/run-discord ()
 		(interactive)
@@ -217,20 +225,18 @@
 			(exwm-workspace-move-window frame id)))
 
 	(setq exwm-input-global-keys
-				`(([?\s-r] . exwm-reset)
-					([?\s-Q] . kill-emacs)
+				`(;; EXWM Management
+					([?\s-r] . exwm-reset)
+					([?\s-Q] . kill-emacs)					
+					;; EXWM
 					([?\s-e] . perspective-exwm-switch-perspective)
-					;; Applications
-					([?\s-b] . exwm/run-browser)
-					([?\s-D] . exwm/run-discord)
-					([?\s-S] . exwm/run-spotify)
-					([?\s-p] . exwm-run-pavucontrol)
-					([?\s-m] . exwm/run-slippi)
+					([?\s-b] . exwm-layout-toggle-mode-line)
 					;; Window Management
 					([?\s-w] . kill-current-buffer)
-					([?\s-W] . delete-window)
+					([?\s-W] . kill-buffer-and-window)
 					([?\s-i] . split-window-vertically)
 					([?\s-o] . split-window-horizontally)
+					([?\s-f] . exwm-layout-toggle-fullscreen)
 					;; Move Window to Workspace
 					([?\s-~] . exwm/move-win-to-0)
 					([?\s-!] . exwm/move-win-to-1)
@@ -242,15 +248,15 @@
 					([?\s-&] . exwm/move-win-to-7)
 					([?\s-*] . exwm/move-win-to-8)
 					;; Window Movement
-					([?\s-h] . windmove-left)
-					([?\s-j] . windmove-down)
-					([?\s-k] . windmove-up)
-					([?\s-l] . windmove-up)
-					([?\s-H] . buf-move-left)
-					([?\s-J] . buf-move-down)
-					([?\s-K] . buf-move-up)
-					([?\s-L] . buf-move-right)
-
+					([?\M-h] . windmove-left)
+					([?\M-j] . windmove-down)
+					([?\M-k] . windmove-up)
+					([?\M-l] . windmove-right)
+					([?\M-H] . buf-move-left)
+					([?\M-J] . buf-move-down)
+					([?\M-K] . buf-move-up)
+					([?\M-L] . buf-move-right)
+					;; Workspaces
 					([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
 					,@(mapcar (lambda (i)
 											`(,(kbd (format "s-%d" i)) .
@@ -258,7 +264,21 @@
 													(interactive)
 													(exwm-workspace-switch-create ,i))))
 										(number-sequence 0 9))))
-	(exwm-enable)) ;; Must be at the END
+
+	;; Use input-set-key for KeyChords :)
+   ;; Applications
+	  (exwm-input-set-key (kbd "s-SPC b") 'exwm/run-browser)
+		(exwm-input-set-key (kbd "s-SPC D") 'exwm/run-discord)
+		(exwm-input-set-key (kbd "s-SPC S") 'exwm/run-spotify)
+		(exwm-input-set-key (kbd "s-SPC p") 'exwm/run-pavucontrol)
+		(exwm-input-set-key (kbd "s-SPC m") 'exwm/run-slippi)
+
+	 ;; EXWM Management
+		(exwm-input-set-key (kbd "s-SPC s") 'switch-to-buffer)
+		(exwm-input-set-key (kbd "s-SPC w") 'delete-window)
+;;		(exwm-input-set-key (kbd "s-SPC ") ')
+
+		(exwm-enable))
 
 (use-package desktop-environment
 	:demand t
