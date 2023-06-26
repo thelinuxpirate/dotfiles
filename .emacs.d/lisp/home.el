@@ -64,6 +64,7 @@
 	 "eww" nil "./System/Applications/eww/target/release/eww open bar"))
 
 (defun zonai/exwm-init-hook ()
+	(zonai/set-command "sudo sysctl kernel.unprivileged_userns_clone=1") ;; Let User use AppImages (Hardened-Kernel)
 	(zonai/set-command "xset r rate 200 60" nil)
 	(zonai/set-command "xset b off" nil) ;; Disable Annoying X Beep Noise
 	(run-at-time "2 sec" nil (lambda () (zonai/update-wallpaper)))
@@ -138,7 +139,7 @@
 	(defun exwm/run-discord ()
 		(interactive)
 		(start-process-shell-command
-		 "discord" nil "Discord")
+		 "discord" nil "discord")
 		(exwm-workspace-switch-create 3))
 
 	(defun exwm/run-spotify ()

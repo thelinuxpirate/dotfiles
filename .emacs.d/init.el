@@ -1,5 +1,5 @@
 ;; Startup Elpaca Package Manager
-(defvar elpaca-installer-version 0.4)
+(defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -56,6 +56,7 @@
 (add-hook 'prog-mode-hook 'global-company-mode)
 (load "~/.emacs.d/lisp/elisp.el")
 (load "~/.emacs.d/lisp/home.el")
+(load "~/.emacs.d/lisp/pacman.el")
 
 ;; Looks & Fonts
 (use-package doom-themes

@@ -1,4 +1,4 @@
-;;; elisp.el - Custom Elisp Code
+;;; elisp.el - Custom Elisp Code For GNU Emacs
 
 ;; This file is NOT part of GNU Emacs.
 
