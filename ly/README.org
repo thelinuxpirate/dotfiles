@@ -1,0 +1,2 @@
+* LY custom
+(/etc/ly/config.ini)
