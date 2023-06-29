@@ -10,7 +10,7 @@ export ZSH="$HOME/.oh-my-zsh"
 pokemon-colorscripts -r --no-title -b
 #pokemon-colorscripts -n dragonite -b -s --no-title
 
-ZSH_THEME="bira"
+ZSH_THEME="afowler"
 CASE_SENSITIVE="true"
 
 plugins=(git)
@@ -31,7 +31,6 @@ alias t="tree"
 alias c="clear"
 alias vi="nvim"
 alias hx="helix"
-alias nv="env -u WAYLAND_DISPLAY neovide"
 
 alias dnfi="doas dnf install"
 alias dnfr="doas dnf remove"
