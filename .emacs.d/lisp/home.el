@@ -94,12 +94,12 @@
               (exwm-layout-hide-mode-line)))
 	
 	(setq perspective-exwm-override-initial-name
-				'((0 . "emacs")
+				'((0 . "home")
 					(1 . "web")
-					(2 . "music")
-					(3 . "discrd")
-					(4 . "audio")
-					(5 . "term")
+					(2 . "term")
+					(3 . "music")
+					(4 . "discrd")
+					(5 . "audio")
 					(6 . "game")
 					(7 . "ctrl")
 					(8 . "&othr")))
@@ -140,19 +140,25 @@
 		(interactive)
 		(start-process-shell-command
 		 "discord" nil "discord")
-		(exwm-workspace-switch-create 3))
+		(exwm-workspace-switch-create 4))
 
 	(defun exwm/run-spotify ()
 		(interactive)
 		(start-process-shell-command
-		 "spotify" nil "./.local/bin/spotify.sh")
-		(exwm-workspace-switch-create 2))
+		 "spotify" nil "spotify")
+		(exwm-workspace-switch-create 3))
 
 	(defun exwm/run-pavucontrol ()
 		(interactive)
 		(start-process-shell-command
 		 "ctrl" nil "pavucontrol")
-		(exwm-workspace-switch-create 4))
+		(exwm-workspace-switch-create 5))
+
+	(defun exwm/run-emulator-dolphin ()
+		(interactive)
+		(start-process-shell-command
+		 "gamecube" nil "dolphin-emu")
+		(exwm-workspace-switch-create 6))
 	
 	(defun exwm/run-slippi ()
 		(interactive)
@@ -268,17 +274,30 @@
 
 	;; Use input-set-key for KeyChords :)
    ;; Applications
-	  (exwm-input-set-key (kbd "s-SPC b") 'exwm/run-browser)
-		(exwm-input-set-key (kbd "s-SPC D") 'exwm/run-discord)
-		(exwm-input-set-key (kbd "s-SPC S") 'exwm/run-spotify)
-		(exwm-input-set-key (kbd "s-SPC p") 'exwm/run-pavucontrol)
-		(exwm-input-set-key (kbd "s-SPC m") 'exwm/run-slippi)
+	  (exwm-input-set-key (kbd "s-SPC b")   'exwm/run-browser)
+		(exwm-input-set-key (kbd "s-SPC D")   'exwm/run-discord)
+		(exwm-input-set-key (kbd "s-SPC S")   'exwm/run-spotify)
+		(exwm-input-set-key (kbd "s-SPC p")   'exwm/run-pavucontrol)
+		(exwm-input-set-key (kbd "s-SPC E d") 'exwm/run-dolphin-emu)
+		(exwm-input-set-key (kbd "s-SPC m")   'exwm/run-slippi)
 
 	 ;; EXWM Management
 		(exwm-input-set-key (kbd "s-SPC s") 'switch-to-buffer)
 		(exwm-input-set-key (kbd "s-SPC w") 'delete-window)
-;;		(exwm-input-set-key (kbd "s-SPC ") ')
 
+	 ;; Multimedia Management
+		;; Volume
+		(exwm-input-set-key (kbd "<f10>") 'desktop-environment-volume-toggle-command)
+		(exwm-input-set-key (kbd "<f8>")  'desktop-environment-volume-small-decrement)
+		(exwm-input-set-key (kbd "<f9>")  'desktop-environment-volume-small-increment)
+
+		;; Media Controlls
+		(exwm-input-set-key (kbd "<f5>") 'desktop-environment-music-toggle-command)
+		(exwm-input-set-key (kbd "<f6>") 'desktop-environment-music-previous-command)
+		(exwm-input-set-key (kbd "<f7>") 'desktop-environment-music-next-command)
+
+		;; Screenshit
+		(exwm-input-set-key (kbd "<f11>") 'desktop-environment-screenshot-command)
 		(exwm-enable))
 
 (use-package desktop-environment

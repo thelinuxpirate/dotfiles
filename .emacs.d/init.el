@@ -53,10 +53,9 @@
 ;; Init
 (set-default-coding-systems 'utf-8)
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'global-company-mode)
 (load "~/.emacs.d/lisp/elisp.el")
 (load "~/.emacs.d/lisp/home.el")
-(load "~/.emacs.d/lisp/pacman.el")
+(load "~/.emacs.d/lisp/linux.el")
 
 ;; Looks & Fonts
 (use-package doom-themes
@@ -155,6 +154,11 @@
 (use-package nerd-icons
   :demand t)
 
+(use-package treemacs-all-the-icons
+	:demand t
+	:config
+	(treemacs-load-theme "all-the-icons"))
+
 ;; Utilities & Misc
 (use-package vterm
   :demand t)
@@ -194,9 +198,28 @@
   :demand t)
 
 (use-package company
-  :demand t)
+  :demand t
+	:config
+	(add-hook 'prog-mode-hook 'global-company-mode))
 
 ;; Language Modes
+(use-package paredit
+	:demand t
+	:config
+	(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
+
+(use-package geiser
+	:demand t)
+
+(use-package geiser-guile
+	:demand t)
+
 (use-package nix-mode
 	:demand t)
 
@@ -229,6 +252,7 @@
   :demand t
   :config
   (general-evil-setup)
+	(setq evil-want-keybinding nil)
 
   ;; Leader Keys Setup 
   (general-create-definer zonai/leader-mappings-norm
@@ -295,6 +319,9 @@
 
     "s k" '(delete-window             :wk "Delete Current Window")
 
+	 ;; Misc
+		"t" '(treemacs                    :wk "Toggle Treemacs")
+		
 	 ;; Workspaces/Persp-Mode
 		"<tab>"   '(:ignore t    :wk "Workspaces")
 
@@ -333,7 +360,8 @@
 
 (use-package evil
   :demand t
-  :init (evil-mode 1)
+  :init
+	(evil-mode 1)
   :config
   (setq-default tab-width 2)
   (setq-default evil-shift-width tab-width)
@@ -345,6 +373,10 @@
 (use-package evil-god-state
   :demand t
   :after evil)
+
+(use-package evil-collection
+	:demand t
+	:after evil)
 
 (use-package god-mode
   :demand t
