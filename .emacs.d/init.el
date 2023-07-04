@@ -429,8 +429,21 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(elcord-editor-icon "emacs_material_icon")
+ '(elcord-idle-message "Compiling Software...")
+ '(elcord-idle-timer 500)
+ '(elcord-quiet t)
+ '(elcord-refresh-rate 1)
  '(warning-suppress-log-types
 	 '((org-element-cache)
 		 (org-element-cache)
 		 (org-element-cache)))
  '(warning-suppress-types '((org-element-cache) (org-element-cache))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-block ((t (:background "#3b4252" :extend t))))
+ '(org-block-begin-line ((t (:underline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))
+ '(org-block-end-line ((t (:overline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t)))))

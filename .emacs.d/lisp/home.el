@@ -272,7 +272,7 @@
 													(exwm-workspace-switch-create ,i))))
 										(number-sequence 0 9))))
 
-	;; Use input-set-key for KeyChords :)
+	;; Use input-set-key for KeyChords & other Bindings
    ;; Applications
 	  (exwm-input-set-key (kbd "s-SPC b")   'exwm/run-browser)
 		(exwm-input-set-key (kbd "s-SPC D")   'exwm/run-discord)
@@ -288,16 +288,16 @@
 	 ;; Multimedia Management
 		;; Volume
 		(exwm-input-set-key (kbd "<f10>") 'desktop-environment-volume-toggle-command)
-		(exwm-input-set-key (kbd "<f8>")  'desktop-environment-volume-small-decrement)
-		(exwm-input-set-key (kbd "<f9>")  'desktop-environment-volume-small-increment)
+		(exwm-input-set-key (kbd "<f8>")  'desktop-environment-volume-decrement-slowly)
+		(exwm-input-set-key (kbd "<f9>")  'desktop-environment-volume-increment-slowly)
 
 		;; Media Controlls
-		(exwm-input-set-key (kbd "<f5>") 'desktop-environment-music-toggle-command)
-		(exwm-input-set-key (kbd "<f6>") 'desktop-environment-music-previous-command)
-		(exwm-input-set-key (kbd "<f7>") 'desktop-environment-music-next-command)
+		(exwm-input-set-key (kbd "<f5>") 'desktop-environment-music-toggle)
+		(exwm-input-set-key (kbd "<f6>") 'desktop-environment-music-previous)
+		(exwm-input-set-key (kbd "<f7>") 'desktop-environment-music-next)
 
 		;; Screenshit
-		(exwm-input-set-key (kbd "<f11>") 'desktop-environment-screenshot-command)
+		(exwm-input-set-key (kbd "<f11>") 'desktop-environment-screenshot)
 		(exwm-enable))
 
 (use-package desktop-environment
