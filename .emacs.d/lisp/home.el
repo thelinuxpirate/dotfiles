@@ -40,7 +40,7 @@
 (defun zonai/update-wallpaper ()
 	(interactive)
 	(start-process-shell-command
-	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/wind-waker.jpg"))
+	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/DS.jpg"))
 
 (defun zonai/exwm-input-set-key (key command)
 	"Similar to `exwm-input-set-key', but always refreshes prefix keys.
@@ -49,27 +49,27 @@
 	;; Alternatively, try general-setq (which calls customize handler)
 	(exwm-input--update-global-prefix-keys))
 
-(defun zonai/exwm-next-workspace ()
-	(interactive)
-	(other-frame 1))
+;; Bar
+(setq zonai/barp nil)
 
-(defun zonai/move-tab-other-frame ()
-	(interactive)
-	(tab-bar-move-tab-to-frame nil))
+(defun zonai/kill-bar ()
+  (interactive)
+  (when zonai/barp
+    (ignore-errors
+      (kill-process zonai/barp)))
+  (setq zonai/barp nil))
 
 (defun zonai/set-bar ()
-	(interactive)
-	(zonai/set-command "./System/Applications/eww/target/release/eww daemon")
-	(start-process-shell-command
-	 "eww" nil "./System/Applications/eww/target/release/eww open bar"))
+  (interactive)
+  (zonai/kill-bar)
+  (setq zonai/barp (start-process-shell-command "polybar" nil "polybar exwm-bar")))
 
 (defun zonai/exwm-init-hook ()
-	(zonai/set-command "sudo sysctl kernel.unprivileged_userns_clone=1") ;; Let User use AppImages (Hardened-Kernel)
-	(zonai/set-command "xset r rate 200 60" nil)
+	(zonai/set-command "xset r rate 200 60" nil) ;; Set shitty keyboard rate to be faster
 	(zonai/set-command "xset b off" nil) ;; Disable Annoying X Beep Noise
 	(run-at-time "2 sec" nil (lambda () (zonai/update-wallpaper)))
-	(zonai/set-bar)
 	(zonai/set-command "picom --daemon" nil)
+	(zonai/set-bar)
 	(zonai/set-command "dunst" nil))
 
 ;; EXWM Configuration
@@ -78,12 +78,12 @@
 	:init
   (setq mouse-autoselect-window nil
         focus-follows-mouse t)
-	;; Stops asking to replace current Window Manager
+	;; Stops asking to replace current Window Manager, if there is a current session
 	(setq-default exwm-replace nil)
 	(perspective-exwm-mode)
 	:config
 	(setq exwm-workspace-number 8)
-	;; the next two make all buffers available on all workspaces
+	;; The next two make all buffers available on all workspaces
   (setq exwm-workspace-show-all-buffers t)
   (setq exwm-layout-show-all-buffers t)
 
@@ -102,7 +102,8 @@
 					(5 . "audio")
 					(6 . "game")
 					(7 . "ctrl")
-					(8 . "&othr")))
+					(8 . "&othr")
+					(9 . "dev")))
 
 	;; Make class name the buffer name
   (add-hook 'exwm-update-class-hook
@@ -129,6 +130,13 @@
   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
 	;; Launch Application Functions
+	(defun exwm/run-term ()
+		(interactive)
+		(start-process-shell-command
+		 "terminal" nil "alacritty")
+		(exwm-workspace-switch-create 2)
+		(exwm-layout-toggle-mode-line))
+	
 	(defun exwm/run-browser ()
 		(interactive)
 		(start-process-shell-command
@@ -139,13 +147,12 @@
 	(defun exwm/run-discord ()
 		(interactive)
 		(start-process-shell-command
-		 "discord" nil "discord")
+		 "discord" nil "Discord")
 		(exwm-workspace-switch-create 4))
 
 	(defun exwm/run-spotify ()
-		(interactive)
-		(start-process-shell-command
-		 "spotify" nil "spotify")
+		(interactive) ;; Flatpak is stupid, this seems to work:
+		(call-process-shell-command "flatpak run com.spotify.Client" nil 0)
 		(exwm-workspace-switch-create 3))
 
 	(defun exwm/run-pavucontrol ()
@@ -154,7 +161,7 @@
 		 "ctrl" nil "pavucontrol")
 		(exwm-workspace-switch-create 5))
 
-	(defun exwm/run-emulator-dolphin ()
+	(defun exwm/run-emu-dolphin ()
 		(interactive)
 		(start-process-shell-command
 		 "gamecube" nil "dolphin-emu")
@@ -165,6 +172,12 @@
 		(start-process-shell-command
 		 "slippi-launcher" nil "./System/Applications/Slippi/Slippi-Launcher.AppImage")
 		(exwm-workspace-switch-create 6))
+
+	(defun exwm/run-gd ()
+		(interactive)
+		(start-process-shell-command
+		 "godot" nil "./System/Applications/Godot/GD-Linux.x86_64")
+		(exwm-workspace-switch-create 9))
 
 	;; Move Window to Workspace Functions
 	(defvar workspace-number)
@@ -231,6 +244,13 @@
 					(id (exwm--buffer->id (window-buffer))))
 			(exwm-workspace-move-window frame id)))
 
+	(defun exwm/move-win-to-9 ()
+		(interactive)
+		(setq workspace-number 9)
+		(let ((frame (exwm-workspace--workspace-from-frame-or-index workspace-number))
+					(id (exwm--buffer->id (window-buffer))))
+			(exwm-workspace-move-window frame id)))
+
 	(setq exwm-input-global-keys
 				`(;; EXWM Management
 					([?\s-r] . exwm-reset)
@@ -244,6 +264,9 @@
 					([?\s-i] . split-window-vertically)
 					([?\s-o] . split-window-horizontally)
 					([?\s-f] . exwm-layout-toggle-fullscreen)
+					;; Bar Management
+					([?\s-p] . zonai/set-bar)
+					([?\s-P] . zonai/kill-bar)
 					;; Move Window to Workspace
 					([?\s-~] . exwm/move-win-to-0)
 					([?\s-!] . exwm/move-win-to-1)
@@ -274,30 +297,33 @@
 
 	;; Use input-set-key for KeyChords & other Bindings
    ;; Applications
-	  (exwm-input-set-key (kbd "s-SPC b")   'exwm/run-browser)
-		(exwm-input-set-key (kbd "s-SPC D")   'exwm/run-discord)
-		(exwm-input-set-key (kbd "s-SPC S")   'exwm/run-spotify)
-		(exwm-input-set-key (kbd "s-SPC p")   'exwm/run-pavucontrol)
-		(exwm-input-set-key (kbd "s-SPC E d") 'exwm/run-dolphin-emu)
-		(exwm-input-set-key (kbd "s-SPC m")   'exwm/run-slippi)
+	  (exwm-input-set-key (kbd "s-<return>") 'exwm/run-term)
+    (exwm-input-set-key (kbd "s-SPC b")    'exwm/run-browser)
+		(exwm-input-set-key (kbd "s-SPC D")    'exwm/run-discord)
+		(exwm-input-set-key (kbd "s-SPC S")    'exwm/run-spotify)
+		(exwm-input-set-key (kbd "s-SPC p")    'exwm/run-pavucontrol)
+		(exwm-input-set-key (kbd "s-SPC d g")  'exwm/run-gd)
+		(exwm-input-set-key (kbd "s-SPC E d")  'exwm/run-emu-dolphin)
+		(exwm-input-set-key (kbd "s-SPC m")    'exwm/run-slippi)
 
-	 ;; EXWM Management
+		;; EXWM Management
 		(exwm-input-set-key (kbd "s-SPC s") 'switch-to-buffer)
 		(exwm-input-set-key (kbd "s-SPC w") 'delete-window)
 
 	 ;; Multimedia Management
 		;; Volume
-		(exwm-input-set-key (kbd "<f10>") 'desktop-environment-volume-toggle-command)
+		(exwm-input-set-key (kbd "<f10>") 'desktop-environment-toggle-mute)
 		(exwm-input-set-key (kbd "<f8>")  'desktop-environment-volume-decrement-slowly)
 		(exwm-input-set-key (kbd "<f9>")  'desktop-environment-volume-increment-slowly)
 
 		;; Media Controlls
-		(exwm-input-set-key (kbd "<f5>") 'desktop-environment-music-toggle)
+		(exwm-input-set-key (kbd "<f5>") 'desktop-environment-toggle-music)
 		(exwm-input-set-key (kbd "<f6>") 'desktop-environment-music-previous)
 		(exwm-input-set-key (kbd "<f7>") 'desktop-environment-music-next)
 
 		;; Screenshit
 		(exwm-input-set-key (kbd "<f11>") 'desktop-environment-screenshot)
+
 		(exwm-enable))
 
 (use-package desktop-environment

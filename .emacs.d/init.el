@@ -55,7 +55,8 @@
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
 (load "~/.emacs.d/lisp/elisp.el")
 (load "~/.emacs.d/lisp/home.el")
-(load "~/.emacs.d/lisp/linux.el")
+(setq-default cursor-in-non-selected-windows nil)
+;;(load "~/.emacs.d/lisp/linux.el")
 
 ;; Looks & Fonts
 (use-package doom-themes
@@ -65,15 +66,9 @@
 	(setq doom-themes-enable-bold t    
         doom-themes-enable-italic t))
 
-(use-package nord-theme ;; Backup Theme
-  :demand t)
-
- (use-package ivy
-  :demand t
-  :init (ivy-mode 1))
-
-(use-package projectile 
-	:demand t)
+(use-package nord-theme :demand t) ;; Backup Theme
+(use-package ivy :demand t :init (ivy-mode))
+(use-package projectile :demand t)
 
 (use-package dashboard
 	:demand t
@@ -89,7 +84,6 @@
 	;; Content is not centered by default. To center, set
 	(setq dashboard-center-content t)
 	(setq dashboard-show-shortcuts t)
-
 
 	(setq dashboard-items '((recents  . 5)
 													(bookmarks . 5)
@@ -108,23 +102,19 @@
 	(setq dashboard-set-footer t)
 	(setq dashboard-footer-messages '("\"Emacs is just a text editor\" - Some Windows User"))
 
-	;; Org Agenda
-	(setq dashboard-week-agenda t)
+	(setq dashboard-week-agenda t) ;; Org Agenda
 	(setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda))
 
 (use-package which-key
   :demand t
-  :init (which-key-mode 1)
   :config
-  (setq which-key-idle-delay 0.2))
-
-(use-package beacon
-  :demand t
-  :init (beacon-mode 1))
+  (setq which-key-idle-delay 0.2)
+	:init (which-key-mode))
+(use-package beacon :demand t :init (beacon-mode))
 
 (use-package doom-modeline
   :demand t
-  :init (doom-modeline-mode 1)
+  :init (doom-modeline-mode)
   :custom
   (doom-modeline-height 28)
   (doom-modeline-bar-width 6)
@@ -138,114 +128,92 @@
   (doom-modeline-enable-word-count t)
   (doom-modeline-buffer-file-name-style 'truncate-with-project))
 
-(use-package treemacs
-	:demand t)
-
-(use-package rainbow-mode
-  :demand t
-  :init (rainbow-mode 1))
-
+(use-package rainbow-mode :demand t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
 ;; all-the-icons-install-fonts
-(use-package all-the-icons
-  :demand t
-  :if (display-graphic-p))
-
+(use-package all-the-icons :demand t :if (display-graphic-p))
 ;; nerd-icons-install-fonts
-(use-package nerd-icons
-  :demand t)
-
-(use-package treemacs-all-the-icons
-	:demand t
-	:config
-	(treemacs-load-theme "all-the-icons"))
+(use-package nerd-icons :demand t)
+(use-package treemacs-all-the-icons :demand t :config (treemacs-load-theme "all-the-icons"))
 
 ;; Utilities & Misc
-(use-package vterm
-  :demand t)
-
-(use-package magit
-  :demand t)
+(use-package vterm :demand t)
+(use-package magit :demand t)
 
 (use-package perspective
 	:demand t
 	:custom
 	(persp-mode-prefix-key (kbd "C-."))
 	(persp-initial-frame-name "1")
-	:init (persp-mode 1))
+	:init (persp-mode))
 
-(use-package multiple-cursors
-	:demand t)
+(use-package treemacs :demand t)
+(use-package ranger
+	:demand t
+	:config
+	(setq ranger-cleanup-eagerly t)
+	(setq ranger-modify-header t)
+	(setq ranger-show-hidden t))
 
-(use-package sudo-edit
-	:demand t)
-
-(use-package sudo-utils
-	:demand t)
-
-(use-package elcord
-  :demand t
-  :init (elcord-mode 1))
+(use-package multiple-cursors :demand t)
+(use-package sudo-edit :demand t)
+(use-package sudo-utils :demand t)
+(use-package elcord :demand t :init (elcord-mode)) ;; Discord Status of Emacs
 
 ;; Syntax & LSP
-(use-package tree-sitter
-  :demand t
-	:init (global-tree-sitter-mode 1))
+(use-package tree-sitter :demand t :init (global-tree-sitter-mode))
+(use-package tree-sitter-langs :demand t)
 
-(use-package tree-sitter-langs
-	:demand t)
-
-(use-package eglot
-  :demand t)
-
-(use-package company
-  :demand t
-	:config
-	(add-hook 'prog-mode-hook 'global-company-mode))
+(use-package lsp-mode
+	:demand t
+	:init (setq lsp-keymap-prefix "C-c l")
+	:hook
+	(prog-mode-hook . lsp)
+	(lsp-mode . lsp-enable-which-key-integration)
+	:commands lsp)
+(use-package lsp-ui :demand t :commands lsp-ui-mode) ;; Extra LSP Packages
+(use-package lsp-ivy :demand t :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :demand t :commands lsp-treemacs-errors-list)
+(use-package dap-mode :demand t)
+(use-package company :demand t :config (add-hook 'prog-mode-hook #'global-company-mode))
 
 ;; Language Modes
 (use-package paredit
 	:demand t
+	:init (autoload 'enable-paredit-mode "paredit" t)
+	:hook
+	(emacs-lisp-mode-hook . enable-paredit-mode)
+  (eval-expression-minibuffer-setup-hook . enable-paredit-mode)
+  (ielm-mode-hook . enable-paredit-mode)
+  (lisp-mode-hook . enable-paredit-mode)
+  (lisp-interaction-mode-hook . enable-paredit-mode)
+  (scheme-mode-hook . enable-paredit-mode)
+	(yuck-mode-hook . enable-paredit-mode))
+
+(use-package geiser :demand t)
+(use-package geiser-guile :demand t)
+(use-package nix-mode :demand t)
+;; Install rust-analyzer for lsp
+(use-package rust-mode :demand t :hook (rust-mode-hook . cargo-minor-mode))
+(use-package cargo :demand t)
+
+(use-package go-mode :demand t)
+(use-package haskell-mode :demand t)
+(use-package zig-mode :demand t) ;; Install zls for lsp
+
+(use-package typescript-mode :demand t)
+(use-package kotlin-mode :demand t)
+(use-package yuck-mode :demand t)
+
+(use-package go-translate ;; Helps translating when modding games
+	:demand t
 	:config
-	(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
+	(setq gts-translate-list '(("en" "ja") ("en" "es")))
 
-(use-package geiser
-	:demand t)
-
-(use-package geiser-guile
-	:demand t)
-
-(use-package nix-mode
-	:demand t)
-
-(use-package rust-mode ;; Install rust-analyzer for lsp
-  :demand t
-  :config
-  (add-hook 'rust-mode-hook
-						(lambda () (setq indent-tabs-mode nil))))
-
-(use-package go-mode
-	:demand t)
-
-(use-package haskell-mode
-	:demand t)
-
-(use-package zig-mode ;; Install zls for lsp
-	:demand t)
-
-(use-package typescript-mode
-	:demand t)
-
-(use-package kotlin-mode
-	:demand t)
-
-(use-package yuck-mode
-	:demand t)
+	(setq gts-default-translator
+				(gts-translator
+				 :picker (gts-prompt-picker)
+				 :engines (list (gts-bing-engine) (gts-google-engine))
+				 :render (gts-buffer-render))))
 
 ;; Keybindings/Mappings
 (use-package general
@@ -281,7 +249,7 @@
     :keymaps 'override) 
 	
   (zonai/leader-mappings-norm
-   ;; BUFFER MANAGEMENT
+		;; BUFFER MANAGEMENT
     "j"       '(:ignore t                 :wk "Buffer KeyChords")
     "j s"     '(switch-to-buffer          :wk "Switch to an Active Buffer")
     "j r"     '(revert-buffer             :wk "Reload Current Buffer")
@@ -290,24 +258,24 @@
     "j <tab>" '(switch-to-prev-buffer     :wk "Switch to Previous Buffer")
     "j SPC"   '(switch-to-next-buffer     :wk "Switch to Next Buffer")
 
-   ;; GOD MODE SETTINGS
+		;; GOD MODE SETTINGS
     "g"       '(:ignore t                 :wk "GOD MODE MAPPINGS")
     "g g"     '(zonai/evil-god-mode-all   :wk "SWITCH TO GOD MODE GLOBAL")
     "g l"     '(zonai/evil-god-local-mode :wk "SWITCH TO GOD MODE BUFFER")
     "g j"     '(evil-execute-in-god-state :wk "EXECUTE CMD IN GOD STATE")
     "g ?"     '(zonai/god-mode-manual     :wk "OPEN GOD MODE MANUAL")
 
-	 ;; Root
+		;; Root
 		"s"       '(:ignore t                 :wk "Options as Root")
 		"s e"     '(sudo-edit                 :wk "Open Current File as Root")
 		"s f"     '(sudo-edit-find-file       :wk "Find File as Root")
 
-   ;; MISC
+		;; MISC
     "f"       '(find-file                 :wk "Find & Open File")
 		"t"       '(vterm                     :wk "Launch VTerm"))
 
   (zonai/localleader-mappings-norm
-   ;; WINDOW MANAGEMENT
+		;; WINDOW MANAGEMENT
 		"s"   '(:ignore t                 :wk "Split Windows Prefix")
 		"s s" '(split-window-vertically   :wk "Split Window Vertically")
     "s h" '(split-window-horizontally :wk "Split Window Horizontally")
@@ -319,10 +287,11 @@
 
     "s k" '(delete-window             :wk "Delete Current Window")
 
-	 ;; Misc
+		;; Misc
 		"t" '(treemacs                    :wk "Toggle Treemacs")
+		"c" '(cargo-minor-mode-command-map :wk "Show Cargo Commands")
 		
-	 ;; Workspaces/Persp-Mode
+		;; Workspaces/Persp-Mode
 		"<tab>"   '(:ignore t    :wk "Workspaces")
 
 		"<tab> 1" '(zonai/switch-to-workspace-01 :wk "Switch to Main Workspace")
@@ -338,11 +307,10 @@
 
     "<tab> k" '(persp-next   :wk "Switch to Next Workspace")
 		"<tab> j" '(persp-prev   :wk "Switch to Previous Workspace")
-		"<tab> q" '(persp-kill   :wk "Kill Current Workspace")
-)
+		"<tab> q" '(persp-kill   :wk "Kill Current Workspace"))
 
 	(zonai/GOD
-	 ;; Movement
+		;; Movement
 		"C-1" '(backward-char             :wk "Move Backward")
 		"C-2" '(next-line                 :wk "Move Down")
 		"C-3" '(forward-char              :wk "Move Foward")
@@ -355,13 +323,11 @@
 		"C-W" '(move-beginning-of-line    :wk "Move to the Start of the Line")
 
 		"C-?" '(zonai/god-mode-manual    :wk "Opens God-Mode Manual")
-		"C-;" '(zonai/become-human       :wk "Return to Human State"))
-)
+		"C-;" '(zonai/become-human       :wk "Return to Human State")))
 
 (use-package evil
   :demand t
-  :init
-	(evil-mode 1)
+  :init (evil-mode)
   :config
   (setq-default tab-width 2)
   (setq-default evil-shift-width tab-width)
@@ -369,14 +335,9 @@
   (evil-define-key 'insert 'global (kbd "M-e") 'evil-normal-state)
   (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
   (evil-define-key 'normal 'global (kbd "P") 'vterm-yank))
-
-(use-package evil-god-state
-  :demand t
-  :after evil)
-
-(use-package evil-collection
-	:demand t
-	:after evil)
+;; Extra stuff for Evil
+(use-package evil-god-state :demand t :after evil)
+(use-package evil-collection :demand t :after evil)
 
 (use-package god-mode
   :demand t
@@ -386,8 +347,7 @@
   (setq god-exempt-predicates nil)
   (setq god-mode-enable-function-key-translation nil))
 
-(use-package hydra
-  :demand t)
+(use-package hydra :demand t)
 
 ;; Org Mode Configuration
 (use-package org
@@ -411,18 +371,14 @@
 (use-package org-roam
   :demand t
   :after org
-	:config
-	(add-hook 'org-mode-hook (lambda () (org-roam-mode 1))))
+	:config (add-hook 'org-mode-hook (lambda () (org-roam-mode))))
 
 (use-package org-superstar 
   :demand t
   :after org-roam
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+	:config (add-hook 'org-mode-hook (lambda () (org-superstar-mode))))
 
-(use-package org-present
-  :demand t
-  :after org-roam)
+(use-package org-present :demand t :after org-roam)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
