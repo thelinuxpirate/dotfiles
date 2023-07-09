@@ -1,9 +1,13 @@
 ** Todo List and Updates:
-- [...] Rewrite nearly everything
+- [...] Rewrite nearly everything (Close to complete)
 - [...] Write Neovim config
-- [...] Rewrite Emacs config
-- [...] Create a Desktop-like Sway environment
+- [...] Rewrite Emacs config (Close to stable)
+- [X] Create a Desktop-like EXWM environment
 
 ** Setup
 My current setup is EXWM + Fedora. It has been working pretty well, I also plan
-to write some elisp code that will enable emacs to work more with my system
+to write some elisp code that will enable emacs to work more with my system.
+
+
+When I get better at programming I hope to create a package manager interface
+for dnf, so I can control my package management via emacs :)
