@@ -37,8 +37,7 @@ wouldn't be needed.
 
 ** What can this backend do?
 - The backend will be able to set up GNU Guix (Zonaimacs' package manager) & Zonaimacs.
-- The backend will soon be able to handle setting up the entirety of my Arch Linux system (TPS)
-& custom "profiles" on a basic Arch installation.
+- The backend will soon be able to handle setting up the entirety of my Arch Linux system (TPS) & custom "profiles" on a basic Arch installation.
 
 
 - The backend is now able to detect and print out the entirety of the user's environment variables.
