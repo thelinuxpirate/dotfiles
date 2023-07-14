@@ -36,10 +36,10 @@ Rust is a strongly compiled language so having this backend that I wanted to sim
 wouldn't be needed.
 
 ** What can this backend do?
-The backend will be able to set up GNU Guix (Zonaimacs' package manager) & Zonaimacs.
-The backend will soon be able to handle setting up the entirety of my Arch Linux system (TPS)
+- The backend will be able to set up GNU Guix (Zonaimacs' package manager) & Zonaimacs.
+- The backend will soon be able to handle setting up the entirety of my Arch Linux system (TPS)
 & custom "profiles" on a basic Arch installation.
 
 
-The backend is now able to detect and print out the entirety of the user's environment variables.
+- The backend is now able to detect and print out the entirety of the user's environment variables.
 Hoping to add more shit to make this more of a backend and less of an installation script...
