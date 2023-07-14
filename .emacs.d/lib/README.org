@@ -11,18 +11,20 @@ As of now *backend.py* is only able to take in a single argument (I'm planning o
 
 Example:
 #+begin_src
-  $ ./backend.py
-  usage: backend.py [-h] {iZonaimacs,iTPS} ...
+  $ ./backend.py <OPTIONS> or python3 backend.py <OPTIONS>
+  usage: backend.py [-h] {iZonaimacs,iGuix,iTPS,getEnv,t} ...
 
   Zonaimacs Python Backend;
 
   positional arguments:
-    {iZonaimacs,iTPS}
-      iZonaimacs       Installs Zonaimacs (ROOT)
-      iTPS             Turns System into "ThePirateShip" (Arch, ROOT)
+    {iZonaimacs,iGuix,iTPS,getEnv,t}
+      iZonaimacs          Installs Zonaimacs (ROOT)
+      iGuix               Installs GNU Guix (ROOT)
+      iTPS                Turns Current System into "ThePirateShip" (Arch, ROOT)
+      getEnv              Prints Out User's Environment Variables
 
   options:
-    -h, --help         show this help message and exit
+    -h, --help            show this help message and exit
 
   Created by TheLinuxPirate
 #+end_src
