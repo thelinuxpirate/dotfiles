@@ -1,0 +1,39 @@
+#+title: Zonaimacs Backend
+I'm not any good at Lisp programming so I decided to make a Zonaimacs backend via Python.
+I could have done this "backend" via Shell Scripting but I'm not any good at that.
+I also believe that having Python manage certain things would be better than a Shell Script.
+Also I feel like I shouldn't have to note this but please at least have Python3 installed...
+
+* Usage
+You should be able to execute the backend.py file and be able to use it like any other cli utilites.
+As of now *backend.py* is only able to take in a single argument (I'm planning on adding more features...).
+
+
+Example:
+#+begin_src sh
+  $ ./backend.py
+  usage: backend.py [-h] {iZonaimacs,iTPS} ...
+
+  Zonaimacs Python Backend;
+
+  positional arguments:
+    {iZonaimacs,iTPS}
+      iZonaimacs       Installs Zonaimacs (ROOT)
+      iTPS             Turns System into "ThePirateShip" (Arch, ROOT)
+
+  options:
+    -h, --help         show this help message and exit
+
+  Created by TheLinuxPirate
+#+end_src
+
+* Extra
+** Why Python?
+Originally I was going to do Rust but then I thought about how Rust's abilities weren't needed,
+Rust is a strongly compiled language so having this backend that I wanted to simply executed, Rust
+wouldn't be needed.
+
+** What can this backend do?
+The backend will be able to set up guix (Zonaimacs' package manager), and will be able to
+handle setting up the entirety of my Arch Linux system (TPS) on a basic Arch installation.
+
