@@ -10,7 +10,7 @@ As of now *backend.py* is only able to take in a single argument (I'm planning o
 
 
 Example:
-#+begin_src sh
+#+begin_src
   $ ./backend.py
   usage: backend.py [-h] {iZonaimacs,iTPS} ...
 
