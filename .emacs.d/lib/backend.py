@@ -125,7 +125,7 @@ def install_sys(): # TODO Create Profiles and make pacman do its thing (dont for
             print("Press <Enter> to continue")
             input()
 
-            desktoppkgs = "\n{\n alacritty, alsa-utils, cmake, \n discord, dolphin-emu, \n dunst, ffmpeg, file-roller, \n firefox, fuse, gcc, \n gimp, go, gzip, \n htop, hunspell-en_us, \n hyprland, intel-ucode, \n lua, lxappearance, ly, \n mesa, meson, neofetch, \n networkmanager, ninja, \n opendoas, otf-font-awesome, \n pamixer, pavucontrol, \n pipewire, playerctl, \n pulseaudio, pulseaudio-alsa, \n python, rustup, snes9x, \n tar, thunar, vlc, waybar, \n wireplumber, wlroots, \n wofi, xdg-desktop-portal-wlr, \n zig, zls, zsh, zsh-syntax-highlighting,\n}\n \n| AUR |\n \n{\n brave-bin, eww-wayland, mpvpaper, \n pfetch, pokemon-colorscripts-git, spicetify-cli, \n spotify, swww,\n}"
+            desktoppkgs = "\n{\n alacritty, alsa-utils, cmake, \n discord, dolphin-emu, \n dunst, ffmpeg, file-roller, \n firefox, fuse, gcc, \n gimp, go, gzip, \n htop, hunspell-en_us, \n hyprland, intel-ucode, \n lua, lxappearance, ly, \n mesa, meson, neofetch, \n networkmanager, ninja, \n opendoas, otf-font-awesome, \n pamixer, pavucontrol, \n pipewire, playerctl, \n pulseaudio, pulseaudio-alsa, \n python, rustup, snes9x, \n tar, thunar, vlc, waybar, \n wireplumber, wlroots, \n wofi, xdg-desktop-portal-wlr, \n zig, zls, zsh, zsh-syntax-highlighting,\n}\n \n| AUR |\n \n{\n brave-bin, eww-wayland, grimshot, mpvpaper, \n pfetch, pokemon-colorscripts-git, spicetify-cli, \n spotify, swww,\n}"
 
             print("Desktop: Full Desktop Setup includes misc packages & Configurations\n")
             print("Includes: " + desktoppkgs)
@@ -139,6 +139,10 @@ def install_sys(): # TODO Create Profiles and make pacman do its thing (dont for
     print("\n[D O N E]\n")
 
 # EXTRA
+def eww():
+    print("Hello World!")
+    input()
+
 def env():
     env_var = os.environ
     print("Your Environment variables:")
@@ -165,7 +169,10 @@ parser_itps.set_defaults(func=install_sys)
 parser_getenv = subparsers.add_parser('getEnv', help='Prints Out User\'s Environment Variables')
 parser_getenv.set_defaults(func=env)
 
-parser_demo = subparsers.add_parser('t', help='nigglet')
+parser_getenv = subparsers.add_parser('ewwSample', help='Eww bar click sample')
+parser_getenv.set_defaults(func=env)
+
+parser_demo = subparsers.add_parser('t', help='demo')
 parser_demo.set_defaults(func=demo)
 
 if len(sys.argv) <= 1:
