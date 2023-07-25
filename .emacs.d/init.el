@@ -37,13 +37,13 @@
 (elpaca `(,@elpaca-order))
 
 (elpaca elpaca-use-package
-  (elpaca-use-package-mode)
-  (setq elpaca-use-package-by-default t))
+  (elpaca-use-package-mode))
+  ;;(setq elpaca-use-package-by-default t))
 (elpaca-wait)
 
 ;; Important Package to keep ~/.emacs.d/ clean
 (use-package no-littering
-  :demand t
+  :elpaca t
   :config
   (setq no-littering-etc-directory
       (expand-file-name ".config/" user-emacs-directory))
@@ -53,25 +53,30 @@
 ;; Init
 (set-default-coding-systems 'utf-8)
 (add-hook 'prog-mode-hook 'global-display-line-numbers-mode)
-(load "~/.emacs.d/lisp/elisp.el")
-(load "~/.emacs.d/lisp/home.el")
+(add-hook 'text-mode-hook 'visual-line-mode)
+
 (setq-default cursor-in-non-selected-windows nil)
-;;(load "~/.emacs.d/lisp/linux.el")
+(setq indent-tabs-mode nil)
+(setq tab-width 2)
+
+(load "~/.emacs.d/lisp/elisp.el")
+(load "~/.emacs.d/lisp/linux.el")
+;;(load "~/.emacs.d/lisp/home.el")
 
 ;; Looks & Fonts
 (use-package doom-themes
-	:demand t
+	:elpaca t
 	:init (load-theme 'doom-palenight t)	
 	:config
 	(setq doom-themes-enable-bold t    
         doom-themes-enable-italic t))
 
-(use-package nord-theme :demand t) ;; Backup Theme
-(use-package ivy :demand t :init (ivy-mode))
-(use-package projectile :demand t)
+(use-package nord-theme :elpaca t) ;; Backup Theme
+(use-package ivy :elpaca t :init (ivy-mode))
+(use-package projectile :elpaca t)
 
 (use-package dashboard
-	:demand t
+	:elpaca t
 	:after projectile
 	:config
 	(dashboard-setup-startup-hook)
@@ -106,14 +111,14 @@
 	(setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda))
 
 (use-package which-key
-  :demand t
+  :elpaca t
   :config
   (setq which-key-idle-delay 0.2)
 	:init (which-key-mode))
-(use-package beacon :demand t :init (beacon-mode))
+(use-package beacon :elpaca t :init (beacon-mode))
 
 (use-package doom-modeline
-  :demand t
+  :elpaca t
   :init (doom-modeline-mode)
   :custom
   (doom-modeline-height 28)
@@ -128,57 +133,55 @@
   (doom-modeline-enable-word-count t)
   (doom-modeline-buffer-file-name-style 'truncate-with-project))
 
-(use-package rainbow-mode :demand t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
+(use-package rainbow-mode :elpaca t :config (add-hook 'prog-mode-hook (lambda () (rainbow-mode))))
 ;; all-the-icons-install-fonts
-(use-package all-the-icons :demand t :if (display-graphic-p))
+(use-package all-the-icons :elpaca t :if (display-graphic-p))
 ;; nerd-icons-install-fonts
-(use-package nerd-icons :demand t)
-(use-package treemacs-all-the-icons :demand t :config (treemacs-load-theme "all-the-icons"))
+(use-package nerd-icons :elpaca t)
+(use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
 
 ;; Utilities & Misc
-(use-package vterm :demand t)
-(use-package magit :demand t)
+(use-package magit :elpaca t)
 
 (use-package perspective
-	:demand t
+	:elpaca t
 	:custom
 	(persp-mode-prefix-key (kbd "C-."))
 	(persp-initial-frame-name "1")
 	:init (persp-mode))
 
-(use-package treemacs :demand t)
+(use-package treemacs :elpaca t)
 (use-package ranger
-	:demand t
+	:elpaca t
 	:config
 	(setq ranger-cleanup-eagerly t)
 	(setq ranger-modify-header t)
 	(setq ranger-show-hidden t))
 
-(use-package multiple-cursors :demand t)
-(use-package sudo-edit :demand t)
-(use-package sudo-utils :demand t)
-(use-package elcord :demand t :init (elcord-mode)) ;; Discord Status of Emacs
+(use-package multiple-cursors :elpaca t)
+(use-package sudo-edit :elpaca t)
+(use-package sudo-utils :elpaca t)
+(use-package elcord :elpaca t :init (elcord-mode)) ;; Discord Status of Emacs
 
 ;; Syntax & LSP
-(use-package tree-sitter :demand t :init (global-tree-sitter-mode))
-(use-package tree-sitter-langs :demand t)
+(use-package tree-sitter :elpaca t :init (global-tree-sitter-mode))
+(use-package tree-sitter-langs :elpaca t)
 
 (use-package lsp-mode
-	:demand t
+	:elpaca t
 	:init (setq lsp-keymap-prefix "C-c l")
-	:hook
-	(prog-mode-hook . lsp)
-	(lsp-mode . lsp-enable-which-key-integration)
+	(add-hook 'prog-mode-hook #'lsp)
+	(add-hook 'lsp-mode #'lsp-enable-which-key-integration)
 	:commands lsp)
-(use-package lsp-ui :demand t :commands lsp-ui-mode) ;; Extra LSP Packages
-(use-package lsp-ivy :demand t :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :demand t :commands lsp-treemacs-errors-list)
-(use-package dap-mode :demand t)
-(use-package company :demand t :config (add-hook 'prog-mode-hook #'global-company-mode))
+(use-package lsp-ui :elpaca t :commands lsp-ui-mode) ;; Extra LSP Packages
+(use-package lsp-ivy :elpaca t :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :elpaca t :commands lsp-treemacs-errors-list)
+(use-package dap-mode :elpaca t)
+(use-package company :elpaca t :config (add-hook 'prog-mode-hook #'global-company-mode))
 
 ;; Language Modes
 (use-package paredit
-	:demand t
+	:elpaca t
 	:init (autoload 'enable-paredit-mode "paredit" t)
 	:hook
 	(emacs-lisp-mode-hook . enable-paredit-mode)
@@ -189,23 +192,25 @@
   (scheme-mode-hook . enable-paredit-mode)
 	(yuck-mode-hook . enable-paredit-mode))
 
-(use-package geiser :demand t)
-(use-package geiser-guile :demand t)
-(use-package nix-mode :demand t)
+(use-package geiser :elpaca t)
+(use-package geiser-guile :elpaca t)
+(use-package nim-mode :elpaca t)
+(use-package nix-mode :elpaca t)
 ;; Install rust-analyzer for lsp
-(use-package rust-mode :demand t :hook (rust-mode-hook . cargo-minor-mode))
-(use-package cargo :demand t)
+(use-package rust-mode :elpaca t :hook (rust-mode-hook . cargo-minor-mode))
+(use-package cargo :elpaca t)
 
-(use-package go-mode :demand t)
-(use-package haskell-mode :demand t)
-(use-package zig-mode :demand t) ;; Install zls for lsp
+(use-package go-mode :elpaca t)
+(use-package lua-mode)
+(use-package haskell-mode :elpaca t)
+(use-package zig-mode :elpaca t) ;; Install zls for lsp
 
-(use-package typescript-mode :demand t)
-(use-package kotlin-mode :demand t)
-(use-package yuck-mode :demand t)
+(use-package typescript-mode :elpaca t)
+(use-package kotlin-mode :elpaca t)
+(use-package yuck-mode :elpaca t)
 
 (use-package go-translate ;; Helps translating when modding games
-	:demand t
+	:elpaca t
 	:config
 	(setq gts-translate-list '(("en" "ja") ("en" "es")))
 
@@ -217,7 +222,7 @@
 
 ;; Keybindings/Mappings
 (use-package general
-  :demand t
+  :elpaca t
   :config
   (general-evil-setup)
 	(setq evil-want-keybinding nil)
@@ -228,10 +233,10 @@
     :keymaps 'override
     :prefix  ";") 
 
-  (general-create-definer zonai/leader-mappings-ins
-    :states  'insert
+  (general-create-definer zonai/leader-mappings-vis
+    :states  'visual
     :keymaps 'override
-    :prefix  "M-;")
+    :prefix  ";")
 
   ;; Local-Leader Key  
   (general-create-definer zonai/localleader-mappings-norm
@@ -270,9 +275,13 @@
 		"s e"     '(sudo-edit                 :wk "Open Current File as Root")
 		"s f"     '(sudo-edit-find-file       :wk "Find File as Root")
 
+		;; Org
+		"o"       '(:ignore t                 :wk "Org Mode Options")
+		"o df"    '(org-babel-tangle          :wk "Babel Tangle File")
+
 		;; MISC
     "f"       '(find-file                 :wk "Find & Open File")
-		"t"       '(vterm                     :wk "Launch VTerm"))
+		"d t"     '(gts-do-translate          :wk "Translate Region"))
 
   (zonai/localleader-mappings-norm
 		;; WINDOW MANAGEMENT
@@ -288,7 +297,7 @@
     "s k" '(delete-window             :wk "Delete Current Window")
 
 		;; Misc
-		"t" '(treemacs                    :wk "Toggle Treemacs")
+		"t" '(treemacs                     :wk "Toggle Treemacs")
 		"c" '(cargo-minor-mode-command-map :wk "Show Cargo Commands")
 		
 		;; Workspaces/Persp-Mode
@@ -326,33 +335,32 @@
 		"C-;" '(zonai/become-human       :wk "Return to Human State")))
 
 (use-package evil
-  :demand t
+  :elpaca t
   :init (evil-mode)
   :config
   (setq-default tab-width 2)
   (setq-default evil-shift-width tab-width)
 
   (evil-define-key 'insert 'global (kbd "M-e") 'evil-normal-state)
-  (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
-  (evil-define-key 'normal 'global (kbd "P") 'vterm-yank))
+  (evil-define-key 'god global-map [escape] 'evil-god-state-bail))
 ;; Extra stuff for Evil
-(use-package evil-god-state :demand t :after evil)
-(use-package evil-collection :demand t :after evil)
+(use-package evil-god-state :elpaca t :after evil)
+(use-package evil-collection :elpaca t :after evil)
 
 (use-package god-mode
-  :demand t
+  :elpaca t
   :after evil
   :config
   (setq god-exempt-major-modes nil)
   (setq god-exempt-predicates nil)
   (setq god-mode-enable-function-key-translation nil))
 
-(use-package hydra :demand t)
+(use-package hydra :elpaca t)
 
 ;; Org Mode Configuration
 (use-package org
-  :demand t
-	:init (org-mode)
+  :elpaca t
+  :init (org-mode)
   :config
   (evil-define-key 'normal 'global (kbd "<tab>") 'org-cycle)
 
@@ -368,17 +376,14 @@
    '(org-block-end-line
      ((t (:overline "#292D3E" :foreground "#8fbcbb" :background "#2e3440" :extend t))))))
 
-(use-package org-roam
-  :demand t
-  :after org
-	:config (add-hook 'org-mode-hook (lambda () (org-roam-mode))))
+(use-package org-roam :elpaca t :after org)
 
 (use-package org-superstar 
-  :demand t
+  :elpaca t
   :after org-roam
-	:config (add-hook 'org-mode-hook (lambda () (org-superstar-mode))))
+  :config (add-hook 'org-mode-hook (lambda () (org-superstar-mode))))
 
-(use-package org-present :demand t :after org-roam)
+(use-package org-present :elpaca t :after org-roam)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -386,7 +391,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(elcord-editor-icon "emacs_material_icon")
- '(elcord-idle-message "Compiling Software...")
+ '(elcord-idle-message "Playing Melee...")
  '(elcord-idle-timer 500)
  '(elcord-quiet t)
  '(elcord-refresh-rate 1)
