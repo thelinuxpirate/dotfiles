@@ -1,2 +1,0 @@
-#+title: EWW Bar
-(work in progress)
