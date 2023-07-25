@@ -54,11 +54,6 @@ The main important thing about the general function is that I have set the layou
   $setWallpaper01 = swaybg -i ~/.emacs.d/.custom/wallpapers/japan-street.jpg 
   $setWallpaper02 = swaybg -i ~/.emacs.d/.custom/wallpapers/wallhaven.png
   $setWallpaper03 = mpvpaper -o "loop" HDMI-A-2 ~/.emacs.d/.custom/wallpapers/live/snorlax.mp4
-  $setWallpaper04 = mpvpaper -o "loop" HDMI-A-2 ~/.emacs.d/.custom/wallpapers/live/cyberpunk-bedroom.mp4
-  $setWallpaper05 = mpvpaper -o "loop" HDMI-A-2 ~/.emacs.d/.custom/wallpapers/live/night-harbor-punk.mp4
-  $setWallpaper06 = mpvpaper -o "loop" HDMI-A-2 ~/.emacs.d/.custom/wallpapers/live/winter-cabin.mp4
-  $setWallpaper07 = mpvpaper -o "loop" HDMI-A-2 ~/.emacs.d/.custom/wallpapers/live/raya-lucaria.mp4
-  $setWallpaper08 = mpvpaper -o "loop" HDMI-A-2 ~/Downloads/pac-man-desktop-wallpaperwaifu.com.mp4
 
   exec-once = $workspaceName & $wallpaperDaemon & $bar & $setWallpaper02 & $setTheme & $setIcon & $setCursor & emacs
 
