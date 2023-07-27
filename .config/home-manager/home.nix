@@ -1,8 +1,9 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./desktop/hypr.nix ];
+  
   nixpkgs.config.allowUnfreePredicate = _: true;
-
   
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -10,14 +11,16 @@
   home.homeDirectory = "/home/pinguino";
 
   home.packages = [
-    pkgs.emacs-gtk
+    pkgs.firefox
+    pkgs.helix
+    pkgs.emacs29-gtk3
     pkgs.neofetch
     pkgs.discord
     pkgs.spotify
+    pkgs.dolphin-emu
+    pkgs.bottles
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
   home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
@@ -31,22 +34,33 @@
     # '';
   };
 
-  # You can also manage environment variables but you will have to manually
-  # source
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/pinguino/etc/profile.d/hm-session-vars.sh
-  #
-  # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "emacs";
   };
-
+  
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+    
+  services.emacs = {
+    defaultEditor = true;
+    package = pkgs.emacs29-gtk3;
+  };
+  
+  programs.zsh = {
+    enable = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = {
+      d = "doas";
+      s = "sudo";
 
+      c = "clear";
+      t = "tree";
+      vi = "nvim";
+
+      melee = "cd && ./System/Applications/Slippi/Slippi-Launcher.AppImage && cd -";
+      discordBot = "cd && ./System/Code/wiggler/target/release/wiggler && cd -";
+    };
+  };
+  
   home.stateVersion = "22.11";
-  }
+}
