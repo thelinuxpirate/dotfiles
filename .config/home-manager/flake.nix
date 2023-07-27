@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration of pinguino";
+  description = "Home Manager Configuration for Pinguino";
 
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
@@ -8,13 +8,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     }; 
-    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = { 
   nixpkgs, 
   home-manager, 
-  hyprland, 
   ... 
   }:
     let
@@ -24,9 +22,6 @@
       homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
-        hyprland.homeManagerModules.default
-        {wayland.windowManager.hyprland.enable = true;} 
-
         ./home.nix 
         ];
       };
