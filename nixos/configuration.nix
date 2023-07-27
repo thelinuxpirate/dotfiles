@@ -1,32 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-#      ./home-manager/home.nix
-    ];
+  imports = [ ./hardware-configuration.nix ];
 
-  # Bootloader.
+  # SYSTEM:
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "TheTreeHouse"; # Define your hostname.
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
-
-  # Enable Usage of Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # Set shell to zsh
-  programs.zsh.enable = true;
-
- #  Select internationalisation properties.
+  # Locales & Time Zone
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -38,103 +20,106 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+  time.timeZone = "America/Los_Angeles";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # Networking & Pinguino
+  networking.hostName = "TheTreeHouse";
+  networking.networkmanager.enable = true;
+
   security.doas = {
     enable = true;
     wheelNeedsPassword = false;
   };
 
-  # Desktop
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland  = true;
-  programs.hyprland.enable = true; 
-  services.dbus.enable = true;
-  xdg.portal.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    #media-session.enable = true;
-  };
-  services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pinguino = {
     isNormalUser = true;
     description = "Larry Hamilton";
     extraGroups = [ "networkmanager" "wheel" ];
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-  pkgs.home-manager
   
-    pkgs.alacritty
-    pkgs.helix
-    pkgs.tree
-    pkgs.pfetch
-    pkgs.wofi 
-    pkgs.waybar 
+  # Set shell to zsh
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+   
+  # Desktop
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland  = true;
+  programs.hyprland.enable = true;
 
-    pkgs.git
-    pkgs.curl
-    pkgs.appimage-run
-    pkgs.pavucontrol
-    pkgs.lxappearance
-    pkgs.swaybg
+  # Sound & Media
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    wireplumber.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
 
-    pkgs.gnome.file-roller
-    pkgs.dunst
+  # Nix Settings
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-    pkgs.gcc
-    pkgs.cmake
-    pkgs.gnumake
-    pkgs.libtool
-    pkgs.libvterm
-
-    pkgs.busybox
-    
-    pkgs.python3
-    pkgs.python3Packages.pip
-  ];
-
-  fonts.fonts = with pkgs; [
-    pkgs.font-awesome
-    pkgs.nerdfonts
-    ];
-
-  # Automatic Garbage Collection
-  nix.gc = {
+  system.autoUpgrade = { # Auto-Upgrade NixOS System
+    enable = true;
+  };
+  
+  nix.gc = { # Automatic Garbage Collection
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
-  # Auto-Upgrade NixOS System
-  system.autoUpgrade = {
-    enable = true;
+  
+  # System Software & Packages
+  environment.systemPackages = with pkgs; [
+    # Important (System)
+    pkgs.git
+    pkgs.home-manager
+    pkgs.curl
+    pkgs.appimage-run
+
+    # Desktop Dependencies
+    pkgs.alacritty
+    pkgs.waybar
+    pkgs.swaybg
+    pkgs.dunst
+    pkgs.wofi
+    pkgs.pavucontrol
+
+    # &Othr
+    pkgs.pfetch
+    pkgs.btop
+    pkgs.tree
+
+    pkgs.xfce.thunar
+    pkgs.lxappearance
+  ];
+
+  fonts.packages = with pkgs; [ # Waybar Dependencies
+    pkgs.font-awesome
+    pkgs.nerdfonts
+  ];
+
+  # Daemons, Services, & Programs;
+  services.xserver.libinput.enable = true;
+
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
   };
   
   services.openssh.enable = true;
+  services.printing.enable = true;
+
+  programs.mtr.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+  
   system.stateVersion = "23.05";
 }
