@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, callPackage, ... }:
 
 {
   imports = [ ./desktop/hypr.nix ];
@@ -11,14 +11,71 @@
   home.homeDirectory = "/home/pinguino";
 
   home.packages = [
+    # Web, & Media
     pkgs.firefox
-    pkgs.helix
-    pkgs.emacs29-gtk3
-    pkgs.neofetch
     pkgs.discord
+    pkgs.betterdiscordctl
     pkgs.spotify
+    pkgs.spicetify-cli
+
+    # Editors & Dev
+    pkgs.emacs29-gtk3
+    pkgs.helix
+    pkgs.neovim
+
+    pkgs.blender
+
+    # Programming
+     # Rust
+    pkgs.rustup
+
+     # Nim
+    pkgs.nim
+    pkgs.nimlsp
+
+     # Zig
+    pkgs.zig
+    pkgs.zls
+    
+     # Python
+    pkgs.python3
+    pkgs.python311Packages.pip
+
+     # Go
+    pkgs.go
+    
+     # C / C++
+    pkgs.gcc
+    pkgs.gnumake
+    pkgs.cmake
+
+    # Emulation, & Wine
     pkgs.dolphin-emu
+    pkgs.snes9x-gtk
+    pkgs.mupen64plus
+    pkgs.citra-nightly
+    pkgs.vbam
+    
     pkgs.bottles
+    pkgs.wineWowPackages.stable
+    pkgs.winetricks
+
+    # Videos & Streaming
+    pkgs.obs-studio
+    pkgs.obs-studio-plugins.wlrobs
+    pkgs.vlc
+
+    # Gaming
+    pkgs.steam
+    pkgs.steam-tui
+
+    pkgs.lutris
+    
+    # Misc
+    pkgs.neofetch
+    pkgs.krabby
+    pkgs.pipes
+    pkgs.obsidian
   ];
 
   home.file = {
@@ -43,12 +100,17 @@
     
   services.emacs = {
     defaultEditor = true;
-    package = pkgs.emacs29-gtk3;
+    package = pkgs.emacs-unstable-pgtk; # emacs29-gtk3
   };
   
   programs.zsh = {
     enable = true;
     syntaxHighlighting.enable = true;
+    initExtra = "krabby random -i --no-title\n";
+    oh-my-zsh = {
+      enable = true;
+      theme = "afowler";
+    };
     shellAliases = {
       d = "doas";
       s = "sudo";
