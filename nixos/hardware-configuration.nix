@@ -12,20 +12,20 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  #boot.extraModulePackages = with config.boot.kernelPackages; ["rtl88x2bu" ];
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/99a67938-cc51-469a-a59a-680fb7f35dfd";
+    { device = "/dev/disk/by-uuid/8abceb8c-1fde-4d59-8223-1589a1b2e111";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A74B-5870";
+    { device = "/dev/disk/by-uuid/3FFB-2141";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/6dd6e0d0-ed23-4eac-95fc-003ea22399c0"; }
+    [ { device = "/dev/disk/by-uuid/57358cef-5237-4d3c-b2f8-2a6fcd77aa9f"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
