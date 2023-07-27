@@ -1,78 +1,52 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ <home-manager/nixos> ];
+  nixpkgs.config.allowUnfreePredicate = _: true;
 
-  # User Config
-  users.users.pinguino.shell = pkgs.zsh;
-  services.emacs = {
-      enable               = true;
-      defaultEditor        = true;
-  };
-
-  # HOME MANAGER
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-
-  home-manager.users.pinguino = { pkgs, ... }: {
-  home.stateVersion = "23.05";
-  programs.home-manager.enable = true;
-
+  
+  # Home Manager needs a bit of information about you and the paths it should
+  # manage.
   home.username = "pinguino";
   home.homeDirectory = "/home/pinguino";
-  
-  home.packages = [
-    pkgs.tmux
-    pkgs.neofetch
-    pkgs.pokemon-colorscripts-mac
-    pkgs.emacs-gtk 
-    pkgs.firefox
-    pkgs.dolphin-emu
-    pkgs.blender
-    pkgs.discord
-    pkgs.betterdiscordctl
-    pkgs.spotify
-    pkgs.spicetify-cli
-    pkgs.steam
-    pkgs.lutris
-    pkgs.vbam
-    pkgs.citra-nightly
-    pkgs.btop
-  ];  
 
-  programs.zsh = {
-    enable = true;
-    syntaxHighlighting.enable = true;
-    oh-my-zsh = {
-      enable  = true;
-      plugins = [ "git" ];
-      theme   = "afowler";
-    };
-    initExtraFirst = "neofetch";
-    initExtra = # Add to $PATH
-      "export PATH=\"$HOME/.local/bin:$PATH\"\n
-       export PATH=\"$HOME/System/Applications/smblevelworkshop2/build/ws2editor/launch/:$PATH\"\n"; 
-    localVariables = {
-      GRIM_DEFAULT_DIR = [ "~/Pictures/Screenshits/" ];
-    };
-    shellAliases = {
-      s="sudo";
-      vi="nvim";
-      t="tree";
-      c="clear";
-      godot="cd && ./System/Applications/Godot4/Godot_v4.0.2-stable_mono_linux.x86_64 && cd -";
-      melee="cd && ./System/Applications/Slippi/Slippi-Launcher.AppImage && cd -";
-      wiggler=" cd && ./System/Code/thetuss/thetuss && cd -";
-    };
+  home.packages = [
+    pkgs.emacs-gtk
+    pkgs.neofetch
+    pkgs.discord
+    pkgs.spotify
+  ];
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+    # # symlink to the Nix store copy.
+    # ".screenrc".source = dotfiles/screenrc;
+
+    # # You can also set the file content immediately.
+    # ".gradle/gradle.properties".text = ''
+    #   org.gradle.console=verbose
+    #   org.gradle.daemon.idletimeout=3600000
+    # '';
   };
-    
-    fonts.fontconfig.enable = true;
-    gtk = {
-      enable = true;
-      theme = {
-        name    = "nordic";
-        package = pkgs.nordic;
-      };
-    };
+
+  # You can also manage environment variables but you will have to manually
+  # source
+  #
+  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+  #
+  # or
+  #
+  #  /etc/profiles/per-user/pinguino/etc/profile.d/hm-session-vars.sh
+  #
+  # if you don't want to manage your shell through Home Manager.
+  home.sessionVariables = {
+    # EDITOR = "emacs";
   };
-}
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  home.stateVersion = "22.11";
+  }

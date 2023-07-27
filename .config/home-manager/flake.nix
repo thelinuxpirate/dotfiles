@@ -7,28 +7,28 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
+    }; 
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { nixpkgs, home-manager, hyprland, ... }:
+  outputs = { 
+  nixpkgs, 
+  home-manager, 
+  hyprland, 
+  ... 
+  }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations."pinguino" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ 
+        modules = [
         hyprland.homeManagerModules.default
-        {wayland.windowManager.hyprland.enable = true;}
+        {wayland.windowManager.hyprland.enable = true;} 
+
         ./home.nix 
         ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
       };
     };
 }
