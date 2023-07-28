@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, callPackage, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -45,7 +45,7 @@
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.wayland  = true;
-  programs.hyprland.enable = true;
+#  programs.hyprland.enable = true;
 
   # Sound & Media
   sound.enable = true;
@@ -96,14 +96,16 @@
     pkgs.tree
 
     pkgs.xfce.thunar
-    pkgs.lxappearance
+    pkgs.gnome.file-roller
+    pkgs.wget
+    pkgs.lxappearance-gtk2
   ];
-
+  
   fonts.packages = with pkgs; [ # Waybar Dependencies
     pkgs.font-awesome
     pkgs.nerdfonts
   ];
-
+  
   # Daemons, Services, & Programs;
   services.xserver.libinput.enable = true;
 
@@ -114,6 +116,9 @@
   
   services.openssh.enable = true;
   services.printing.enable = true;
+  services.udisks2 = {
+    enable = true;
+  };
 
   programs.mtr.enable = true;
   programs.gnupg.agent = {
