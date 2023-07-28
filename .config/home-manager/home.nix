@@ -1,7 +1,10 @@
-{ config, pkgs, callPackage, ... }:
+{ config, pkgs, ... }:
 
 {
-  imports = [ ./desktop/hypr.nix ];
+  imports = [
+    ./pingu/sh.nix
+    ./pingu/themes.nix
+  ];
   
   nixpkgs.config.allowUnfreePredicate = _: true;
   
@@ -76,53 +79,22 @@
     pkgs.krabby
     pkgs.pipes
     pkgs.obsidian
+
   ];
 
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
+  home.file = {};
 
   home.sessionVariables = {
     EDITOR = "emacs";
   };
+
+  # Zonaimacs
+  services.emacs = {
+    enable = true;
+   
+  };
   
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-    
-  services.emacs = {
-    defaultEditor = true;
-    package = pkgs.emacs-unstable-pgtk; # emacs29-gtk3
-  };
-  
-  programs.zsh = {
-    enable = true;
-    syntaxHighlighting.enable = true;
-    initExtra = "krabby random -i --no-title\n";
-    oh-my-zsh = {
-      enable = true;
-      theme = "afowler";
-    };
-    shellAliases = {
-      d = "doas";
-      s = "sudo";
-
-      c = "clear";
-      t = "tree";
-      vi = "nvim";
-
-      melee = "cd && ./System/Applications/Slippi/Slippi-Launcher.AppImage && cd -";
-      discordBot = "cd && ./System/Code/wiggler/target/release/wiggler && cd -";
-    };
-  };
-  
   home.stateVersion = "22.11";
 }
