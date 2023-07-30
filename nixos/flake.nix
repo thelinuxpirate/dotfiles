@@ -11,13 +11,23 @@
     hyprland,
     ...
   } @inputs: {
-    nixosConfigurations.TheTreeHouse = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; }; # this is the important part
-      modules = [
-        hyprland.nixosModules.default
-        {programs.hyprland.enable = true;}
-        ./configuration.nix
-      ];
+    nixosConfigurations = {
+      TheTreeHouse = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; }; # this is the important part
+        modules = [
+          hyprland.nixosModules.default
+          {programs.hyprland.enable = true;}
+          ./hosts/TheTreeHouse/configuration.nix
+        ];
+      };
+      ThePirateShip = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; }; # this is the important part
+        modules = [
+          hyprland.nixosModules.default
+          {programs.hyprland.enable = true;}
+          ./hosts/ThePirateShip/configuration.nix
+        ];
+      };
     };
-  }; 
+  };
 }
