@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -8,8 +8,7 @@
   
   nixpkgs.config.allowUnfreePredicate = _: true;
   
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
+  # Home Manager needs a bit of information about you and the paths it should manage.
   home.username = "pinguino";
   home.homeDirectory = "/home/pinguino";
 
@@ -18,14 +17,10 @@
     pkgs.firefox
     pkgs.discord
     pkgs.betterdiscordctl
-    pkgs.spotify
-    pkgs.spicetify-cli
 
     # Editors & Dev
-    pkgs.emacs29-gtk3
     pkgs.helix
-    pkgs.neovim
-
+    
     pkgs.blender
 
     # Programming
@@ -53,6 +48,7 @@
     pkgs.cmake
 
     # Emulation, & Wine
+    pkgs.yuzu
     pkgs.dolphin-emu
     pkgs.snes9x-gtk
     pkgs.mupen64plus
@@ -79,7 +75,6 @@
     pkgs.krabby
     pkgs.pipes
     pkgs.obsidian
-
   ];
 
   home.file = {};
@@ -88,12 +83,22 @@
     EDITOR = "emacs";
   };
 
-  # Zonaimacs
-  services.emacs = {
+  services.emacs.enable = true;
+
+  programs.emacs = { 
+    enable = true; 
+    package = pkgs.emacs29-gtk3;
+  };
+
+  programs.neovim = {
     enable = true;
-   
+    defaultEditor = false;
+
+    viAlias = true;
+    vimAlias = true;
   };
   
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   home.stateVersion = "22.11";
