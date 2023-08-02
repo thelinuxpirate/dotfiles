@@ -13,7 +13,7 @@
   } @inputs: {
     nixosConfigurations = {
       TheTreeHouse = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; }; # this is the important part
+        specialArgs = { inherit inputs; };
         modules = [
           hyprland.nixosModules.default
           {programs.hyprland.enable = true;}
@@ -21,11 +21,17 @@
         ];
       };
       ThePirateShip = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; }; # this is the important part
+        specialArgs = { inherit inputs; };
         modules = [
           hyprland.nixosModules.default
           {programs.hyprland.enable = true;}
           ./hosts/ThePirateShip/configuration.nix
+        ];
+      };
+      KernelCanopy = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/KernelCanopyServer/configuration.nix
         ];
       };
     };

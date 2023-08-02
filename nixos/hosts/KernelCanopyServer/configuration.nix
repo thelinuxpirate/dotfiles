@@ -1,5 +1,5 @@
-{ config, pkgs, callPackage, ... }:
-
+{ config, pkgs, ... }:
+# Try to keep the server as minimal as possible. We don't want bloat;
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -23,103 +23,53 @@
   time.timeZone = "America/Los_Angeles";
 
   # Networking & Pinguino
-  networking.hostName = "TheTreeHouse";
+  networking.hostName = "KernelCanopy";
   networking.networkmanager.enable = true;
 
-  security.doas = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
-
-  users.users.pinguino = {
+  users.users.grimace = {
     isNormalUser = true;
-    description = "Larry Hamilton";
+    description = "Maintainer";
     extraGroups = [ "networkmanager" "wheel" ];
   };
-  
-  # Set shell to zsh
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
    
-  # Desktop
+  # Graphics
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland  = true;
-#  programs.hyprland.enable = true;
-
-  # Sound & Media
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    wireplumber.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
+  services.xserver.displayManager.startx.enable = true;
+  services.xserver.windowManager.dwm.enable = true;
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
   };
 
-  # Nix Settings
-  nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  system.autoUpgrade = { # Auto-Upgrade NixOS System
+  hardware.opengl = {
     enable = true;
+    driSupport = true;
   };
   
-  nix.gc = { # Automatic Garbage Collection
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
+  # Nix Settings
+  nixpkgs.config.allowUnfree = false;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   # System Software & Packages
   environment.systemPackages = with pkgs; [
     # Important (System)
     pkgs.git
-    pkgs.home-manager
     pkgs.curl
-    pkgs.appimage-run
-
-    # Desktop Dependencies
-    pkgs.alacritty
-    pkgs.waybar
-    pkgs.swaybg
-    pkgs.dunst
-    pkgs.wofi
-    pkgs.pavucontrol
+    
+    # Grahical Environment
+    pkgs.st
+    pkgs.dmenu
 
     # &Othr
-    pkgs.pfetch
     pkgs.btop
     pkgs.tree
-
-    pkgs.xfce.thunar
-    pkgs.gnome.file-roller
-    pkgs.wget
-    pkgs.lxappearance-gtk2
-  ];
-  
-  fonts.packages = with pkgs; [ # Waybar Dependencies
-    pkgs.font-awesome
-    pkgs.nerdfonts
   ];
   
   # Daemons, Services, & Programs;
-  services.xserver.libinput.enable = true;
-
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-  
   services.openssh.enable = true;
-  services.printing.enable = true;
-  services.udisks2 = {
-    enable = true;
-  };
-
+  services.udisks2.enable = true;
+  programs.neovim.enable = true; # You'll need a text editor at least;
+  
   programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;

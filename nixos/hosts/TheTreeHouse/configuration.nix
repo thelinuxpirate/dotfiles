@@ -87,15 +87,16 @@
     pkgs.swaybg
     pkgs.dunst
     pkgs.wofi
+    pkgs.xfce.thunar
+    pkgs.gnome.file-roller
     pkgs.pavucontrol
+    pkgs.sway-contrib.grimshot
 
     # &Othr
     pkgs.pfetch
     pkgs.btop
     pkgs.tree
 
-    pkgs.xfce.thunar
-    pkgs.gnome.file-roller
     pkgs.wget
     pkgs.lxappearance-gtk2
   ];

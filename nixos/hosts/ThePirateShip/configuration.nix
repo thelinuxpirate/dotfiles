@@ -23,7 +23,7 @@
   time.timeZone = "America/Los_Angeles";
 
   # Networking & Pinguino
-  networking.hostName = "TheTreeHouse";
+  networking.hostName = "ThePirateShip";
   networking.networkmanager.enable = true;
 
   security.doas = {
@@ -31,9 +31,9 @@
     wheelNeedsPassword = false;
   };
 
-  users.users.pinguino = {
+  users.users.tlp = {
     isNormalUser = true;
-    description = "Larry Hamilton";
+    description = "TheLinuxPirate";
     extraGroups = [ "networkmanager" "wheel" ];
   };
   
@@ -45,7 +45,6 @@
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.wayland  = true;
-#  programs.hyprland.enable = true;
 
   # Sound & Media
   sound.enable = true;
@@ -65,7 +64,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   system.autoUpgrade = { # Auto-Upgrade NixOS System
-    enable = true;
+    enable = false;
   };
   
   nix.gc = { # Automatic Garbage Collection
@@ -88,15 +87,16 @@
     pkgs.swaybg
     pkgs.dunst
     pkgs.wofi
+    pkgs.xfce.thunar
+    pkgs.gnome.file-roller
     pkgs.pavucontrol
+    pkgs.sway-contrib.grimshot
 
     # &Othr
     pkgs.pfetch
     pkgs.btop
     pkgs.tree
 
-    pkgs.xfce.thunar
-    pkgs.gnome.file-roller
     pkgs.wget
     pkgs.lxappearance-gtk2
   ];
@@ -113,18 +113,6 @@
     layout = "us";
     xkbVariant = "";
   };
-  
-  services.openssh.enable = true;
-  services.printing.enable = true;
-  services.udisks2 = {
-    enable = true;
-  };
 
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-  
   system.stateVersion = "23.05";
 }
