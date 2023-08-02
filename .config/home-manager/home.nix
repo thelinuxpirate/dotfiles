@@ -3,6 +3,7 @@
 {
   imports = [
     ./pingu/sh.nix
+    ./pingu/spicetify.nix
     ./pingu/themes.nix
   ];
   
@@ -20,7 +21,6 @@
 
     # Editors & Dev
     pkgs.helix
-    
     pkgs.blender
 
     # Programming
