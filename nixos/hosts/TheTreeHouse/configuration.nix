@@ -79,17 +79,24 @@
     pkgs.git
     pkgs.home-manager
     pkgs.curl
-    pkgs.appimage-run
 
+    pkgs.appimage-run
+    pkgs.pciutils
+    pkgs.usbutils
+    
     # Desktop Dependencies
     pkgs.alacritty
     pkgs.waybar
+    pkgs.python3
+    
     pkgs.swaybg
     pkgs.dunst
     pkgs.wofi
+
     pkgs.xfce.thunar
     pkgs.gnome.file-roller
     pkgs.pavucontrol
+
     pkgs.sway-contrib.grimshot
 
     # &Othr
@@ -97,6 +104,9 @@
     pkgs.btop
     pkgs.tree
 
+    pkgs.glxinfo
+    pkgs.vulkan-tools
+    
     pkgs.wget
     pkgs.lxappearance-gtk2
   ];
@@ -105,6 +115,17 @@
     pkgs.font-awesome
     pkgs.nerdfonts
   ];
+
+  # Gaming
+  programs.steam.enable = true;
+
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+  };
+  hardware.pulseaudio.support32Bit = true;
   
   # Daemons, Services, & Programs;
   services.xserver.libinput.enable = true;
