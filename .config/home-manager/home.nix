@@ -3,8 +3,8 @@
 {
   imports = [
     ./pingu/sh.nix
-    ./pingu/spicetify.nix
     ./pingu/themes.nix
+    ./pingu/spicetify.nix
   ];
   
   nixpkgs.config.allowUnfreePredicate = _: true;
@@ -19,6 +19,10 @@
     pkgs.discord
     pkgs.betterdiscordctl
 
+    pkgs.tor-browser-bundle-bin
+    pkgs.nyx
+    pkgs.transmission-gtk
+    
     # Editors & Dev
     pkgs.helix
     pkgs.blender
@@ -36,7 +40,6 @@
     pkgs.zls
     
      # Python
-    pkgs.python3
     pkgs.python311Packages.pip
 
      # Go
@@ -65,7 +68,6 @@
     pkgs.vlc
 
     # Gaming
-    pkgs.steam
     pkgs.steam-tui
 
     pkgs.lutris
@@ -74,6 +76,8 @@
     pkgs.neofetch
     pkgs.krabby
     pkgs.pipes
+
+    pkgs.mpvpaper
     pkgs.obsidian
   ];
 
@@ -84,7 +88,6 @@
   };
 
   services.emacs.enable = true;
-
   programs.emacs = { 
     enable = true; 
     package = pkgs.emacs29-gtk3;
@@ -97,7 +100,6 @@
     viAlias = true;
     vimAlias = true;
   };
-  
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
