@@ -12,24 +12,63 @@ window#waybar {
     background: transparent;
 }
 
+/* STANDARD COLORS
+Bar: #1A1B26
+Bar-Font: #cdd6f4
+
+Workspaces-Font: #cdd6f4
+Workspaces-Hover: #80a0ff
+Workspaces-Highlight: #080808
+
+Clock-Background: #80a0ff
+Clock-Font: #080808
+
+Spotify-Font: #73DACA
+CPU-Font: #F7768E
+RAM-Font: #BB9AF7
+Submap-Font: #F7768E
+Pulseaudio-Font: #7DCFFF
+Pulseaudio-Muted-Font: #e3c78a
+*/
+
+/* SIEGMEYER DRIP
+Bar: #472F20
+Bar-Font: #FBDAA7
+
+Workspaces-Font: #FBDAA7
+Workspaces-Hover: #5E4642
+Workspaces-Highlight: #937C5D
+
+Clock-Background: #5E4642
+Clock-Font: #937C5D
+
+Spotify-Font: #BCA873
+CPU-Font: #E58C45
+RAM-Font: #FCD8A5
+Submap-Font: #5F4534 
+Pulseaudio-Font: #FFEFDA
+Pulseaudio-Muted-Font: #e3c78a
+*/
+
+
 /*-----module groups----*/
 .modules-right {
-		background: #1A1B26;
-		color: #cdd6f4;
+		background: #472F20;
+		color: #FBDAA7;
 		font-weight: bold;
 	/* background: rgba(8,8,8,0.01);*/
 		border-radius: 12px;
 }
 .modules-center {
 	/* background: rgba(8,8,8,0.01); */
-		background: #1A1B26;
-		color: #cdd6f4;
+		background: #472F20;
+		color: #FBDAA7;
 		font-weight: bold;
 		border-radius: 12px;
 }
 .modules-left {
-		background: #1A1B26;
-		color: #cdd6f4;
+		background: #472F20;
+		color: #FBDAA7;
 		font-weight: bold;
 	/* background: transparent; */
 		border-radius: 12px;
@@ -41,19 +80,19 @@ tooltip {
 }
 
 #workspaces {
-		color: #cdd6f4;
+		color: #FBDAA7;
 }
 
 /*-----modules indv----*/
 #workspaces button {
 	font-size: 4px;
 	border-radius: 12px;
-	color: #cdd6f4;
+	color: #FBDAA7;
 	font-weight: bold;
 }
 
 #workspaces button:hover {
-	color: #80a0ff;
+	color: #5E4642;
 }
 
 #workspaces button.urgent {
@@ -64,38 +103,37 @@ tooltip {
 
 #workspaces button.active {
     font-weight: bold;
-	background: #80a0ff;
-	color: #080808;
+	background: #5E4642;
+	color: #937C5D;
 }
 
 #clock {
 	border-radius: 12px;
 	font-weight: bold;
 	font-size: 11pt;
-	background: #80a0ff;
-	color: #080808;
+	background: #5E4642;
+	color: #937C5D;
 	padding: 6 0px;
 }
 
 #custom-spotify {
-    color: #73DACA; 
+    color: #BCA873; 
 }
 
-
 #cpu {
-		color: #F7768E;
+		color: #E58C45;
 }
 
 #memory {
-		color: #BB9AF7;
+		color: #FCD8A5;
 }
 
 #pulseaudio {
-		color: #7DCFFF;
+		color: #FFEFDA;
 }
 
 #submap {
-		color: #F7768E;
+		color: #5F4534;
 		font-weight: bold;
 }
 
@@ -115,14 +153,6 @@ tooltip {
 }
 
 /*-----Indicators----*/
-#network.disconnected {
-	color: #ff5454;
-	font-weight: bold;
-}
-#network.disabled {
-	color: #e3c78a;
-	font-weight: bold;
-}
 #pulseaudio.muted {
     color: #e3c78a;
 	font-weight: bold;
