@@ -37,8 +37,8 @@
 (elpaca `(,@elpaca-order))
 
 (elpaca elpaca-use-package
-  (elpaca-use-package-mode))
-  ;;(setq elpaca-use-package-by-default t))
+  (elpaca-use-package-mode)
+  (setq elpaca-use-package-by-default t))
 (elpaca-wait)
 
 ;; Important Package to keep ~/.emacs.d/ clean
@@ -60,8 +60,8 @@
 (setq tab-width 2)
 
 (load "~/.emacs.d/lisp/elisp.el")
-(load "~/.emacs.d/lisp/linux.el")
-;;(load "~/.emacs.d/lisp/home.el")
+(load "~/.emacs.d/lisp/home.el")
+;;(load "~/.emacs.d/lisp/linux.el")
 
 ;; Looks & Fonts
 (use-package doom-themes
@@ -141,6 +141,7 @@
 (use-package treemacs-all-the-icons :elpaca t :config (treemacs-load-theme "all-the-icons"))
 
 ;; Utilities & Misc
+(use-package vterm :elpaca t)
 (use-package magit :elpaca t)
 
 (use-package perspective
@@ -201,7 +202,7 @@
 (use-package cargo :elpaca t)
 
 (use-package go-mode :elpaca t)
-(use-package lua-mode)
+(use-package lua-mode :elpaca t)
 (use-package haskell-mode :elpaca t)
 (use-package zig-mode :elpaca t) ;; Install zls for lsp
 

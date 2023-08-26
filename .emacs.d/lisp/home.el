@@ -1,9 +1,6 @@
 ;; EXWM Plugins
-(use-package perspective-exwm
-	:demand t)
-
-(use-package buffer-move
-	:demand t)
+(use-package perspective-exwm :elpaca t)
+(use-package buffer-move :elpaca t)
 
 ;; Custom Functions
 (defun zonai/desktop-manual () (interactive)
@@ -40,7 +37,7 @@
 (defun zonai/update-wallpaper ()
 	(interactive)
 	(start-process-shell-command
-	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/DS.jpg"))
+	 "feh" nil "feh --bg-scale ~/.emacs.d/.custom/wallpapers/wind-waker.jpg"))
 
 (defun zonai/exwm-input-set-key (key command)
 	"Similar to `exwm-input-set-key', but always refreshes prefix keys.
@@ -74,7 +71,7 @@
 
 ;; EXWM Configuration
 (use-package exwm
-	:demand t
+	:elpaca t
 	:init
   (setq mouse-autoselect-window nil
         focus-follows-mouse t)
@@ -327,7 +324,7 @@
 		(exwm-enable))
 
 (use-package desktop-environment
-	:demand t
+	:elpaca t
 	:after exwm
 	:config (desktop-environment-mode)
 	:custom
