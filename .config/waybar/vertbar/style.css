@@ -53,22 +53,22 @@ Pulseaudio-Muted-Font: #e3c78a
 
 /*-----module groups----*/
 .modules-right {
-		background: #472F20;
-		color: #FBDAA7;
+		background: #1A1B26;
+		color: #cdd6f4;
 		font-weight: bold;
 	/* background: rgba(8,8,8,0.01);*/
 		border-radius: 12px;
 }
 .modules-center {
 	/* background: rgba(8,8,8,0.01); */
-		background: #472F20;
-		color: #FBDAA7;
+		background: #1A1B26;
+		color: #cdd6f4;
 		font-weight: bold;
 		border-radius: 12px;
 }
 .modules-left {
-		background: #472F20;
-		color: #FBDAA7;
+		background: #1A1B26;
+		color: #cdd6f4;
 		font-weight: bold;
 	/* background: transparent; */
 		border-radius: 12px;
@@ -80,19 +80,19 @@ tooltip {
 }
 
 #workspaces {
-		color: #FBDAA7;
+		color: #cdd6f4;
 }
 
 /*-----modules indv----*/
 #workspaces button {
 	font-size: 4px;
 	border-radius: 12px;
-	color: #FBDAA7;
+	color: #cdd6f4;
 	font-weight: bold;
 }
 
 #workspaces button:hover {
-	color: #5E4642;
+	color: #80a0ff;
 }
 
 #workspaces button.urgent {
@@ -103,37 +103,37 @@ tooltip {
 
 #workspaces button.active {
     font-weight: bold;
-	background: #5E4642;
-	color: #937C5D;
+	background: #80a0ff;
+	color: #080808;
 }
 
 #clock {
 	border-radius: 12px;
 	font-weight: bold;
 	font-size: 11pt;
-	background: #5E4642;
-	color: #937C5D;
+	background: #80a0ff;
+	color: #080808;
 	padding: 6 0px;
 }
 
 #custom-spotify {
-    color: #BCA873; 
+    color: #73DACA; 
 }
 
 #cpu {
-		color: #E58C45;
+		color: #F7768E;
 }
 
 #memory {
-		color: #FCD8A5;
+		color: #BB9AF7;
 }
 
 #pulseaudio {
-		color: #FFEFDA;
+		color: #7DCFFF;
 }
 
 #submap {
-		color: #5F4534;
+		color: #F7768E;
 		font-weight: bold;
 }
 
