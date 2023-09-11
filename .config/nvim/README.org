@@ -1,2 +1,0 @@
-* TheLinuxPirate's Neovim Configuration
-A very basic neovim config built on top of the Lazy plugin manager :)
