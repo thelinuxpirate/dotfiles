@@ -15,22 +15,26 @@
 
   home.packages = [
     # Web, & Media
-    pkgs.firefox
+    pkgs.firefox-devedition
     pkgs.discord
     pkgs.betterdiscordctl
 
     pkgs.tor-browser-bundle-bin
-    pkgs.nyx
     pkgs.transmission-gtk
+    pkgs.playerctl
     
-    # Editors & Dev
-    pkgs.helix
+    # General
+    pkgs.obs-studio
+    pkgs.obs-studio-plugins.wlrobs
+    pkgs.vlc
+
     pkgs.blender
+    pkgs.gimp
+    pkgs.krita
 
     # Programming
-     # Rust
-    pkgs.rustup
-
+     # Rust (TODO/Use Overlay)
+    
      # Nim
     pkgs.nim
     pkgs.nimlsp
@@ -50,6 +54,9 @@
     pkgs.gnumake
     pkgs.cmake
 
+     # Lua
+    pkgs.lua
+
     # Emulation, & Wine
     pkgs.yuzu
     pkgs.dolphin-emu
@@ -62,14 +69,8 @@
     pkgs.wineWowPackages.stable
     pkgs.winetricks
 
-    # Videos & Streaming
-    pkgs.obs-studio
-    pkgs.obs-studio-plugins.wlrobs
-    pkgs.vlc
-
     # Gaming
     pkgs.steam-tui
-
     pkgs.lutris
     
     # Misc
@@ -87,18 +88,47 @@
     EDITOR = "emacs";
   };
 
-  services.emacs.enable = true;
-  programs.emacs = { 
-    enable = true; 
-    package = pkgs.emacs29-gtk3;
-  };
-
   programs.neovim = {
     enable = true;
     defaultEditor = false;
 
     viAlias = true;
     vimAlias = true;
+  };
+
+  programs.foot = {
+    enable = true;
+    server.enable = true;
+    settings = {
+      main = {
+        term = "xterm-256color";
+        font = "Comic Mono:size=11";
+        pad = "6x6 center";
+        dpi-aware = "yes";
+      };
+      mouse = { hide-when-typing = "yes"; };
+
+      colors = {
+        foreground = "cdd6f4";
+        background = "1e1e2e";
+        regular0 = "45475a";
+        regular1 = "f38ba8";
+        regular2 = "a6e3a1";
+        regular3 = "f9e2af";
+        regular4 = "89b4fa";
+        regular5 = "f5c2e7";
+        regular6 = "94e2d5";
+        regular7 = "bac2de";
+        bright0 = "585b70";
+        bright1 = "f38ba8";
+        bright2 = "a6e3a1";
+        bright3 = "f9e2af";
+        bright4 = "89b4fa";
+        bright5 = "f5c2e7";
+        bright6 = "94e2d5";
+        bright7 = "a6adc8";
+      };
+    };
   };
 
   # Let Home Manager install and manage itself.

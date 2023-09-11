@@ -9,6 +9,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Rust-Overlay
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Spicetify
     spicetify-nix.url = "github:the-argus/spicetify-nix";
   };
@@ -18,6 +23,7 @@
   nixpkgs,
   flake-utils,
   home-manager,
+  rust-overlay,
   spicetify-nix,
   ... 
   }@inputs:
@@ -25,6 +31,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       specialArgs = {
+        inherit rust-overlay;
         inherit spicetify-nix;
       }; in { 
       homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
@@ -32,6 +39,10 @@
         extraSpecialArgs = specialArgs;
         modules = [
           ./home.nix
+          ({ pkgs, ... }: { # Rust
+            nixpkgs.overlays = [ rust-overlay.overlays.default ];
+            home.packages = [ pkgs.rust-bin.stable.latest.default ];
+          })
         ];
       };
     };
