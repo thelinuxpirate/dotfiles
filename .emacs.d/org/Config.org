@@ -1,8 +1,0 @@
-#+title: Zonaimacs Configuration (in progress...)
-* Zonaimacs?
-Zonaimacs is my own personal configuration and personal desktop of emacs.
-I dont really expect this to work on every machine so if you ever want to use this config, feel free to;
-but a stable system isnt guaranteed!
-** Features
-- Emacs Desktop Environment (thanks to EXWM)
-- ...
