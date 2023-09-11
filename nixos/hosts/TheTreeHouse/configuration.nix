@@ -1,4 +1,4 @@
-{ config, pkgs, callPackage, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -85,8 +85,9 @@
     pkgs.usbutils
     
     # Desktop Dependencies
-    pkgs.alacritty
+    pkgs.foot
     pkgs.waybar
+    pkgs.eww-wayland
     pkgs.python3
     
     pkgs.swaybg
@@ -110,12 +111,24 @@
     pkgs.wget
     pkgs.lxappearance-gtk2
   ];
-  
-  fonts.packages = with pkgs; [ # Waybar Dependencies
-    pkgs.font-awesome
-    pkgs.nerdfonts
-  ];
 
+  # Fonts
+  fonts = {
+    packages = with pkgs; [ # Desktop & Snormacs Fonts
+      pkgs.comic-mono
+      pkgs.font-awesome
+      pkgs.nerdfonts
+    ];
+    fontDir.enable = true;
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "Comic Mono" ];
+        sansSerif = [ "Comic Mono" ];
+        monospace = [ "Comic Mono" ];
+      };
+    };
+  };
+  
   # Gaming
   programs.steam.enable = true;
 
@@ -128,6 +141,7 @@
   hardware.pulseaudio.support32Bit = true;
   
   # Daemons, Services, & Programs;
+  services.emacs.enable = true;
   services.xserver.libinput.enable = true;
 
   services.xserver = {
