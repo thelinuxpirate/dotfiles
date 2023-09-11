@@ -1,8 +1,6 @@
 ** Todo List and Updates:
-- [...] Rewrite nearly everything (Close to complete)
+- [...] Add more functions to Nix Config
 - [...] Write Neovim config
-- [...] Rewrite Emacs config (Close to stable)
-- [X] Create a Desktop-like EXWM environment
 
 ** Setup
 In progress...
