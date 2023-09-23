@@ -10,10 +10,11 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [];
 
+  
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/9dbc8411-3d1c-4d51-9f49-5aeefef86168";
       fsType = "ext4";
