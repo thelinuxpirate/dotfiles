@@ -9,6 +9,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Emacs-Overlay
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Rust-Overlay
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -23,6 +28,7 @@
   nixpkgs,
   flake-utils,
   home-manager,
+  emacs-overlay,
   rust-overlay,
   spicetify-nix,
   ... 
@@ -31,6 +37,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       specialArgs = {
+        inherit emacs-overlay;
         inherit rust-overlay;
         inherit spicetify-nix;
       }; in { 
@@ -39,10 +46,10 @@
         extraSpecialArgs = specialArgs;
         modules = [
           ./home.nix
-          ({ pkgs, ... }: { # Rust
-            nixpkgs.overlays = [ rust-overlay.overlays.default ];
-            home.packages = [ pkgs.rust-bin.stable.latest.default ];
-          })
+           ({ pkgs, ... }: { # Rust
+             nixpkgs.overlays = [ rust-overlay.overlays.default ];
+             home.packages = [ pkgs.rust-bin.beta.latest.default ];
+           })
         ];
       };
     };

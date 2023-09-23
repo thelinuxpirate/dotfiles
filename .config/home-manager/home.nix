@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, emacs-overlay, ... }:
 
 {
   imports = [
@@ -13,11 +13,12 @@
   home.username = "pinguino";
   home.homeDirectory = "/home/pinguino";
 
-  home.packages = [
+  home.packages = [    
     # Web, & Media
     pkgs.firefox-devedition
     pkgs.discord
     pkgs.betterdiscordctl
+    pkgs.grapejuice
 
     pkgs.tor-browser-bundle-bin
     pkgs.transmission-gtk
@@ -33,8 +34,6 @@
     pkgs.krita
 
     # Programming
-     # Rust (TODO/Use Overlay)
-    
      # Nim
     pkgs.nim
     pkgs.nimlsp
@@ -42,6 +41,10 @@
      # Zig
     pkgs.zig
     pkgs.zls
+
+     # Lisp/Scheme
+    pkgs.sbcl
+    pkgs.guile_3_0
     
      # Python
     pkgs.python311Packages.pip
@@ -56,6 +59,9 @@
 
      # Lua
     pkgs.lua
+
+     # Web
+    pkgs.nodejs
 
     # Emulation, & Wine
     pkgs.yuzu
@@ -82,18 +88,10 @@
     pkgs.obsidian
   ];
 
-  home.file = {};
+#  home.file = {};
 
   home.sessionVariables = {
     EDITOR = "emacs";
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = false;
-
-    viAlias = true;
-    vimAlias = true;
   };
 
   programs.foot = {
@@ -129,6 +127,17 @@
         bright7 = "a6adc8";
       };
     };
+  };
+  
+  services.emacs.enable = true;   
+  programs.emacs = {
+    enable = true;
+    package = emacs-overlay.packages.${pkgs.system}.emacs-pgtk;
+  };
+  
+  programs.helix = {
+    enable = true;
+    defaultEditor = false;
   };
 
   # Let Home Manager install and manage itself.

@@ -18,7 +18,7 @@
       t = "tree";
       vi = "nvim";
 
-      melee = "cd && ./System/Applications/Slippi/Slippi-Launcher.AppImage && cd -";
+      rs-nix = "nix run github:cargo2nix/cargo2nix";
       discordBot = "cd && ./System/Code/wiggler/target/release/wiggler && cd -";
     };
   };
