@@ -15,9 +15,11 @@ import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce
 
 import qualified XMonad.Actions.TreeSelect as TS
-import XMonad.Actions.GridSelect as GS
+import XMonad.Actions.GridSelect
 import XMonad.Actions.CycleWindows as CW
 
+import XMonad.Layout
+import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.Magnifier
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Spacing
@@ -39,6 +41,9 @@ myModMask = mod4Mask
 
 altModMask :: KeyMask
 altModMask = mod1Mask
+
+myFont :: String
+myFont = "xft:Comic Mono"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
@@ -65,7 +70,7 @@ myManageHook = composeAll
     [ className =? "Gimp" --> doFloat
     , isDialog            --> doFloat
     ]
-
+-- ............................................................................... --
 myWorkspaces :: Forest String
 myWorkspaces = [ Node "Dev"
                    [ Node "Snormacs" []
@@ -108,7 +113,7 @@ myWorkspaces = [ Node "Dev"
 tsDefaultConfig :: TS.TSConfig a
 tsDefaultConfig = TS.TSConfig { TS.ts_hidechildren = False
                               , TS.ts_background   = 0xdd292d3e
-                              , TS.ts_font = "xft:Comic Mono"
+                              , TS.ts_font         = myFont 
                               , TS.ts_node         = (0xffd0d0d0, 0xff202331)
                               , TS.ts_nodealt      = (0xffd0d0d0, 0xff292d3e)
                               , TS.ts_highlight    = (0xffffffff, 0xff755999)
@@ -147,7 +152,43 @@ myLayout = tiled ||| Mirror tiled ||| Full ||| threeCol
     nmaster  = 1      -- Master pane windows
     ratio    = 1/2    -- Default proportion of screen occupied by master pane
     delta    = 3/100  -- Percent of screen to increment by when resizing panes
+-- ............................................................................... -- (Grids)
+myColorizer :: Window -> Bool -> X (String, String)
+myColorizer = colorRangeFromClassName
+                  (0x29,0x2d,0x3e) -- lowest inactive bg
+                  (0x29,0x2d,0x3e) -- highest inactive bg
+                  (0xc7,0x92,0xea) -- active bg
+                  (0xc0,0xa7,0x9a) -- inactive fg
+                  (0x29,0x2d,0x3e) -- active fg
 
+myGridConfig :: p -> GSConfig Window
+myGridConfig colorizer = (buildDefaultGSConfig myColorizer)
+    { gs_cellheight   = 40
+    , gs_cellwidth    = 200
+    , gs_cellpadding  = 6
+    , gs_originFractX = 0.5
+    , gs_originFractY = 0.5
+    , gs_font         = myFont
+    }
+
+myLayoutGrid :: [(String, String)]
+myLayoutGrid = [ ("Tiled", "Tall")
+                , ("Mirror Tiled", "Mirror Tall")
+                , ("Fullscreen", "Full")
+                , ("Three Collums", "threeCol")
+                ]
+
+spawnLayoutSelector :: [(String, String)] -> X ()
+spawnLayoutSelector lst = gridselect conf lst >>= flip whenJust (sendMessage . JumpToLayout)
+    where conf = def
+                   { gs_cellheight   = 40
+                   , gs_cellwidth    = 200
+                   , gs_cellpadding  = 6
+                   , gs_originFractX = 0.5
+                   , gs_originFractY = 0.5
+                   , gs_font         = myFont
+                   }
+-- ............................................................................... --
 main :: IO ()
 main = xmonad
      . ewmhFullscreen
@@ -178,7 +219,8 @@ myConfig = def
     , ("M-<Space> s", spawn "spotify")
     , ("M-<Space> d", spawn "discord")
     , ("M-<Space> p", spawn "pavucontrol")
-
+    
+    , ("M-<Space> <Space>", spawnSelected def ["xterm","gmplayer","gvim"])
     , ("M-d", spawn "rofi -show drun")
 
     -- XMonad/Window Management
@@ -187,6 +229,7 @@ myConfig = def
     , ("M-w", kill)
 
     -- Layout Maanagement
+    , ("M-<Space> l", spawnLayoutSelector myLayoutGrid)
 
     -- FN + XF86 Keys | Multimedia Options
     , ("<XF86HomePage>", TS.treeselectWorkspace tsDefaultConfig myWorkspaces W.greedyView)
