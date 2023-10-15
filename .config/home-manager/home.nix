@@ -22,8 +22,7 @@
 
     pkgs.tor-browser-bundle-bin
     pkgs.transmission-gtk
-    pkgs.playerctl
-    
+
     # General
     pkgs.obs-studio
     pkgs.obs-studio-plugins.wlrobs
@@ -33,11 +32,28 @@
     pkgs.gimp
     pkgs.krita
 
+    pkgs.qemu
+
     # Programming
-     # Nim
+     # Haskell
+    pkgs.ghc
+    pkgs.cabal-install
+    pkgs.stack
+
+      # Godot + .NET
+    pkgs.godot_4
+    pkgs.gdtoolkit
+    pkgs.pixelorama
+
+    pkgs.dotnet-sdk_8
+    
+      # Nim
     pkgs.nim
     pkgs.nimlsp
 
+     # Elixir
+    pkgs.asdf
+    
      # Zig
     pkgs.zig
     pkgs.zls
@@ -57,6 +73,8 @@
     pkgs.gnumake
     pkgs.cmake
 
+    pkgs.pixelorama
+ 
      # Lua
     pkgs.lua
 
@@ -81,65 +99,68 @@
     
     # Misc
     pkgs.neofetch
+    pkgs.onefetch
+    pkgs.ffmpeg
+    
     pkgs.krabby
     pkgs.pipes
-
-    pkgs.mpvpaper
-    pkgs.obsidian
   ];
-
-#  home.file = {};
 
   home.sessionVariables = {
     EDITOR = "emacs";
   };
 
-  programs.foot = {
-    enable = true;
-    server.enable = true;
-    settings = {
-      main = {
-        term = "xterm-256color";
-        font = "Comic Mono:size=11";
-        pad = "6x6 center";
-        dpi-aware = "yes";
-      };
-      mouse = { hide-when-typing = "yes"; };
+  services.emacs.enable = true; # XMonad Issues
+  programs = {
+    kitty = {
+      enable = true;
+      shellIntegration.enableZshIntegration = true;
+      font.name = "Comic Mono";
+      font.size = 11;
+      theme = "Catppuccin-Macchiato";
+    };
+    tmux = {
+      enable = true;
+      tmuxinator.enable = true;
 
-      colors = {
-        foreground = "cdd6f4";
-        background = "1e1e2e";
-        regular0 = "45475a";
-        regular1 = "f38ba8";
-        regular2 = "a6e3a1";
-        regular3 = "f9e2af";
-        regular4 = "89b4fa";
-        regular5 = "f5c2e7";
-        regular6 = "94e2d5";
-        regular7 = "bac2de";
-        bright0 = "585b70";
-        bright1 = "f38ba8";
-        bright2 = "a6e3a1";
-        bright3 = "f9e2af";
-        bright4 = "89b4fa";
-        bright5 = "f5c2e7";
-        bright6 = "94e2d5";
-        bright7 = "a6adc8";
-      };
+      mouse = true;
+      secureSocket = true;
+      disableConfirmationPrompt = true;
+
+      historyLimit = 5000;
+      escapeTime = 650;
+      resizeAmount = 2;
+      clock24 = true;
+      
+      prefix = "C-x";
+    };
+    emacs = { # Use "Pgtk" for pure GTK | Wayland ONLY, no EXWM
+      enable = true;
+      package = emacs-overlay.packages.${pkgs.system}.emacs-unstable;
+    };
+    neovim = {
+      enable = true;
+      defaultEditor = false;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+    };
+    rofi = {
+      enable = true;
+      package = pkgs.rofi.override { plugins = [
+        pkgs.rofi-systemd
+        pkgs.rofi-file-browser
+        pkgs.rofi-mpd
+        pkgs.rofi-vpn
+        pkgs.rofi-calc
+      ]; };
+
+      font = "Comic Mono";
+      theme = "sidebar";
+      location = "center";
     };
   };
   
-  services.emacs.enable = true;   
-  programs.emacs = {
-    enable = true;
-    package = emacs-overlay.packages.${pkgs.system}.emacs-pgtk;
-  };
-  
-  programs.helix = {
-    enable = true;
-    defaultEditor = false;
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   home.stateVersion = "22.11";

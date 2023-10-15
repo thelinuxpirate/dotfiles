@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Zsh Shell
@@ -18,6 +18,8 @@
       t = "tree";
       vi = "nvim";
 
+      rebuild = "doas nixos-rebuild switch";
+      
       rs-nix = "nix run github:cargo2nix/cargo2nix";
       discordBot = "cd && ./System/Code/wiggler/target/release/wiggler && cd -";
     };
