@@ -41,14 +41,38 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
    
-  # Desktop
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland  = true;
+  # Desktop:
+  services.xserver = {
+    enable = true;
+    updateDbusEnvironment = true;
 
+    displayManager.startx.enable = true;
+    displayManager.gdm = {
+      enable = true;
+      autoSuspend = false;
+      wayland  = false;
+    };
+
+    windowManager.xmonad = {
+      enable = true;
+      enableContribAndExtras = true;
+    };
+
+    displayManager.session = [
+      {
+        manage = "window";
+        name = "EXWM";
+        start = ''
+         emacs 
+         '';
+      }
+    ];
+  };
+  
   # Sound & Media
   sound.enable = true;
   hardware.pulseaudio.enable = false;
+  hardware.pulseaudio.support32Bit = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -85,20 +109,21 @@
     pkgs.usbutils
     
     # Desktop Dependencies
-    pkgs.foot
-    pkgs.waybar
-    pkgs.eww-wayland
-    pkgs.python3
-    
-    pkgs.swaybg
+    pkgs.kitty
+    pkgs.dmenu
+
+    pkgs.eww
+    pkgs.feh
+    pkgs.picom-jonaburg
+
     pkgs.dunst
-    pkgs.wofi
+    pkgs.flameshot
+    pkgs.playerctl
+    pkgs.brightnessctl
 
     pkgs.xfce.thunar
     pkgs.gnome.file-roller
     pkgs.pavucontrol
-
-    pkgs.sway-contrib.grimshot
 
     # &Othr
     pkgs.pfetch
@@ -107,9 +132,6 @@
 
     pkgs.glxinfo
     pkgs.vulkan-tools
-    
-    pkgs.wget
-    pkgs.lxappearance-gtk2
   ];
 
   # Fonts
@@ -131,24 +153,21 @@
   
   # Gaming
   programs.steam.enable = true;
-
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = [ pkgs.mesa.drivers ];
   };
-  hardware.pulseaudio.support32Bit = true;
   
   # Daemons, Services, & Programs;
-  services.emacs.enable = true;
   services.xserver.libinput.enable = true;
-
   services.xserver = {
     layout = "us";
     xkbVariant = "";
   };
-  
+
+  services.emacs.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
   services.udisks2 = {

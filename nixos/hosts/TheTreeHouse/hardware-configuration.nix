@@ -7,26 +7,24 @@
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
-
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [];
+  boot.extraModulePackages = [ ];
 
-  
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/9dbc8411-3d1c-4d51-9f49-5aeefef86168";
+    { device = "/dev/disk/by-uuid/b8a9494b-5cff-47f7-8543-4c581e12e7d5";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/DA16-CDBA";
+    { device = "/dev/disk/by-uuid/19E3-8B0B";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/bf78745a-9431-44a5-bafa-f87252b17ea3"; }
+    [ { device = "/dev/disk/by-uuid/5397c733-32c7-444e-8e79-934f12e86f9b"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
