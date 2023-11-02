@@ -5,6 +5,7 @@
     ./pingu/sh.nix
     ./pingu/themes.nix
     ./pingu/spicetify.nix
+    ./pingu/gaming.nix
   ];
   
   nixpkgs.config.allowUnfreePredicate = _: true;
@@ -18,99 +19,56 @@
     pkgs.firefox-devedition
     pkgs.discord
     pkgs.betterdiscordctl
-    pkgs.grapejuice
 
     pkgs.tor-browser-bundle-bin
     pkgs.transmission-gtk
-
-    # General
     pkgs.obs-studio
     pkgs.obs-studio-plugins.wlrobs
     pkgs.vlc
 
+    # General
     pkgs.blender
     pkgs.gimp
     pkgs.krita
-
     pkgs.qemu
 
-    # Programming
-     # Haskell
-    pkgs.ghc
-    pkgs.cabal-install
-    pkgs.stack
-
-      # Godot + .NET
-    pkgs.godot_4
-    pkgs.gdtoolkit
-    pkgs.pixelorama
-
-    pkgs.dotnet-sdk_8
-    
-      # Nim
-    pkgs.nim
-    pkgs.nimlsp
-
-     # Elixir
-    pkgs.asdf
-    
-     # Zig
-    pkgs.zig
-    pkgs.zls
-
-     # Lisp/Scheme
-    pkgs.sbcl
-    pkgs.guile_3_0
-    
-     # Python
-    pkgs.python311Packages.pip
-
-     # Go
-    pkgs.go
-    
-     # C / C++
-    pkgs.gcc
-    pkgs.gnumake
-    pkgs.cmake
-
-    pkgs.pixelorama
- 
-     # Lua
-    pkgs.lua
-
-     # Web
-    pkgs.nodejs
-
-    # Emulation, & Wine
-    pkgs.yuzu
-    pkgs.dolphin-emu
-    pkgs.snes9x-gtk
-    pkgs.mupen64plus
-    pkgs.citra-nightly
-    pkgs.vbam
-    
-    pkgs.bottles
-    pkgs.wineWowPackages.stable
-    pkgs.winetricks
-
-    # Gaming
-    pkgs.steam-tui
-    pkgs.lutris
-    
-    # Misc
+    pkgs.krabby
     pkgs.neofetch
     pkgs.onefetch
     pkgs.ffmpeg
+    pkgs.xdelta
+    pkgs.hyprpicker
     
-    pkgs.krabby
-    pkgs.pipes
+    # Programming
+    pkgs.ghc # Haskell
+    pkgs.cabal-install
+    pkgs.stack
+    pkgs.godot_4 # Godot/C#
+    pkgs.gdtoolkit
+    pkgs.pixelorama
+    pkgs.dotnet-sdk_8
+    pkgs.nim # Nim
+    pkgs.nimlsp
+    pkgs.asdf # Elixir 
+    pkgs.zig # Zig
+    pkgs.zls
+    pkgs.sbcl # Lisp/Scheme
+    pkgs.guile_3_0
+    pkgs.python311Packages.pip # Python
+    pkgs.go # Golang
+    pkgs.gcc # C/C++
+    pkgs.gnumake
+    pkgs.cmake
+    pkgs.lua # Lua
+    pkgs.nodejs # JS/TS
+    pkgs.bun
   ];
 
   home.sessionVariables = {
     EDITOR = "emacs";
   };
 
-  services.emacs.enable = true; # XMonad Issues
+  services.emacs.enable = true; # Has issues on XMonad
   programs = {
     kitty = {
       enable = true;
@@ -134,9 +92,9 @@
       
       prefix = "C-x";
     };
-    emacs = { # Use "Pgtk" for pure GTK | Wayland ONLY, no EXWM
+    emacs = { # Use "Pgtk" for pure GTK | Wayland ONLY; No EXWM
       enable = true;
-      package = emacs-overlay.packages.${pkgs.system}.emacs-unstable;
+      package = emacs-overlay.packages.${pkgs.system}.emacs-pgtk;
     };
     neovim = {
       enable = true;
@@ -161,7 +119,7 @@
     };
   };
   
-  # Let Home Manager install and manage itself.
+  # Home Manager required
   programs.home-manager.enable = true;
   home.stateVersion = "22.11";
 }

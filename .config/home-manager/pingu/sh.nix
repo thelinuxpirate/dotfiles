@@ -19,6 +19,7 @@
       vi = "nvim";
 
       rebuild = "doas nixos-rebuild switch";
+      slippi = "nix run github:lytedev/ssbm-nix#slippi-netplay";
       
       rs-nix = "nix run github:cargo2nix/cargo2nix";
       discordBot = "cd && ./System/Code/wiggler/target/release/wiggler && cd -";

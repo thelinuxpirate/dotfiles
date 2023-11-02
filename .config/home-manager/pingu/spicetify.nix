@@ -1,4 +1,6 @@
-{ pkgs, lib, spicetify-nix, ...}: {
+{ pkgs, lib, spicetify-nix, ... }:
+
+{
   imports = [ spicetify-nix.homeManagerModule ];
 
   programs.spicetify = let

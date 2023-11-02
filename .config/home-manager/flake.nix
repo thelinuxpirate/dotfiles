@@ -1,5 +1,5 @@
 {
-  description = "Home Manager Configuration for Pinguino";
+  description = "Personal Home Manager Configuration; Created by: TheLinuxPirate";
 
   inputs = {
     # Specify the source of Nixpkgs, get Flake-Utils, & Home-Manager:
@@ -20,7 +20,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Spicetify
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    spicetify-nix = {
+      url = "github:the-argus/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Gaming Tools
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -31,6 +39,7 @@
   emacs-overlay,
   rust-overlay,
   spicetify-nix,
+  nix-gaming,
   ... 
   }@inputs:
     let
@@ -40,17 +49,18 @@
         inherit emacs-overlay;
         inherit rust-overlay;
         inherit spicetify-nix;
+        inherit nix-gaming;
       }; in { 
-      homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = specialArgs;
-        modules = [
-          ./home.nix
-           ({ pkgs, ... }: { # Rust
-             nixpkgs.overlays = [ rust-overlay.overlays.default ];
-             home.packages = [ pkgs.rust-bin.beta.latest.default ];
-           })
-        ];
-      };
+        homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          extraSpecialArgs = specialArgs;
+          modules = [
+            ({ pkgs, ... }: { # Rust
+              nixpkgs.overlays = [ rust-overlay.overlays.default ];
+              home.packages = [ pkgs.rust-bin.beta.latest.default ];
+            })
+            ./home.nix
+          ];
+        };
     };
 }
