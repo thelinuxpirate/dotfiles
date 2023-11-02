@@ -3,10 +3,12 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  # SYSTEM:
+  # System
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  
   # Locales & Time Zone
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -45,28 +47,18 @@
   services.xserver = {
     enable = true;
     updateDbusEnvironment = true;
-
-    displayManager.startx.enable = true;
+    
     displayManager.gdm = {
       enable = true;
       autoSuspend = false;
-      wayland  = false;
+      wayland  = true;
     };
 
-    windowManager.xmonad = {
+    displayManager.startx.enable = true; # Error Checking (in case Hyprland has errors)
+    windowManager.xmonad = { 
       enable = true;
       enableContribAndExtras = true;
     };
-
-    displayManager.session = [
-      {
-        manage = "window";
-        name = "EXWM";
-        start = ''
-         emacs 
-         '';
-      }
-    ];
   };
   
   # Sound & Media
@@ -100,6 +92,7 @@
   # System Software & Packages
   environment.systemPackages = with pkgs; [
     # Important (System)
+    pkgs.kitty
     pkgs.git
     pkgs.home-manager
     pkgs.curl
@@ -107,31 +100,39 @@
     pkgs.appimage-run
     pkgs.pciutils
     pkgs.usbutils
+    pkgs.glxinfo
+    pkgs.vulkan-tools
     
+    # Graphical Desktop
+     # Hyprland | Wayland
+    pkgs.eww-wayland
+    pkgs.waybar
+    pkgs.wofi
+    pkgs.swaybg
+    pkgs.mpvpaper
+    pkgs.sway-contrib.grimshot
+
+     # XMonad | Xorg
+    # pkgs.polybar
+    # pkgs.feh
+    # pkgs.picom-jonaburg
+    # pkgs.flameshot
+
     # Desktop Dependencies
-    pkgs.kitty
-    pkgs.dmenu
-
-    pkgs.eww
-    pkgs.feh
-    pkgs.picom-jonaburg
-
     pkgs.dunst
-    pkgs.flameshot
     pkgs.playerctl
     pkgs.brightnessctl
 
     pkgs.xfce.thunar
     pkgs.gnome.file-roller
+    pkgs.bluetuith
+    pkgs.blueberry
     pkgs.pavucontrol
 
     # &Othr
     pkgs.pfetch
     pkgs.btop
     pkgs.tree
-
-    pkgs.glxinfo
-    pkgs.vulkan-tools
   ];
 
   # Fonts
@@ -153,11 +154,22 @@
   
   # Gaming
   programs.steam.enable = true;
+  programs.gamemode.enable = true;
+  services.joycond.enable = true;
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = [ pkgs.mesa.drivers ];
+  };
+
+  ssbm = { # Melee for NixOS
+    overlay.enable = true;
+    cache.enable = true;
+    gcc = {
+      oc-kmod.enable = true;
+      rules.enable = true;
+    };
   };
   
   # Daemons, Services, & Programs;
@@ -170,6 +182,7 @@
   services.emacs.enable = true;
   services.openssh.enable = true;
   services.printing.enable = true;
+  services.blueman.enable = true;
   services.udisks2 = {
     enable = true;
   };
