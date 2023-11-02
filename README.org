@@ -1,5 +1,5 @@
 #+title: TheLinuxPirate's Dotfiles
-**TODO:**
+*TODO:*
 - Find a way to get SSBM-Slippi working on Nix/NixOS
 - Set up EWW for Hyprland + Snormacs Desktop
 - Clean Up & Document Hyprland configuration
