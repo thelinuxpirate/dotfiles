@@ -1,6 +1,6 @@
 #+title: TheLinuxPirate's Dotfiles
 | Distro       | [[https://nixos.org][NixOS]]             |
-| Secondary Distro    | [[https://gentoo.org][Gentoo]]        |
+| Secondary Distro       | [[https://gentoo.org][Gentoo]]             |
 |-------+-------+-----|-----+|------+|--------+|-------+|
 | WM           | [[https://hyprland.org/][Hyprland]]                         |
 | Secondary WM | [[https://github.com/ch11ng/exwm][Emacs X Window Manager]]  |
