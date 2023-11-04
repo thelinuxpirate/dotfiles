@@ -4,7 +4,9 @@
 | :---        |    :----:   |
 | Distro      | [NixOS](https://nixos.org)            |
 | Secondary Distro   | [Gentoo](https://gentoo.org)   | 
-|------------------+-----------------------------------------------------------|
+
+| Software      | Description |
+| :---          |    :----:   |
 | WM               | [Hyprland](https://hyprland.org/)                         |
 | Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)  |
 | Editor           | [Snormacs](https://github.com/thelinuxpirate/Snormacs)    |
