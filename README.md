@@ -36,7 +36,7 @@ I only have one user and that user is "pingu".
 As of right now I do not need multiple Home-Manager configurations/declarations.
 My Home-Manager is purely the software I want installed on my system that shouldn't be installed with the system. (AKA bloat)
 
-## The TLP NixOS Struggle
+## NixOS Struggle
 I've struggled trying to use NixOS for about 7 months. 
 Now I have the configuration down to contain my configurations at a reproducible level.
 
