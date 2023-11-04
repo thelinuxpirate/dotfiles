@@ -2,8 +2,8 @@
 
 | System      | Description |
 | :---        |    :----:   |
-| Distro      | [NixOS](https://nixos.org)            |
-| Secondary Distro   | [Gentoo](https://gentoo.org)   | 
+| Distro      | [OpenSUSE Tumbleweed](https://www.opensuse.org/)    |
+| Secondary Distro   | [NixOS](https://nixos.org)   | 
 
 | Software      | Description |
 | :---          |    :----:   |
@@ -13,10 +13,10 @@
 | Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
 
 ## TODO
-- Find a way to get SSBM-Slippi working on Nix/NixOS
 - Set up EWW for Hyprland + Snormacs Desktop
 - Clean Up & Document Hyprland configuration
 - Add images of my NixOS Desktops to this repository
+- Find a way to get SSBM-Slippi working on Nix/NixOS
 - Write a simplistic Neovim configuration
 
 ## NixOS Machines
@@ -25,6 +25,8 @@
 ![TheTreeHouse Desktop](img/TheTreeHouseNix.png)
 TheTreeHouse is my personal Desktop computer which runs off of NixOS.
 It contains Hyprland as its main desktop; and XMonad in case of any reason in which I'd need a backup Desktop.
+
+(TheTreeHouse has now been migrated to OpenSUSE Tumbleweed due to issues on NixOS)
 
 ### ThePirateShip
 ThePirateShip is my personal laptop.
