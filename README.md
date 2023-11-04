@@ -1,7 +1,9 @@
 # TLP Dotfiles 2023
 
-| Distro           | [NixOS](https://nixos.org)                                |
-| Secondary Distro | [Gentoo](https://gentoo.org)                              |
+| System      | Description |
+| :---        |    :----:   |
+| Distro      | [NixOS](https://nixos.org)            |
+| Secondary Distro   | [Gentoo](https://gentoo.org)   | 
 |------------------+-----------------------------------------------------------|
 | WM               | [Hyprland](https://hyprland.org/)                         |
 | Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)  |
