@@ -1,6 +1,5 @@
 #+title: TheLinuxPirate's Dotfiles
 | Distro       | [NixOS](https://nixos.org/)                                      |
-|:------------:|:------------------------------------------------------------------:|
 | WM           | [Hyprland](https://hyprland.org/)                                  |
 | Secondary WM | [EXWM](https://github.com/ch11ng/exwm)                             |
 | Editor       | [Snormacs](https://github.com/thelinuxpirate/Snormacs)             |
