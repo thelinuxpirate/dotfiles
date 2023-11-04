@@ -17,7 +17,7 @@
 
 * NixOS Machines
 *** TheTreeHouse
-[[https://github.com/thelinuxpirate/dotfiles/img/TheTreeHouseNix.png][*TheTreeHouse Desktop*]]
+[[img/TheTreeHouseNix.png][*TheTreeHouse Desktop*]]
 TheTreeHouse is my personal Desktop computer which runs off of NixOS.
 It contains Hyprland as its main desktop; and XMonad in case of any reason in which I'd need a backup Desktop.
 
