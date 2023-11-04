@@ -1,12 +1,12 @@
 # TLP Dotfiles 2023
 
 | Distro           | [NixOS](https://nixos.org)                                |
-| Secondary Distro | [Gentoo](https://gentoo.org)                            |
-|------------------+--------------------------------------------------------|
-| WM               | [Hyprland](https://hyprland.org/)                        |
-| Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)|
-| Editor           | [Snormacs](https://github.com/thelinuxpirate/Snormacs)  |
-| Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)               |
+| Secondary Distro | [Gentoo](https://gentoo.org)                              |
+|------------------+-----------------------------------------------------------|
+| WM               | [Hyprland](https://hyprland.org/)                         |
+| Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)  |
+| Editor           | [Snormacs](https://github.com/thelinuxpirate/Snormacs)    |
+| Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
 
 ## TODO
 - Find a way to get SSBM-Slippi working on Nix/NixOS
