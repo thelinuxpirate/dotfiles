@@ -2,7 +2,7 @@
 
 | System      | Description |
 | :---        |    :----:   |
-| Distro      | [OpenSUSE Tumbleweed](https://www.opensuse.org/)    |
+| Distro      | [Artix(runit)](https://artixlinux.org/)    |
 | Secondary Distro   | [NixOS](https://nixos.org)   | 
 
 | Software      | Description |
