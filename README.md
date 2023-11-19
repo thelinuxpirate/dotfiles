@@ -2,18 +2,18 @@
 
 | System      | Description |
 | :---        |    :----:   |
-| Distro      | [Artix(runit)](https://artixlinux.org/)    |
+| Distro      | [Arch GNU/Linux](https://archlinux.org/)    |
 | Secondary Distro   | [NixOS](https://nixos.org)   | 
 
 | Software      | Description |
 | :---          |    :----:   |
-| WM               | [Hyprland](https://hyprland.org/)                         |
+| WM               | [DWM](https://dwm.suckless.org/)                         |
 | Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)  |
 | Editor           | [Snormacs](https://github.com/thelinuxpirate/Snormacs)    |
 | Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
 
 ## TODO
-- Set up EWW for Hyprland + Snormacs Desktop
+- Set up EWW for Snormacs Desktop
 - Clean Up & Document Hyprland configuration
 - Add images of my NixOS Desktops to this repository
 - Find a way to get SSBM-Slippi working on Nix/NixOS
