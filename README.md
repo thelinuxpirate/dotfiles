@@ -2,7 +2,7 @@
 
 | System      | Description |
 | :---        |    :----:   |
-| Distro      | [Arch GNU/Linux](https://archlinux.org/)    |
+| Distro      | [OpenSUSE Tumbleweed + Nix](https://www.opensuse.org/)    |
 | Secondary Distro   | [NixOS](https://nixos.org)   | 
 
 | Software      | Description |
