@@ -1,4 +1,6 @@
 export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.nimble/bin:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 xset r rate 200 60
 krabby random -i
@@ -15,10 +17,12 @@ export DEVKITPRO=/opt/devkitpro
 export DEVKITARM=/opt/devkitpro/devkitARM
 export DEVKITPPC=/opt/devkitpro/devkitPPC
 
+export BUN_INSTALL="$HOME/.bun"
+
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='emacs'
 else
-  export EDITOR='nvim'
+  export EDITOR='helix'
 fi
 
 if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
@@ -32,15 +36,18 @@ alias t='tree'
 
 alias ls='ls --color=auto'
 alias vi='nvim'
+alias hx='helix'
 alias discordBot='cd && ./System/Code/wiggler/target/release/wiggler && cd -'
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+alias zypi='sudo zypper in'
+alias zypr='sudo zypper rm'
+alias zyps='zypper se'
+alias zypu='sudo zypper up'
+alias zypdup='sudo zypper dup'
+alias zypar='sudo zypper ar'
+alias zyprf='sudo zypper refresh'
+
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+source $HOME/.nix-profile/etc/profile.d/nix.sh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 eval "$(starship init zsh)"
-export PATH=$PATH:/home/pingu/.spicetify
-
-# bun completions
-[ -s "/home/pingu/.bun/_bun" ] && source "/home/pingu/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
