@@ -2,7 +2,7 @@
 
 | System      | Description |
 | :---        |    :----:   |
-| Distro      | [Arch GNU/Linux + Nix](https://www.archlinux.org/)    |
+| Distro      | [Fedora GNU/Linux + Nix](https://fedoraproject.org/)    |
 | Secondary Distro   | [NixOS](https://nixos.org)   | 
 
 | Software      | Description |
