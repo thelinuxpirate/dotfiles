@@ -8,16 +8,14 @@
 | Software      | Description |
 | :---          |    :----:   |
 | WM               | [DWM](https://dwm.suckless.org/)                         |
-| Secondary WM     | [Emacs X Window Manager](https://github.com/ch11ng/exwm)  |
-| Editor           | [Snormacs](https://github.com/thelinuxpirate/Snormacs)    |
+| Secondary WM     | [River (Wayland)](https://github.com/riverwm/river)  |
+| Editor           | [Sleepy-Nvim](https://github.com/thelinuxpirate/sleepy-nvim)    |
 | Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
 
 ## TODO
-- Set up EWW for Snormacs Desktop
-- Clean Up & Document Hyprland configuration
-- Add images of my NixOS Desktops to this repository
-- Find a way to get SSBM-Slippi working on Nix/NixOS
-- Write a simplistic Neovim configuration
+- Finish River config
+- Reupdate & organize my dots
+- Possibly revist NixOS?
 
 ## NixOS Machines
 
