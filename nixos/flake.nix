@@ -45,7 +45,7 @@
     ...
   } @inputs: {
       nixosConfigurations = {
-      TheTreeHouse = nixpkgs.lib.nixosSystem {
+      ThePirateCove = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
           disko.nixosModules.disko
@@ -56,7 +56,7 @@
           hyprland.nixosModules.default
           {programs.hyprland.enable = true;}
 
-          ./hosts/TheTreeHouse/configuration.nix
+          ./hosts/ThePirateCove/configuration.nix
        ];
       };
       ThePirateShip = nixpkgs.lib.nixosSystem {
@@ -65,7 +65,7 @@
           ./hosts/ThePirateShip/configuration.nix
         ];
       };
-      ThePirateCove = nixpkgs.lib.nixosSystem {
+      ThePirateCoveServer = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/KernelCanopyServer/configuration.nix
