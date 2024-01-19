@@ -1,14 +1,9 @@
-# TLP Dotfiles 2023
-
-| System      | Description |
-| :---        |    :----:   |
-| Distro      | [Arch GNU/Linux + Nix](https://archlinux.org/)    |
-| Secondary Distro   | [NixOS](https://nixos.org)   | 
+# TLP Dotfiles 2024
 
 | Software      | Description |
 | :---          |    :----:   |
-| WM               | [DWM](https://dwm.suckless.org/)                         |
-| Secondary WM     | [River (Wayland)](https://github.com/riverwm/river)  |
+| WM               | [Hyprland (Wayland)](https://hyprland.org/)                         |
+| Secondary WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
 | Editor           | [Sleepy-Nvim](https://github.com/thelinuxpirate/sleepy-nvim)    |
 | Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
 
