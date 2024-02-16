@@ -1,12 +1,20 @@
+[[ -r $HOME/.repos/znap/znap.zsh ]] ||
+    git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git $HOME/.repos/znap
+source $HOME/.repos/znap/znap.zsh  
+
+source $HOME/.nix-profile/etc/profile.d/nix.sh
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$HOME/.nimble/bin:$PATH"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$DENO_INSTALL/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
+
+znap source zsh-users/zsh-syntax-highlighting
+znap source zsh-users/zsh-autosuggestions
+znap source zsh-users/zaw
 
 krabby random -i
-
-plugins=(
-  git,
-  zsh-autosuggestions
-)
 
 ZSH_THEME="afowler"
 CASE_SENSITIVE="true"
@@ -23,19 +31,6 @@ setopt appendhistory
 export DEVKITPRO=/opt/devkitpro
 export DEVKITARM=/opt/devkitpro/devkitARM
 export DEVKITPPC=/opt/devkitpro/devkitPPC
-
-export BUN_INSTALL="$HOME/.bun"
-
-if [ "$WAYLAND_DISPLAY" = "0" ]; then
-    xset r rate 200 60
-else
-    export DISPLAY=":0"
-    export WAYLAND_DISPLAY="wayland-1"
-    export QT_QPA_PLATFORM="wayland-egl"
-    export MOZ_ENABLE_WAYLAND="1"
-    export _JAVA_AWT_WM_NONREPARENTING="1"
-    export XDG_SESSION_TYPE="wayland"
-fi
 
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nvim'
@@ -55,22 +50,11 @@ alias t='tree'
 alias ls='ls --color=auto'
 alias vi='nvim'
 alias hx='helix'
-alias discordBot='cmd'
-
-alias paci='doas pacman -S'
-alias pacr='doas pacman -R'
-alias pacs='pacman -Ss'
-alias pacu='doas pacman -Sy'
-alias pacdup='doas pacman -Syu'
-
-alias auri='paru -S'
-alias aurr='paru -R'
-alias aurs='paru -Ss'
-alias aurdup='paru'
-
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
-source $HOME/.nix-profile/etc/profile.d/nix.sh
 eval "$(starship init zsh)"
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# bun completions
+[ -s "/home/trong/.bun/_bun" ] && source "/home/trong/.bun/_bun"
+[ -f "/home/trong/.ghcup/env" ] && source "/home/trong/.ghcup/env" # ghcup-env
