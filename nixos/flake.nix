@@ -1,5 +1,5 @@
 {
-  description = "TheLinuxPirate's NixOS System Manager Flake";
+  description = "TheLinuxPirate's NixOS Hosts Flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -25,12 +25,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ssbm-nix = { # Super Smash Brothers Melee Slippi via NixOS
+    ssbm-nix = { # Slippi Hardware via NixOS
       url = "github:djanatyn/ssbm-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland"; # Desktop
   };
 
   outputs = {
@@ -44,8 +44,9 @@
     hyprland,
     ...
   } @inputs: {
-      nixosConfigurations = {
-      ThePirateCove = nixpkgs.lib.nixosSystem {
+    nixosConfigurations = {
+      # Before building this host, set system to <nixos-unstable>
+      ThePirateBay = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
           disko.nixosModules.disko
@@ -56,19 +57,20 @@
           hyprland.nixosModules.default
           {programs.hyprland.enable = true;}
 
-          ./hosts/ThePirateCove/configuration.nix
-       ];
+          ./hosts/ThePirateBay/configuration.nix
+        ];
       };
       ThePirateShip = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
+          ssbm-nix.nixosModule
           ./hosts/ThePirateShip/configuration.nix
         ];
       };
-      ThePirateCoveServer = nixpkgs.lib.nixosSystem {
+      ThePirateCove = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          ./hosts/KernelCanopyServer/configuration.nix
+          ./hosts/ThePirateCove/configuration.nix
         ];
       };
     };
