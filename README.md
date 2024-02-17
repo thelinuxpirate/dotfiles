@@ -4,32 +4,8 @@
 | :---          |    :----:   |
 | WM               | [Hyprland (Wayland)](https://hyprland.org/)                         |
 | Secondary WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
-| Editor           | [Sleepy-Nvim](https://github.com/thelinuxpirate/sleepy-nvim)    |
-| Terminal         | [Kitty](https://sw.kovidgoyal.net/kitty/)                 |
-
-## TODO
-- Finish River config
-- Reupdate & organize my dots
-- Possibly revist NixOS?
-
-## NixOS Machines
-
-### TheTreeHouse
-![TheTreeHouse Desktop](img/TheTreeHouseNix.png)
-TheTreeHouse is my personal Desktop computer which runs off of NixOS.
-It contains Hyprland as its main desktop; and XMonad in case of any reason in which I'd need a backup Desktop.
-
-(TheTreeHouse has now been migrated to OpenSUSE Tumbleweed due to issues on NixOS)
-
-### ThePirateShip
-ThePirateShip is my personal laptop.
-Its specs aren't great but its a fine laptop.
-ThePirateShip uses the Snormacs desktop configuration as its main desktop.
-
-## Home-Manager
-I only have one user and that user is "pingu".
-As of right now I do not need multiple Home-Manager configurations/declarations.
-My Home-Manager is purely the software I want installed on my system that shouldn't be installed with the system. (AKA bloat)
+| Editor           | [...](https://github.com/thelinuxpirate/sleepy-nvim)    |
+| Terminal         | [Wezterm](https://sw.kovidgoyal.net/kitty/)                 |
 
 ## NixOS Struggle
 I've struggled trying to use NixOS for about 7 months. 
