@@ -29,6 +29,11 @@
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Minecraft Options
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -40,6 +45,7 @@
   rust-overlay,
   spicetify-nix,
   nix-gaming,
+  nix-minecraft,
   ... 
   }@inputs:
     let
@@ -50,8 +56,9 @@
         inherit rust-overlay;
         inherit spicetify-nix;
         inherit nix-gaming;
+	inherit nix-minecraft;
       }; in { 
-        homeConfigurations.pinguino = home-manager.lib.homeManagerConfiguration {
+        homeConfigurations.trong = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = specialArgs;
           modules = [

@@ -2,17 +2,15 @@
 
 {
   imports = [
-    ./pingu/sh.nix
-    ./pingu/themes.nix
-    ./pingu/spicetify.nix
-    ./pingu/gaming.nix
+    ./trong/sh.nix
+    ./trong/themes.nix
+    ./trong/spicetify.nix
+    ./trong/gaming.nix
   ];
   
   nixpkgs.config.allowUnfreePredicate = _: true;
-  
-  # Home Manager needs a bit of information about you and the paths it should manage.
-  home.username = "pinguino";
-  home.homeDirectory = "/home/pinguino";
+  home.username = "trong";
+  home.homeDirectory = "/home/trong";
 
   home.packages = [    
     # Web, & Media
@@ -44,7 +42,6 @@
     pkgs.cabal-install
     pkgs.stack
     pkgs.godot_4 # Godot/C#
-    pkgs.gdtoolkit
     pkgs.pixelorama
     pkgs.dotnet-sdk_8
     pkgs.nim # Nim
@@ -68,7 +65,7 @@
     EDITOR = "emacs";
   };
 
-  services.emacs.enable = true; # Has issues on XMonad
+  services.emacs.enable = true;
   programs = {
     kitty = {
       enable = true;
@@ -119,7 +116,6 @@
     };
   };
   
-  # Home Manager required
   programs.home-manager.enable = true;
   home.stateVersion = "22.11";
 }
