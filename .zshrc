@@ -3,9 +3,11 @@
         https://github.com/marlonrichert/zsh-snap.git $HOME/.repos/znap
 source $HOME/.repos/znap/znap.zsh  
 source $HOME/.nix-profile/etc/profile.d/nix.sh
+source /etc/profile.d/devkit-env.sh
 
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/emacs/bin:$PATH"
 export PATH="$HOME/.nimble/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$DENO_INSTALL/bin:$PATH"
@@ -16,6 +18,7 @@ znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zaw
 
+xset r rate 200 60
 krabby random -i
 
 ZSH_THEME="afowler"
@@ -49,19 +52,33 @@ fi
 alias d='doas'
 alias s='sudo'
 alias c='clear'
-alias t='tree'
+alias t='tree -A -C'
 
 alias ls='ls --color=auto'
 alias vi='nvim'
 alias hx='helix'
 alias cleannix='nix-collect-garbage --delete-old'
 
-alias dnfi='doas dnf install'
-alias dnfr='doas dnf remove'
-alias dnfs='dnf search'
-alias dnfu='doas dnf -y update'
-alias dnfdup='doas dnf -y update && doas dnf -y upgrade'
+alias paci='doas pacman -S'
+alias pacr='doas pacman -R'
+alias pacs='pacman -Ss'
+alias pacu='doas pacman -Sy'
+alias pacup='doas pacman -Syu'
+alias pacdup='paru'
+
+alias auri='paru -S'
+alias aurr='paru -R'
+alias aurs='paru -Ss'
+
+alias rebuildthesucc='cd $HOME/.config/sleepy-dwm/ && doas make clean install && cd slstatus/ && doas make clean install && cd .. && cd dmenu/ && doas make clean install && cd'
+alias rebuildthewm='cd $HOME/.config/sleepy-dwm/ && doas make clean install && cd'
+alias rebuildthebar='cd $HOME/.config/sleepy-dwm/slstatus/ && doas make clean install && cd'
+alias rebuildthemenu='cd $HOME/.config/sleepy-dwm/dmenu/ && doas make clean install && cd'
+
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/home/trong/.bun/_bun" ] && source "/home/trong/.bun/_bun"
