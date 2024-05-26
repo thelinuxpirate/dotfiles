@@ -1,9 +1,9 @@
 local wezterm = require 'wezterm'
 return {
-	enable_wayland = true,
+	enable_wayland = false, -- currently broken?
 
 	-- appearence
-  color_scheme = 'Catppuccin Mocha',
+  color_scheme = 'Tokyo Night',
 	font = wezterm.font 'Comic Mono',
 	front_end = 'OpenGL',
 
