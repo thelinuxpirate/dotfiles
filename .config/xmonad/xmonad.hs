@@ -10,12 +10,17 @@ import XMonad
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
+import XMonad.Hooks.InsertPosition (insertPosition, Focus(Newer), Position(End))
 
 -- Actions
 import XMonad.Actions.SpawnOn (spawnOn, spawnHere)
 import XMonad.Actions.MouseResize
+import XMonad.Actions.DwmPromote
+import XMonad.Actions.Minimize
+import XMonad.Actions.CycleWindows
 import XMonad.Actions.GridSelect
 import XMonad.Actions.Search as Se
+
 -- Utilities 
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.Ungrab
@@ -25,6 +30,8 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.ThreeColumns
+import XMonad.Layout.Minimize
+import qualified XMonad.Layout.BoringWindows as BW
 
 -- Haskell
 import Control.Monad (join, when)
@@ -46,17 +53,17 @@ myFocusColor :: String
 myFocusColor  = "#6eaae6"
 
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False
 
 myClickJustFocuses :: Bool
-myClickJustFocuses = False
+myClickJustFocuses = True
 
 myStartupHook :: X ()
 myStartupHook = do
   spawn "xset r rate 200 60"
   spawn "xset b off"
   spawnOnce "nm-applet"
-  spawnOnce "blueberry-tray"
+  spawnOn "9" "blueman-applet"
   spawnOnce "emacs --daemon"
   spawnOnce "feh --bg-fill ~/Pictures/Wallpapers/default.png"
   spawnOnce "dunst"
@@ -66,16 +73,17 @@ myStartupHook = do
   spawnOnce "playme -t ~/.local/audio/StickerbushSymphony.mp3 -d 1"
 
 
-myWorkspaces = ["1", "2", "3", "4",  "5", "6", "7", "8", "9"]
-
 myLayouts = tiled ||| Mirror tiled ||| Full ||| threeCol
   where
     threeCol = ThreeColMid nmaster delta ratio
     tiled   = Tall nmaster delta ratio
     nmaster = 1      -- number of windows in the master pane
-    ratio   = 1/2    -- proportion of screen occupied by master pane
+    ratio   = 2/3    -- proportion of screen occupied by master pane
     delta   = 3/100  -- resize incrementations 
 
+myManageHook :: ManageHook
+myManageHook = composeAll
+  [ insertPosition End Newer ]
 
 addNETSupported :: Atom -> X ()
 addNETSupported x   = withDisplay $ \dpy -> do
@@ -100,8 +108,9 @@ myConfig = def
     { modMask            = mod4Mask
     , startupHook        = myStartupHook >> addEWMHFullscreen
     , terminal           = myTerminal
-    , workspaces         = myWorkspaces
-    , layoutHook         = smartSpacingWithEdge 4 $ myLayouts
+    , workspaces         = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    , layoutHook         = smartSpacingWithEdge 4 $ minimize . BW.boringWindows $ myLayouts
+    , manageHook         = myManageHook
     , borderWidth        = myBorderWidth
     , normalBorderColor  = myNormColor
     , focusedBorderColor = myFocusColor
@@ -111,6 +120,7 @@ myConfig = def
   `additionalKeysP`
     [ -- Applications 
     ("M-<Return>", spawn myTerminal)
+    , ("M-<Space>", spawn "rofi -show drun")
     , ("M-S-e", spawn "emacsclient -c")
     , ("M-S-n", spawn "wezterm -e nvim")
     , ("M-S-b", spawn "firefox-aurora")
@@ -121,4 +131,7 @@ myConfig = def
 
     -- Window Management
     , ("M-w", kill)
+    , ("M-S-<Return>", dwmpromote)
+    , ("M-m", withFocused minimizeWindow)
+    , ("M-S-m", withLastMinimized maximizeWindowAndFocus)
     ]
