@@ -1,22 +1,22 @@
 format = """
-[░▒▓](#939ab7)\
-[  ](bg:#939ab7 fg:#3c6eb4 )\
-[](bg:#c6a0f6 fg:#939ab7)\
+[░▒▓](#4c566a)\
+[  ](bg:#4c566a fg:#1793d1 )\
+[](bg:#ebcb8b fg:#4c566a)\
 $directory\
-[](fg:#c6a0f6 bg:#394260)\
+[](fg:#ebcb8b bg:#434c5e)\
 $git_branch\
 $git_status\
-[](fg:#394260 bg:#212736)\
+[](fg:#434c5e bg:#3b4252)\
 $nodejs\
 $rust\
 $golang\
-[](fg:#212736 bg:#1d2230)\
+[](fg:#3b4252 bg:#2e3440)\
 $time\
-[ ](fg:#1d2230)\
+[ ](fg:#2e3440)\
 \n$character"""
 
 [directory]
-style = "fg:#e3e5e5 bg:#c6a0f6"
+style = "fg:#2e3440 bg:#ebcb8b"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
