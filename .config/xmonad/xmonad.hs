@@ -1,7 +1,8 @@
 {-
   Inspired by:
-  https://github.com/Axarva/dotfiles-2.0/
   https://gitlab.com/dwt1/dotfiles/.config/xmonad/
+  https://github.com/GlitchMill/dotfiles/tree/Fuji
+  https://github.com/Axarva/dotfiles-2.0/
 -}
 
 import XMonad
@@ -11,6 +12,7 @@ import XMonad
 -- Hooks
 import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
 import XMonad.Hooks.InsertPosition (insertPosition, Focus(Newer), Position(End))
+import XMonad.Hooks.ManageDocks
 
 -- Actions
 import XMonad.Actions.SpawnOn (spawnOn, spawnHere)
@@ -23,7 +25,6 @@ import XMonad.Actions.Search as Se
 
 -- Utilities 
 import XMonad.Util.EZConfig (additionalKeysP)
-import XMonad.Util.Ungrab
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 -- Layouts
@@ -35,7 +36,9 @@ import qualified XMonad.Layout.BoringWindows as BW
 
 -- Haskell
 import Control.Monad (join, when)
+import Control.Monad.IO.Class (liftIO)
 import Data.Maybe (maybeToList)
+import System.Process (readProcess)
 
 myTerminal :: String
 myTerminal = "wezterm"
@@ -65,7 +68,8 @@ myStartupHook = do
   spawnOnce "nm-applet"
   spawnOn "9" "blueman-applet"
   spawnOnce "emacs --daemon"
-  spawnOnce "feh --bg-fill ~/Pictures/Wallpapers/default.png"
+  spawnOnce "feh --bg-fill ~/Pictures/Wallpapers/landscape/paper-city-art.jpg"
+  spawnOnce "polybar -c ~/.config/xmonad/polybar/config"
   spawnOnce "dunst"
   spawnOnce "flameshot"
   spawnOnce "picom --daemon"
@@ -73,7 +77,7 @@ myStartupHook = do
   spawnOnce "playme -t ~/.local/audio/StickerbushSymphony.mp3 -d 1"
 
 
-myLayouts = tiled ||| Mirror tiled ||| Full ||| threeCol
+myLayouts = avoidStruts (tiled ||| Mirror tiled ||| Full ||| threeCol)
   where
     threeCol = ThreeColMid nmaster delta ratio
     tiled   = Tall nmaster delta ratio
@@ -101,14 +105,30 @@ addEWMHFullscreen   = do
     wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
     mapM_ addNETSupported [wms, wfs]
 
+togglePolybar :: X ()
+togglePolybar = do
+    polybarRunning <- liftIO isPolybarRunning
+    if polybarRunning
+       then spawn "killall -q polybar"
+       else spawn "polybar example &"
+
+isPolybarRunning :: IO Bool
+isPolybarRunning = do
+    result <- readProcess "pgrep" ["-x", "polybar"] ""
+    return (not $ null result)
+
 main :: IO ()
-main = xmonad $ ewmhFullscreen $ ewmh $ myConfig
+main = xmonad 
+     . docks
+     . ewmhFullscreen 
+     . ewmh 
+     $ myConfig
 
 myConfig = def
     { modMask            = mod4Mask
     , startupHook        = myStartupHook >> addEWMHFullscreen
     , terminal           = myTerminal
-    , workspaces         = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    , workspaces         = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     , layoutHook         = smartSpacingWithEdge 4 $ minimize . BW.boringWindows $ myLayouts
     , manageHook         = myManageHook
     , borderWidth        = myBorderWidth
@@ -119,19 +139,32 @@ myConfig = def
     }
   `additionalKeysP`
     [ -- Applications 
-    ("M-<Return>", spawn myTerminal)
-    , ("M-<Space>", spawn "rofi -show drun")
-    , ("M-S-e", spawn "emacsclient -c")
-    , ("M-S-n", spawn "wezterm -e nvim")
-    , ("M-S-b", spawn "firefox-aurora")
-    , ("M-p", spawnOn "5" "pavucontrol")
-    , ("M-S-t", spawn "thunar")
-    , ("M-S-s", spawn "./.nix-profile/bin/spotify")
-    , ("M-S-d", spawn "./.nix-profile/bin/discord")
+    ("M-<Return>",    spawn myTerminal)
+    , ("M-<Space>",   spawn "rofi -show drun")
+    , ("M-S-e",       spawn "emacsclient -c")
+    , ("M-S-n",       spawn "wezterm -e nvim")
+    , ("M-S-b",       spawn "firefox")
+    , ("M-p",         spawnOn "5" "pavucontrol")
+    , ("M-S-t",       spawn "thunar")
+    , ("M-S-s",       spawn "flatpak run com.spotify.Client")
+    , ("M-S-d",       spawn "discord")
 
     -- Window Management
-    , ("M-w", kill)
-    , ("M-S-<Return>", dwmpromote)
-    , ("M-m", withFocused minimizeWindow)
-    , ("M-S-m", withLastMinimized maximizeWindowAndFocus)
+    , ("M-S-r",                  spawn "xmonad --restart")
+    , ("M-w",                    kill)
+    , ("M-b",                    togglePolybar)
+    , ("M-S-<Return>",           dwmpromote)
+    , ("M-m",                    withFocused minimizeWindow)
+    , ("M-S-m",                  withLastMinimized maximizeWindowAndFocus)
+
+    -- Media Keys
+    , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 2%+" )
+    , ("<XF86AudioLowerVolume>", spawn "amixer set Master 2%-" )
+    , ("<XF86AudioMute>",        spawn "amixer set Master toggle" )
+    , ("<XF86AudioPlay>",        spawn "playerctl play-pause" )
+    , ("<XF86AudioNext>",        spawn "playerctl next" )
+    , ("<XF86AudioPrev>",        spawn "playerctl previous" )
+    , ("<XF86Explorer>",         spawn "flameshot gui" )
+    , ("<XF86Search>",           spawn "rofi -show drun" )
+    -- FN Keys (Keyboard Dependant; feel free to modify)
     ]
