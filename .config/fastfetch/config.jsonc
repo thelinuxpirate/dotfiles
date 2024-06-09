@@ -1,0 +1,115 @@
+// bye bye Neofetch
+
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "type": "small",
+        "padding": {
+            "top": 2
+        }
+    },
+    "display": {
+        "separator": " -> "
+    },
+    "modules": [
+        {
+            "type": "title",
+            "keyWidth": 10
+        },
+        {
+            "type": "custom",
+            "format": "┌────────────────────────────────────────────────────────────┐",
+            "outputColor": "90"
+        },
+        {
+            "type": "os",
+            "key": "󰧨 ",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "kernel",
+            "key": "│ ├󰌽 ",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "packages",
+            "key": "│ ├ ",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "shell",
+            "key": "│ └ ",
+            "keyColor": "yellow"
+        },
+        {
+            "type": "wm",
+            "key": "WM",
+            "keyColor": "blue"
+        },
+        {
+            "type": "wmtheme",
+            "key": "│ ├ ",
+            "keyColor": "blue"
+        },
+        {
+            "type": "icons",
+            "key": "│ ├ ",
+            "keyColor": "blue"
+        },
+        {
+            "type": "terminal",
+            "key": "│ ├ ",
+            "keyColor": "blue"
+        },
+        {
+            "type": "host",
+            "key": "󰨉 ",
+            "keyColor": "green"
+        },
+        {
+            "type": "cpu",
+            "key": "│ ├ ",
+            "keyColor": "green"
+        },
+        {
+            "type": "opengl",
+            "key": "│ ├󰓓 ",
+            "keyColor": "green"
+        },
+        {
+            "type": "memory",
+            "key": "│ ├ ",
+            "keyColor": "green"
+        },
+        {
+            "type": "disk",
+            "key": "│ ├ ",
+            "keyColor": "green"
+        },
+        {
+            "type": "uptime",
+            "key": "│ ├󰾨 ",
+            "keyColor": "green"
+        },
+        {
+            "type": "sound",
+            "key": "󰓇 ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "player",
+            "key": "│ ├󰥠 ",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "media",
+            "key": "│ └󰝚",
+            "keyColor": "cyan"
+        },
+        {
+            "type": "custom",
+            "format": "└────────────────────────────────────────────────────────────┘",
+            "outputColor": "90"
+        }
+   ]
+}
