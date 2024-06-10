@@ -32,6 +32,7 @@ import XMonad.Actions.Search as Se
 -- Utilities 
 import XMonad.Util.EZConfig (additionalKeysP, additionalKeys)
 import XMonad.Util.SpawnOnce (spawnOnce)
+import XMonad.Util.Run
 
 -- Layouts -- ADD grid; mirror tall;
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
@@ -45,6 +46,9 @@ import Control.Monad (join, when)
 import Control.Monad.IO.Class (liftIO)
 import System.Process (readProcessWithExitCode, callProcess)
 import System.Exit (ExitCode(..))
+
+myHome :: String
+myHome = "/home/trong/"
 
 myTerminal :: String
 myTerminal = "wezterm"
@@ -123,6 +127,22 @@ toggleFullscreen = do
     then sendMessage $ JumpToLayout "Tall"
     else sendMessage $ JumpToLayout "Full"
 
+getCurrentLayout :: X String
+getCurrentLayout = withWindowSet $ \ws -> do
+    let layout = description . W.layout . W.workspace . W.current $ ws
+    return layout
+
+writeLayoutToFile :: X ()
+writeLayoutToFile = do
+    layout <- getCurrentLayout
+    let filePath = myHome ++ ".config/xmonad/lib/.layout.txt"
+    io $ writeFile filePath layout
+
+showCurrentLayout :: X ()
+showCurrentLayout = do
+    layout <- getCurrentLayout
+    safeSpawn "xmessage" [layout]
+
 togglePolybar :: X ()
 togglePolybar = do
     polybarRunning <- liftIO isPolybarRunning
@@ -180,6 +200,8 @@ myConfig = def
     -- Window Management
     , ("M-S-r",                  spawn "xmonad --restart")
     , ("M-w",                    kill)
+    , ("M-S-w",                  showCurrentLayout)
+    , ("M-S-u",                  writeLayoutToFile)
     , ("M-b",                    togglePolybar)
     , ("M-C-k",                  Bw.siftUp)
     , ("M-C-j",                  Bw.siftDown)
