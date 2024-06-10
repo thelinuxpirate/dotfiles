@@ -8,7 +8,7 @@
 -- Base
 import XMonad
 import qualified XMonad.StackSet as W
-import Theme.Trong as T
+import Theme.Trong
 
 -- Data
 import qualified Data.Map as M
@@ -21,8 +21,8 @@ import XMonad.Hooks.ManageHelpers (doFullFloat, isDialog, isFullscreen)
 import XMonad.Hooks.ManageDocks
 
 -- Actions
-import XMonad.Actions.SpawnOn (spawnOn, spawnHere)
 import XMonad.Actions.Submap (submap)
+import XMonad.Actions.DwmPromote
 import XMonad.Actions.MouseResize
 import XMonad.Actions.Minimize
 import XMonad.Actions.CycleWindows
@@ -36,8 +36,9 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 -- Layouts -- ADD grid; mirror tall;
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenSupport, fullscreenFull)
+import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
-import qualified XMonad.Layout.BoringWindows as BW
+import qualified XMonad.Layout.BoringWindows as Bw (boringWindows, siftUp, siftDown)
 
 -- Haskell
 import Control.Monad (join, when)
@@ -51,29 +52,15 @@ myTerminal = "wezterm"
 myFont :: String
 myFont = "xft:Comic Mono:regular:size=12:antialias=true:hinting=true"
 
-myBorderWidth :: Dimension
-myBorderWidth = 2
-
-myNormColor :: String
-myNormColor   = "#c5dde0"
-
-myFocusColor :: String
-myFocusColor  = "#6eaae6"
-
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = False
-
-myClickJustFocuses :: Bool
-myClickJustFocuses = True
-
 myStartupHook :: X ()
 myStartupHook = do
   spawn "xset r rate 200 60"
   spawn "xset b off"
   spawnOnce "nm-applet"
-  spawnOn "9" "blueman-applet"
+  spawnOnce "blueman-applet"
   spawnOnce "emacs --daemon"
-  spawnOnce "feh --bg-fill ~/Pictures/Wallpapers/etc/bender.jpg"
+  spawnOnce "dynamic-paper.c"
+--  spawnOnce "feh --bg-fill ~/Pictures/Wallpapers/etc/bender.jpg"
   spawnOnce "polybar -c ~/.config/xmonad/polybar/config.ini"
   spawnOnce "dunst"
   spawnOnce "flameshot"
@@ -94,20 +81,22 @@ extraWorkspaces =
     | (key,ws) <- myExtraWorkspaces
   ]
 
-myLayouts = avoidStruts (tiled ||| Mirror tiled ||| Full)
+myLayouts = avoidStruts $ Bw.boringWindows (tiled ||| Mirror tiled ||| Full ||| Grid)
   where
     tiled   = Tall nmaster delta ratio
     nmaster = 1      -- number of windows in the master pane
-    ratio   = 2/3    -- proportion of screen occupied by master pane
+    ratio   = 3/5    -- proportion of screen occupied by master pane
     delta   = 3/100  -- resize incrementations 
 
 myManageHook :: ManageHook
 myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
   [ insertPosition End Newer
-  , className    =? "Gimp"           --> doFloat
-  , isDialog                         --> doF W.swapUp
-  , resource     =? "desktop_window" --> doIgnore
-  , isFullscreen                     --> doFullFloat
+  , className    =? "discover-overlay"    --> doShift "tmp"
+  , className    =? "Pavucontrol"         --> doShift "5"
+  , className    =? "Gimp"                --> doFloat
+  , isDialog                              --> doF W.swapUp
+  , resource     =? "desktop_window"      --> doIgnore
+  , isFullscreen                          --> doFullFloat
   ]
 
 addNETSupported :: Atom -> X ()
@@ -125,6 +114,14 @@ addEWMHFullscreen   = do
     wms <- getAtom "_NET_WM_STATE"
     wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
     mapM_ addNETSupported [wms, wfs]
+
+toggleFullscreen :: X ()
+toggleFullscreen = do
+    winset <- gets windowset
+    let currLayout = description . W.layout . W.workspace . W.current $ winset
+    if currLayout == "Full"
+    then sendMessage $ JumpToLayout "Tall"
+    else sendMessage $ JumpToLayout "Full"
 
 togglePolybar :: X ()
 togglePolybar = do
@@ -159,23 +156,23 @@ myConfig = def
     , startupHook        = myStartupHook >> addEWMHFullscreen
     , terminal           = myTerminal
     , workspaces         = myWorkspaces
-    , layoutHook         = smartSpacingWithEdge 4 $ minimize . BW.boringWindows $ myLayouts
+    , layoutHook         = smartSpacingWithEdge 4 $ minimize . Bw.boringWindows $ myLayouts
     , manageHook         = myManageHook
-    , borderWidth        = myBorderWidth
-    , normalBorderColor  = myNormColor
-    , focusedBorderColor = myFocusColor
-    , focusFollowsMouse  = myFocusFollowsMouse
-    , clickJustFocuses   = myClickJustFocuses
+    , borderWidth        = 2
+    , focusedBorderColor = colorFocused
+    , normalBorderColor  = colorUnfocused
+    , focusFollowsMouse  = False
+    , clickJustFocuses   = True
     }
   `additionalKeysP`
     [ -- Applications 
     ("M-<Return>",    spawn myTerminal)
-    , ("M-<Space>",   spawn "rofi -show drun")
+    , ("M-<Space>",   spawn "rofi -show-icons -show drun")
     , ("M-C-c",       spawn "rofi -modi \"clipboard:greenclip print\" -show clipboard -run-command \'{cmd}\'")
     , ("M-S-e",       spawn "emacsclient -c")
     , ("M-S-n",       spawn "wezterm -e nvim")
     , ("M-S-b",       spawn "firefox")
-    , ("M-p",         spawnOn "5" $ "pavucontrol")
+    , ("M-p",         spawn "pavucontrol")
     , ("M-S-t",       spawn "thunar")
     , ("M-S-s",       spawn "flatpak run com.spotify.Client")
     , ("M-S-d",       spawn "discord")
@@ -184,8 +181,12 @@ myConfig = def
     , ("M-S-r",                  spawn "xmonad --restart")
     , ("M-w",                    kill)
     , ("M-b",                    togglePolybar)
-    , ("M-g",                    windows W.focusMaster)
-    , ("M-S-<Return>",           windows W.swapMaster)
+    , ("M-C-k",                  Bw.siftUp)
+    , ("M-C-j",                  Bw.siftDown)
+    , ("M-i",                    windows $ W.focusMaster)
+    , ("M-S-<Return>",           dwmpromote)
+    , ("M-u",                    sendMessage $ NextLayout)
+    , ("M-f",                    toggleFullscreen)
     , ("M-S-<Space>",            withFocused $ windows . W.sink)
     , ("M-m",                    withFocused minimizeWindow)
     , ("M-S-m",                  withLastMinimized maximizeWindowAndFocus)
@@ -195,7 +196,6 @@ myConfig = def
        [ ((0, xK_t),     sendMessage $ JumpToLayout "Tall")
        , ((0, xK_f),     sendMessage $ JumpToLayout "Full")
        , ((0, xK_g),     sendMessage $ JumpToLayout "Grid")
-       --, ((0, xK_space), spawn "mpc toggle")
        ])
     
     -- Media Keys
