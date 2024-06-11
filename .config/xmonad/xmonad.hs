@@ -8,11 +8,8 @@
 -- Base
 import XMonad
 import qualified XMonad.StackSet as W
+import qualified XMonad.Prompt as P
 import Theme.Trong
-
--- Data
-import qualified Data.Map as M
-import Data.Maybe (maybeToList)
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
@@ -21,6 +18,7 @@ import XMonad.Hooks.ManageHelpers (doFullFloat, isDialog, isFullscreen)
 import XMonad.Hooks.ManageDocks
 
 -- Actions
+import XMonad.Actions.ToggleFullFloat
 import XMonad.Actions.Submap (submap)
 import XMonad.Actions.DwmPromote
 import XMonad.Actions.MouseResize
@@ -37,6 +35,7 @@ import XMonad.Util.Run
 -- Layouts -- ADD grid; mirror tall;
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenSupport, fullscreenFull)
+import XMonad.Layout.CenterMainFluid
 import XMonad.Layout.Grid
 import XMonad.Layout.Minimize
 import qualified XMonad.Layout.BoringWindows as Bw (boringWindows, siftUp, siftDown)
@@ -44,6 +43,9 @@ import qualified XMonad.Layout.BoringWindows as Bw (boringWindows, siftUp, siftD
 -- Haskell
 import Control.Monad (join, when)
 import Control.Monad.IO.Class (liftIO)
+import qualified Data.Map as M
+import Data.Maybe (maybeToList)
+import Data.List (isInfixOf, intercalate)
 import System.Process (readProcessWithExitCode, callProcess)
 import System.Exit (ExitCode(..))
 
@@ -73,6 +75,9 @@ myStartupHook = do
   spawnOnce "discover-overlay --configure"
   spawnOnce "playme -t ~/.local/audio/StickerbushSymphony.mp3 -d 1"
 
+myLogHook :: X ()
+myLogHook = writeLayoutToFile
+
 myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "gd"),(xK_equal, "tmp")]
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] ++ (map snd myExtraWorkspaces)
 
@@ -85,12 +90,16 @@ extraWorkspaces =
     | (key,ws) <- myExtraWorkspaces
   ]
 
-myLayouts = avoidStruts $ Bw.boringWindows (tiled ||| Mirror tiled ||| Full ||| Grid)
+myLayouts = avoidStruts $ Bw.boringWindows
+  (tiled |||
+  Mirror tiled |||
+  CenterMainFluid 1 (3/100) (70/100) |||
+  Full)
   where
     tiled   = Tall nmaster delta ratio
-    nmaster = 1      -- number of windows in the master pane
-    ratio   = 3/5    -- proportion of screen occupied by master pane
-    delta   = 3/100  -- resize incrementations 
+    nmaster = 1
+    ratio   = 3/5
+    delta   = 3/100 
 
 myManageHook :: ManageHook
 myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
@@ -102,6 +111,19 @@ myManageHook = fullscreenManageHook <+> manageDocks <+> composeAll
   , resource     =? "desktop_window"      --> doIgnore
   , isFullscreen                          --> doFullFloat
   ]
+
+mySearchList :: [(String, Se.SearchEngine)]
+mySearchList = [ ("g",     Se.github)
+               , ("S-g",   Se.google)
+               , ("y",     Se.youtube)
+               , ("c",     Se.cratesIo)
+               , ("h",     Se.homeManager)
+               , ("S-h",   Se.hoogle)
+               , ("s",     Se.steam)
+               , ("S-s",   Se.protondb)
+               , ("n",     Se.nixos)
+               , ("w",     Se.wikipedia)
+               ]
 
 addNETSupported :: Atom -> X ()
 addNETSupported x   = withDisplay $ \dpy -> do
@@ -119,29 +141,43 @@ addEWMHFullscreen   = do
     wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
     mapM_ addNETSupported [wms, wfs]
 
-toggleFullscreen :: X ()
-toggleFullscreen = do
-    winset <- gets windowset
-    let currLayout = description . W.layout . W.workspace . W.current $ winset
-    if currLayout == "Full"
-    then sendMessage $ JumpToLayout "Tall"
-    else sendMessage $ JumpToLayout "Full"
-
 getCurrentLayout :: X String
 getCurrentLayout = withWindowSet $ \ws -> do
     let layout = description . W.layout . W.workspace . W.current $ ws
     return layout
 
+cleanLayout :: String -> String
+cleanLayout layout = intercalate " " $ filter (\s -> not $ any (`isInfixOf` s) ["Spacing", "Minimize"]) (words layout)
+
+toggleFullscreen :: X ()
+toggleFullscreen = do
+    winset <- gets windowset
+    layout <- getCurrentLayout
+    let currLayout = cleanLayout layout
+    if currLayout == "Full"
+    then sendMessage $ JumpToLayout "Tall"
+    else sendMessage $ JumpToLayout "Full"
+
 writeLayoutToFile :: X ()
 writeLayoutToFile = do
     layout <- getCurrentLayout
+    let cleanLayoutStr = cleanLayout layout
     let filePath = myHome ++ ".config/xmonad/lib/.layout.txt"
-    io $ writeFile filePath layout
+    io $ writeFile filePath cleanLayoutStr
 
-showCurrentLayout :: X ()
-showCurrentLayout = do
-    layout <- getCurrentLayout
-    safeSpawn "xmessage" [layout]
+toggleFloat :: X ()
+toggleFloat = withFocused $ \win -> do
+    winset <- gets windowset
+    let isFloating = M.member win (W.floating winset)
+    if isFloating
+    then withFocused $ windows . W.sink
+    else withFocused $ windows . (flip W.float $ W.RationalRect 0.1 0.1 0.8 0.8)
+
+-- XMessage Demo Function
+-- showCurrentLayout :: X ()
+-- showCurrentLayout = do
+--     layout <- getCurrentLayout
+--     safeSpawn "xmessage" [layout]
 
 togglePolybar :: X ()
 togglePolybar = do
@@ -167,6 +203,7 @@ isPolybarRunning = do
 main :: IO ()
 main = xmonad 
      . docks
+     . toggleFullFloatEwmhFullscreen
      . ewmhFullscreen 
      . ewmh 
      $ myConfig
@@ -177,6 +214,7 @@ myConfig = def
     , terminal           = myTerminal
     , workspaces         = myWorkspaces
     , layoutHook         = smartSpacingWithEdge 4 $ minimize . Bw.boringWindows $ myLayouts
+    , logHook            = myLogHook
     , manageHook         = myManageHook
     , borderWidth        = 2
     , focusedBorderColor = colorFocused
@@ -200,7 +238,6 @@ myConfig = def
     -- Window Management
     , ("M-S-r",                  spawn "xmonad --restart")
     , ("M-w",                    kill)
-    , ("M-S-w",                  showCurrentLayout)
     , ("M-S-u",                  writeLayoutToFile)
     , ("M-b",                    togglePolybar)
     , ("M-C-k",                  Bw.siftUp)
@@ -209,7 +246,8 @@ myConfig = def
     , ("M-S-<Return>",           dwmpromote)
     , ("M-u",                    sendMessage $ NextLayout)
     , ("M-f",                    toggleFullscreen)
-    , ("M-S-<Space>",            withFocused $ windows . W.sink)
+    , ("M-S-f",                  withFocused toggleFullFloat)
+    , ("M-S-<Space>",            toggleFloat) 
     , ("M-m",                    withFocused minimizeWindow)
     , ("M-S-m",                  withLastMinimized maximizeWindowAndFocus)
 
@@ -220,6 +258,9 @@ myConfig = def
        , ((0, xK_g),     sendMessage $ JumpToLayout "Grid")
        ])
     
+    -- XMonad Extras
+
+
     -- Media Keys
     , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 2%+" )
     , ("<XF86AudioLowerVolume>", spawn "amixer set Master 2%-" )
@@ -231,4 +272,6 @@ myConfig = def
     , ("<XF86Search>",           spawn "rofi -show drun" )
     -- FN Keys (Keyboard Dependant; feel free to modify)
     ]
+    ++ [("M-s " ++ k, Se.promptSearch P.def f) | (k,f) <- mySearchList]
+    ++ [("M-S-s " ++ k, Se.selectSearch f) | (k,f) <- mySearchList ]
     `additionalKeys` (extraWorkspaces)
