@@ -8,17 +8,38 @@ use File::Basename;
 use Git;
 
 my $homedir = $ENV{'HOME'};
-my $repodir = cwd() . "/trongdots/";
 
-sub main {
+sub partone {
     check_and_install_module('Git');
-    print "What would you like the clone directory to be called?\n";
-    # input shi here
-    clone_repository('https://github.com/thelinuxpirate/dotfiles', 'trongdots');
+    print "What would you like the cloned directory to be called? (default: 'dotfiles')\n> ";
+    chomp(my $clonedir = <STDIN>);
+    $clonedir = process_dir($clonedir);
+    print "ALERT: Directory name: '$clonedir' will be used. Is this ok? (Yes/No)";
+    chomp(my $input = <STDIN>);
+    if ($input =~ /^yes$/i) {
+        print "Ok...\n";
+        clone_repository('https://github.com/thelinuxpirate/dotfiles', $clonedir);
+        parttwo();
+    } elsif ($input =~ /^no/i) {
+        die "unfinished code";
+        # redo this whole thing
+    } else {
+        clone_repository('https://github.com/thelinuxpirate/dotfiles', "dotfiles");
+        parttwo();
+    } 
+}
 
+sub parttwo {
     print "\n=+Installer: Xorg, Wayland, or NixOnly?+=\n> ";
     chomp(my $input = <STDIN>);
     process_response($input);
+}
+
+sub process_dir {
+    my ($str) = @_;
+    $str = lc $str;
+    $str =~ s/ /_/g;
+    return $str;
 }
 
 sub process_response {
@@ -27,17 +48,17 @@ sub process_response {
     while (1) {
         if ($input =~ /^xorg$/i) {
             my $xorgapps = [
-               "Awesome", 
-               "Fastfetch", 
-               "Krabby", 
-               "Starship", 
-               "Wezterm", 
-               "Dunst", 
-               "Flameshot", 
-               "Neofetch", 
-               "Picom", 
-               "Polybar",
-               "XMonad"
+               "awesome", 
+               "fastfetch", 
+               "krabby", 
+               "starship", 
+               "wezterm", 
+               "dunst", 
+               "flameshot", 
+               "neofetch", 
+               "picom", 
+               "polybar",
+               "xmonad"
             ];
             
             print "\nApplication List:\n";
@@ -51,14 +72,14 @@ sub process_response {
             last;
         } elsif ($input =~ /^wayland$/i) {
             my $waylandapps = [
-               "Hyprland", 
-               "Fastfetch", 
-               "Krabby", 
-               "Starship", 
-               "Wezterm", 
-               "Dunst", 
-               "Waybar", 
-               "Neofetch" 
+               "hyprland", 
+               "fastfetch", 
+               "krabby", 
+               "starship", 
+               "wezterm", 
+               "dunst", 
+               "waybar", 
+               "neofetch" 
             ];
 
             print "\nApplication List:\n";
@@ -84,14 +105,20 @@ sub process_response {
 
 sub process_app {
     my ($applist, $usrapp) = @_;
+    my $repodir = cwd() . "/trongdots/";
     
     foreach my $app (@$applist) {
         if ($usrapp eq $app) {
-            print "Awesome\n";
-            return;
+            if ($usrapp eq "starship") {
+                print "starship?\n"; 
+            } else {
+                print "TRONG\n";
+                create_directory($homedir . "/.config/" . $app);
+                return;
+            } 
         }
     }
-    die "Invalid input. Please enter one of the Xorg applications.\n";
+    die "ALERT: Invalid input. Please enter a valid configuration title.\n";
 }
 
 sub clone_repository {
@@ -104,12 +131,20 @@ sub clone_repository {
             print "\n=+Removing Directory...+=\n\n";
             remove_directory($dir); 
         } elsif ($input =~ /^no$/i) {
-            die "ALERT: Exiting, no changes were made;";
+            print "ALERT: Installation may work incorrectly...\n";
+            print "Would you like to continue installation anyways? (Yes/No)\n> ";
+            chomp(my $response = <STDIN>);
+            if ($response =~ /^yes$/i) {
+                print "\nALERT: Using existing '$dir'!\n";
+                parttwo();
+            } else {
+                die "ALERT: Exiting, no changes were made;\n";
+            }
         } else {
             die "ALERT: Couldnt read message...\n(Maybe try manually removing the existing clone directory?)"
         }
     } else {
-        die "Please remove the directory manually or choose a different directory. Exiting...\n";
+        print "Creating '$dir'...\n";
     }  
 
     unless(-e $dir or make_path($dir)) {
@@ -183,4 +218,8 @@ sub move_file {
     print "File '$file' moved to '$target_dir'.\n";
 }
 
-main();
+sub cleanup {
+  # remove cloned repository directory logic
+}
+
+partone();
