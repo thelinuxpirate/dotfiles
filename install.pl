@@ -1,3 +1,4 @@
+
 #!/usr/bin/perl
 use strict;
 use warnings;
@@ -11,28 +12,37 @@ my $homedir = $ENV{'HOME'};
 
 sub partone {
     check_and_install_module('Git');
-    print "What would you like the cloned directory to be called? (default: 'dotfiles')\n> ";
+    print "What would you like the clone directory to be called? (default: 'dotfiles')\n> ";
     chomp(my $clonedir = <STDIN>);
+    $clonedir = "dotfiles" if $clonedir eq "";
     $clonedir = process_dir($clonedir);
-    print "ALERT: Directory name: '$clonedir' will be used. Is this ok? (Yes/No)";
+    print "ALERT: Directory name: '$clonedir' will be used. Is this ok? (Yes/No)\n> ";
     chomp(my $input = <STDIN>);
-    if ($input =~ /^yes$/i) {
-        print "Ok...\n";
-        clone_repository('https://github.com/thelinuxpirate/dotfiles', $clonedir);
-        parttwo();
-    } elsif ($input =~ /^no/i) {
-        die "unfinished code";
-        # redo this whole thing
-    } else {
-        clone_repository('https://github.com/thelinuxpirate/dotfiles', "dotfiles");
-        parttwo();
-    } 
+
+    while (1) {
+        if ($input =~ /^yes$/i) {
+            print "Ok...\n";
+            clone_repository('https://github.com/thelinuxpirate/dotfiles', $clonedir);
+            parttwo($clonedir);
+            last;
+        } elsif ($input =~ /^no$/i) {
+            print "Please enter a new name for the clone directory:\n> ";
+            chomp($clonedir = <STDIN>);
+            $clonedir = process_dir($clonedir);
+            print "ALERT: Directory name: '$clonedir' will be used. Is this ok? (Yes/No)\n> ";
+            chomp($input = <STDIN>);
+        } else {
+            print "Please enter a valid option (Yes/No), got '$input'\n> ";
+            chomp($input = <STDIN>);
+        }
+    }
 }
 
 sub parttwo {
-    print "\n=+Installer: Xorg, Wayland, or NixOnly?+=\n> ";
+    my ($dir) = @_;
+    print "\n=+Installer: Xorg, Wayland, or Misc?+=\n> ";
     chomp(my $input = <STDIN>);
-    process_response($input);
+    process_response($input, $dir);
 }
 
 sub process_dir {
@@ -43,113 +53,128 @@ sub process_dir {
 }
 
 sub process_response {
-    my ($input) = @_;
+    my ($input, $dir) = @_;
 
     while (1) {
         if ($input =~ /^xorg$/i) {
             my $xorgapps = [
-               "awesome", 
-               "fastfetch", 
-               "krabby", 
-               "starship", 
-               "wezterm", 
-               "dunst", 
-               "flameshot", 
-               "neofetch", 
-               "picom", 
-               "polybar",
-               "xmonad"
+                "awesome",
+                "fastfetch",
+                "krabby",
+                "starship",
+                "wezterm",
+                "dunst",
+                "flameshot",
+                "neofetch",
+                "picom",
+                "polybar",
+                "xmonad"
             ];
-            
+
             print "\nApplication List:\n";
             foreach my $app (@$xorgapps) {
                 print "$app\n";
             }
-            print "\n=+Please input the programs' configurations youd like to have installed+=\n> "; 
-            
+            print "\n=+Please input the programs' configurations you'd like to have installed+=\n> ";
             chomp(my $appchoice = <STDIN>);
-            process_app($xorgapps, $appchoice);
+            process_app($xorgapps, $appchoice, $dir);
             last;
         } elsif ($input =~ /^wayland$/i) {
             my $waylandapps = [
-               "hyprland", 
-               "fastfetch", 
-               "krabby", 
-               "starship", 
-               "wezterm", 
-               "dunst", 
-               "waybar", 
-               "neofetch" 
+                "hyprland",
+                "fastfetch",
+                "krabby",
+                "starship",
+                "wezterm",
+                "dunst",
+                "waybar",
+                "neofetch"
             ];
 
             print "\nApplication List:\n";
             foreach my $app (@$waylandapps) {
                 print "$app\n";
             }
-            print "\n=+Please input the programs' configurations youd like to have installed+=\n> "; 
- 
+            print "\n=+Please input the programs' configurations you'd like to have installed+=\n> ";
             chomp(my $appchoice = <STDIN>);
-            process_app($waylandapps, $appchoice);
+            process_app($waylandapps, $appchoice, $dir);
             last;
-        } elsif ($input =~ /^nixonly$/i) {
-              #ifnixonly();
-              last;
+        } elsif ($input =~ /^misc$/i) {
+            my $miscapps = [
+                "home-manager",
+                "fastfetch",
+                "krabby",
+                "starship",
+                "wezterm",
+                "dunst",
+                "neofetch"
+            ];
+
+            print "\nConfiguration List:\n";
+            foreach my $app (@$miscapps) {
+                print "$app\n";
+            }
+            print "\n=+Please input the programs' configurations you'd like to have installed+=\n(NixOS has to be installed manually)\n> ";
+            chomp(my $appchoice = <STDIN>);
+            process_app($miscapps, $appchoice, $dir);
+            last;
         } else {
-            die "Invalid input. Please enter 'Xorg' or 'Wayland'.\n";
+            die "Invalid input. Please enter 'Xorg', 'Wayland', or 'Misc'.\n";
         }
     }
-    # create_directory('example_dir');
-    # rename_file('example_dir/old_name.txt', 'example_dir/new_name.txt');
-    # move_file('example_dir/new_name.txt', 'cloned_repo/');
 }
 
 sub process_app {
-    my ($applist, $usrapp) = @_;
-    my $repodir = cwd() . "/trongdots/";
-    
-    foreach my $app (@$applist) {
-        if ($usrapp eq $app) {
-            if ($usrapp eq "starship") {
-                print "starship?\n"; 
+    my ($applist, $usrapp, $dir) = @_;
+    my $repodir = cwd() . "/" . $dir;
+    print "\n$repodir\n";
+
+    my @apps_to_install = split(/,\s*/, $usrapp);
+
+    foreach my $app (@apps_to_install) {
+        if (grep { $_ eq $app } @$applist) {
+            if ($app =~ /^starship/i) {
+                print "Starship \n";
             } else {
-                print "TRONG\n";
-                create_directory($homedir . "/.config/" . $app);
-                return;
-            } 
+                print "Creating directory for $app...\n";
+                move_file($repodir . "/.config/" . $app, $homedir . "/.config/" . $app);
+            }
+        } else {
+            die "ALERT: Invalid input '$app'. Please enter a valid configuration title.\n";
         }
     }
-    die "ALERT: Invalid input. Please enter a valid configuration title.\n";
+    print "Hello, world!\n";
 }
 
 sub clone_repository {
     my ($repo_url, $dir) = @_;
-    
+
     if (-d $dir) {
         print "It seems like '$dir' already exists...\nDelete this directory? (Yes/No)\n> ";
         chomp(my $input = <STDIN>);
         if ($input =~ /^yes$/i) {
             print "\n=+Removing Directory...+=\n\n";
-            remove_directory($dir); 
+            remove_directory($dir);
         } elsif ($input =~ /^no$/i) {
             print "ALERT: Installation may work incorrectly...\n";
             print "Would you like to continue installation anyways? (Yes/No)\n> ";
             chomp(my $response = <STDIN>);
             if ($response =~ /^yes$/i) {
                 print "\nALERT: Using existing '$dir'!\n";
-                parttwo();
+                parttwo($dir);
             } else {
                 die "ALERT: Exiting, no changes were made;\n";
             }
         } else {
-            die "ALERT: Couldnt read message...\n(Maybe try manually removing the existing clone directory?)"
+            die "ALERT: Couldn't read message...\n(Maybe try manually removing the existing clone directory?)";
         }
     } else {
         print "Creating '$dir'...\n";
-    }  
+    }
 
-    unless(-e $dir or make_path($dir)) {
+    unless (-e $dir or make_path($dir)) {
         die "\n=+Failed to create directory or '$dir' already exists+= $!\n";
-    }  
+    }
 
     eval {
         Git::command_oneline('clone', $repo_url, $dir);
@@ -183,7 +208,7 @@ sub install_module {
 
 sub create_directory {
     my ($dir) = @_;
-    unless(-e $dir or make_path($dir)) {
+    unless (-e $dir or make_path($dir)) {
         die "Failed to create directory '$dir': $!\n";
     }
     print "Directory '$dir' created or already exists.\n";
@@ -219,7 +244,8 @@ sub move_file {
 }
 
 sub cleanup {
-  # remove cloned repository directory logic
+    # remove cloned repository directory logic
 }
 
 partone();
+
