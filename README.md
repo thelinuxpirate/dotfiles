@@ -2,10 +2,11 @@
 
 | Software      | Description |
 | :---          |    :----:   |
-| WM               | [Hyprland (Wayland)](https://hyprland.org/)                         |
-| Secondary WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
-| Editor           | [...](https://github.com/thelinuxpirate/sleepy-nvim)    |
-| Terminal         | [Wezterm](https://sw.kovidgoyal.net/kitty/)                 |
+| Distro     | [Gentoo](https://gentoo.org)  |
+| WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
+| Secondary WM     | [Currently N/A](https://github.com/thelinuxpirate/)  |
+| Editor           | [NvChad](https://github.com/thelinuxpirate/sleepy-nvim)    |
+| Terminal         | [Currently N/A](https://github.com/thelinuxpirate/)                 |
 
 ## NixOS Struggle
 I've struggled trying to use NixOS for about 7 months. 
