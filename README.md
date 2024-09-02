@@ -2,11 +2,14 @@
 
 | Software      | Description |
 | :---          |    :----:   |
-| Distro     | [Gentoo](https://gentoo.org)  |
-| WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
-| Secondary WM     | [Currently N/A](https://github.com/thelinuxpirate/)  |
-| Editor           | [NvChad](https://github.com/thelinuxpirate/sleepy-nvim)    |
+| Distro     | [NixOS](https://nixos.org)  |
+| WM     | [Hyprland](https://hyprland.org/)  |
+| Secondary WM     | [DWM (Xorg)](https://github.com/thelinuxpirate/sleepy-dwm)  |
+| Editor           | [NixVim](https://github.com/thelinuxpirate/NixOS-Dotfiles)    |
 | Terminal         | [Currently N/A](https://github.com/thelinuxpirate/)                 |
+
+# todo
+these dotfiles are under construction & being tailored/rebuilt for my new NixOS configurations...
 
 ## NixOS Struggle
 I've struggled trying to use NixOS for about 7 months. 
