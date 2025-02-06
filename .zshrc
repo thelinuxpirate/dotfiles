@@ -1,9 +1,12 @@
 [[ -r $HOME/.repos/znap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $HOME/.repos/znap
-source $HOME/.repos/znap/znap.zsh  
-source $HOME/.nix-profile/etc/profile.d/nix.sh
-source /etc/profile.d/devkit-env.sh
+source $HOME/.repos/znap/znap.zsh
+#source $HOME/.nix-profile/etc/profile.d/nix.sh
+#source /etc/profile.d/devkit-env.sh
+
+ZSH_THEME="flazz"
+CASE_SENSITIVE="true"
 
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$HOME/.local/bin:$PATH"
@@ -14,15 +17,13 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/.platformio/penv/bin:$PATH"
 
+znap source ohmyzsh/ohmyzsh
 znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zaw
 
 xset r rate 200 60
 krabby random -i
-
-ZSH_THEME="afowler"
-CASE_SENSITIVE="true"
 
 export ARCHFLAGS="-arch x86_64"
 export MANPATH="/usr/local/man:$MANPATH"
@@ -60,14 +61,14 @@ alias hx='helix'
 alias cleannix='nix-collect-garbage --delete-old'
 
 alias paci='doas pacman -S'
-alias pacr='doas pacman -R'
+alias pacr='doas pacman -Rns'
 alias pacs='pacman -Ss'
 alias pacu='doas pacman -Sy'
 alias pacup='doas pacman -Syu'
 alias pacdup='paru'
 
 alias auri='paru -S'
-alias aurr='paru -R'
+alias aurr='paru -Rns'
 alias aurs='paru -Ss'
 
 alias rebuildthesucc='cd $HOME/.config/sleepy-dwm/ && doas make clean install && cd slstatus/ && doas make clean install && cd .. && cd dmenu/ && doas make clean install && cd'
@@ -75,10 +76,8 @@ alias rebuildthewm='cd $HOME/.config/sleepy-dwm/ && doas make clean install && c
 alias rebuildthebar='cd $HOME/.config/sleepy-dwm/slstatus/ && doas make clean install && cd'
 alias rebuildthemenu='cd $HOME/.config/sleepy-dwm/dmenu/ && doas make clean install && cd'
 
+alias vencordmanager='sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"'
 
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
-eval "$(starship init zsh)"
-
-# bun completions
-[ -s "/home/trong/.bun/_bun" ] && source "/home/trong/.bun/_bun"
+#eval "$(starship init zsh)"
