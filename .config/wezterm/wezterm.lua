@@ -1,17 +1,23 @@
 local wezterm = require 'wezterm'
+
 return {
-	enable_wayland = false, -- currently broken?
+    enable_wayland = false,
+    front_end = 'OpenGL',
 
-	-- appearence
-  color_scheme = 'Tokyo Night',
-	font = wezterm.font 'Comic Mono',
-	front_end = 'OpenGL',
+    -- appearence
+    color_scheme = 'Tokyo Night',
+    font = wezterm.font('Comic Mono', { weight = 'Bold', italic = false }),
+    font_size = 12.12,
 
-	window_decorations = 'RESIZE',
-	line_height = 0.99,
-	enable_tab_bar = false,
+    cell_width = 1,
+    line_height = 1.2,
 
-	-- terminal features
-	enable_kitty_keyboard = true,
-	hide_mouse_cursor_when_typing = true,
+    bold_brightens_ansi_colors = true,
+    window_decorations = 'RESIZE',
+    line_height = 1.025,
+    hide_tab_bar_if_only_one_tab = true,
+
+    -- terminal features
+    enable_kitty_keyboard = true,
+    hide_mouse_cursor_when_typing = true,
 }
