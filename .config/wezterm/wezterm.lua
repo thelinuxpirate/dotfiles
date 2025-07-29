@@ -5,16 +5,15 @@ return {
     front_end = 'OpenGL',
 
     -- appearence
-    color_scheme = 'Tokyo Night',
-    font = wezterm.font('Comic Mono', { weight = 'Bold', italic = false }),
-    font_size = 12.12,
+    color_scheme = 'Catppuccin Mocha',
+    font = wezterm.font('FiraCode'),
+    font_size = 11.5,
 
     cell_width = 1,
-    line_height = 1.2,
+    line_height = 1.3,
 
     bold_brightens_ansi_colors = true,
     window_decorations = 'RESIZE',
-    line_height = 1.025,
     hide_tab_bar_if_only_one_tab = true,
 
     -- terminal features
