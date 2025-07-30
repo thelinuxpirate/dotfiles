@@ -1,14 +1,14 @@
 [[ -r $HOME/.repos/znap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git $HOME/.repos/znap
-source $HOME/.repos/znap/znap.zsh  
+source $HOME/.repos/znap/znap.zsh
 #source $HOME/.nix-profile/etc/profile.d/nix.sh
 #source /etc/profile.d/devkit-env.sh
 
 ZSH_THEME="flazz"
 CASE_SENSITIVE="true"
 
-export BROWSER="brave"
+export BROWSER="zen-browser"
 export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -22,7 +22,7 @@ znap source zsh-users/zsh-syntax-highlighting
 znap source zsh-users/zsh-autosuggestions
 znap source zsh-users/zaw
 
-xset r rate 200 60
+xset r rate 200 50
 krabby random -i
 
 ZSH_THEME="afowler"
@@ -36,7 +36,8 @@ alias s='sudo'
 alias d='doas'
 alias t='tree'
 
-alias hx='helix'
+alias edt='emacs -nw'
+alias vi='nvim'
 alias cleannix='nix-collect-garbage --delete-old'
 
 alias paci='doas pacman -S'
@@ -50,10 +51,7 @@ alias auri='paru -S'
 alias aurr='paru -R'
 alias aurs='paru -Ss'
 
-alias rebuildthesucc='cd $HOME/.config/sleepy-dwm/ && doas make clean install && cd slstatus/ && doas make clean install && cd .. && cd dmenu/ && doas make clean install && cd'
-alias rebuildthewm='cd $HOME/.config/sleepy-dwm/ && doas make clean install && cd'
-alias rebuildthebar='cd $HOME/.config/sleepy-dwm/slstatus/ && doas make clean install && cd'
-alias rebuildthemenu='cd $HOME/.config/sleepy-dwm/dmenu/ && doas make clean install && cd'
-
+alias rebuildthewm='cd $HOME/.config/chadwm/ && doas make clean install && cd'
 alias vencordmanager='sh -c "$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)"'
+
 #eval "$(starship init zsh)"
