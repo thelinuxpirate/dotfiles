@@ -84,16 +84,33 @@ layout {
         top -3
         bottom -3
     }
-}
 
-// Add lines like this to spawn processes at startup.
-hotkey-overlay {
-    skip-at-startup
+    background-color "#282a36"
 }
 
 // gets rid of annoying window title border
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshits/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+    hide-not-bound
+}
+
+cursor {
+    hide-when-typing
+    hide-after-inactive-ms 10000
+}
+
+// Mod+Shift+O Settings
+overview {
+    zoom 0.58
+    backdrop-color "#282a36"
+
+    workspace-shadow {
+        off
+    }
+}
 
 animations {
     // -int = faster
@@ -264,22 +281,17 @@ binds {
     Mod+I            { focus-workspace-up; }
 
     // TODO
-    Mod+Shift+U      { move-window-down; }
-    Mod+Shift+I      { move-window-up; }
+    Mod+Shift+U      { move-window-to-workspace-down; }
+    Mod+Shift+I      { move-window-to-workspace-up; }
 
-    Mod+Ctrl+U       { move-window-to-workspace-down; }
-    Mod+Ctrl+I       { move-window-to-workspace-up; }
-    Mod+Alt+U        { move-column-to-workspace-down; }
-    Mod+Alt+I        { move-column-to-workspace-up; }
+    Mod+Ctrl+U       { move-column-to-workspace-down; }
+    Mod+Ctrl+I       { move-column-to-workspace-up; }
 
     Mod+Shift+Space  { toggle-window-floating; }
     Mod+V            { switch-focus-between-floating-and-tiling; }
 
     // LAUNCHERS
     Mod+Return    cooldown-ms=220 hotkey-overlay-title="Spawn WezTerm"        { spawn "wezterm"; }
-    Mod+Space     hotkey-overlay-title="Spawn Launcher"                       { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
-    Mod+Semicolon hotkey-overlay-title="Spawn Control Center"                 { spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"; }
-    Mod+N         hotkey-overlay-title="Spawn Notification Center"            { spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"; }
     Mod+S         cooldown-ms=220 hotkey-overlay-title="Spawn Spotify"        { spawn "spotify-launcher"; }
     Mod+G         cooldown-ms=220 hotkey-overlay-title="Spawn Gimp"           { spawn "gimp"; }
 
@@ -287,25 +299,34 @@ binds {
     Mod+Shift+B cooldown-ms=220 hotkey-overlay-title="Spawn Zen-Browser"      { spawn    "zen-browser"; }
     Mod+Shift+T cooldown-ms=220 hotkey-overlay-title="Spawn File Manager"     { spawn    "nemo"; }
     Mod+Shift+P cooldown-ms=220 hotkey-overlay-title="Spawn Audio Controller" { spawn    "pwvucontrol"; }
-    Mod+Shift+D cooldown-ms=220 hotkey-overlay-title="Spawn Discord"          { spawn    "vesktop"; }
+    Mod+Shift+D cooldown-ms=220 hotkey-overlay-title="Spawn Discord"          { spawn-sh "equibop --wayland --gtk-version=4"; }
     Mod+Shift+S cooldown-ms=220 hotkey-overlay-title="Spawn Steam"            { spawn-sh "steam -cef-disable-gpu"; }
 
     // MISC/XF86
-    Print      { screenshot; }
-    Ctrl+Print { screenshot-screen; }
+    Mod+B         cooldown-ms=220 hotkey-overlay-title="Toggle Bar"               { spawn-sh "qs -c noctalia-shell ipc call bar toggle"; }
+    Mod+Space     cooldown-ms=220 hotkey-overlay-title="Open Launcher"            { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
+    Mod+Semicolon cooldown-ms=220 hotkey-overlay-title="Open Control Center"      { spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"; }
+    Mod+N         cooldown-ms=220 hotkey-overlay-title="Open Notification Center" { spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"; }
+
+    // TODO: recode 'playmectl'
+    Mod+Ctrl+B        cooldown-ms=220 hotkey-overlay-title="Start BGM"             { spawn-sh "playmectl -t ~/.local/audio/SMG2-CosmicCoveGalaxy.mp3"; }
+    Mod+Ctrl+Shift+B  cooldown-ms=220 hotkey-overlay-title="Toggle BGM play/pause" { spawn-sh "playmectl -c 1"; }
+
+    Print      { screenshot-screen show-pointer=true; }
+    Ctrl+Print { screenshot        show-pointer=false; }
     Alt+Print  { screenshot-window; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "increase"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "decrease"; }
     XF86AudioMute        allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
 
-    XF86AudioPlay             allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    Ctrl+XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    Ctrl+Shift+XF86AudioPlay  allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPlay        cooldown-ms=220 allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    Ctrl+XF86AudioPlay                   allow-when-locked=true { spawn-sh "playerctl previous"; }
+    Ctrl+Shift+XF86AudioPlay             allow-when-locked=true { spawn-sh "playerctl next"; }
 
-    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioStop                        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev                        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext                        allow-when-locked=true { spawn-sh "playerctl next"; }
 
     XF86MonBrightnessUp   allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "increase"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
