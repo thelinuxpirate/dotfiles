@@ -1,0 +1,5 @@
+#+title: Packages Needed (Arch)
+WezTerm | Equibop
+#+begin_src
+niri xdg-desktop-portal-gnome xwayland-satellite noctalia-shell nwg-look cliphist wlsunset power-profiles-daemon ddcutil org.freedesktop.secerets udiskie
+#+end_src
