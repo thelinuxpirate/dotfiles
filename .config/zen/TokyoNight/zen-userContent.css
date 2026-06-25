@@ -1,0 +1,94 @@
+/* --- USAGE WITH NOCTALIA WAYLAND SHELL - File located at: ~/.cache/noctalia/zen-browser/zen-userContent.css --- */
+@-moz-document url-prefix("about:") {
+{
+--in-content-page-color: #c0caf5 !important;
+--color-accent-primary: #7aa2f7 !important;
+
+background-color: #24283b !important;
+--in-content-page-background: #24283b !important;
+
+}
+}
+
+/* about & about */
+@-moz-document url("about"), url("about") {
+
+{
+--newtab-background-color: #24283b !important;
+--newtab-background-color-secondary: #292e42 !important;
+--newtab-element-hover-color: #292e42 !important;
+
+--newtab-text-primary-color: #c0caf5 !important;
+--newtab-wordmark-color: #c0caf5 !important;
+
+--newtab-primary-action-background: #7aa2f7 !important;
+
+}
+
+.icon {
+color: #7aa2f7 !important;
+}
+
+.card-outer(, , .active)(.placeholder) .card-title {
+color: #7aa2f7 !important;
+}
+}
+
+/* about */
+@-moz-document url-prefix("about") {
+
+{
+--zen-colors-tertiary: #1f2335 !important;
+
+--in-content-text-color: #c0caf5 !important;
+
+--link-color: #7aa2f7 !important;
+
+--zen-colors-primary: #292e42 !important;
+--in-content-box-background: #292e42 !important;
+
+--zen-primary-color: #7aa2f7 !important;
+
+}
+
+button,
+groupbox menulist {
+background: #292e42 !important;
+color: #c0caf5 !important;
+}
+
+.main-content {
+background-color: #1a1b26 !important;
+}
+}
+
+/* about */
+@-moz-document url-prefix("about") {
+
+{
+--zen-dark-color-mix-base: #1f2335 !important;
+--background-color-box: #24283b !important;
+}
+}
+
+/* about */
+@-moz-document url-prefix("about") {
+
+{
+--zen-primary-color: #24283b !important;
+
+--in-content-primary-button-text-color-hover: #c0caf5 !important;
+--in-content-primary-button-background: #24283b !important;
+--in-content-primary-button-text-color: #c0caf5 !important;
+
+}
+
+.card {
+background-color: #292e42 !important;
+}
+}
+
+/* Panel UI button visibility fix */
+#PanelUI-menu-button[open] .toolbarbutton-icon {
+fill: #7aa2f7 !important;
+}
