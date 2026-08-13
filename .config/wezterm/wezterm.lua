@@ -5,8 +5,9 @@ return {
     front_end = 'OpenGL',
 
     -- appearence
-    color_scheme = 'Catppuccin Mocha',
-    font = wezterm.font('FiraCode'),
+    -- color_scheme = 'Everblush (Gogh)',
+    color_scheme = 'Tokyo Night (Gogh)',
+    font = wezterm.font('FiraCode Nerd Font Mono'),
     font_size = 11.5,
 
     cell_width = 1,
